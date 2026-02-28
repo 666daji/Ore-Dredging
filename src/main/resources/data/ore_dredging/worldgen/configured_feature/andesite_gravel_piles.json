@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "ore_dredging:random_gravel_piles",
+      "blocks": [
+        "ore_dredging:andesite_gravel_piles"
+      ]
+    }
+  }
+}

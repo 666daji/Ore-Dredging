@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "TW의 광석 채취",
+  "jade.modName.ore_dredging": "TW의 광석 채취",
+
+  "item.ore_dredging.raw_copper_nugget": "구리 원석 조각",
+  "item.ore_dredging.raw_iron_nugget": "철 원석 조각",
+  "item.ore_dredging.raw_gold_nugget": "금 원석 조각",
+
+  "item.ore_dredging.golden_ball": "황금 구슬",
+  "item.ore_dredging.gray_quartz": "회색 석영",
+
+  "block.ore_dredging.granite_bricks": "화강암 벽돌",
+  "block.ore_dredging.granite_brick_stairs": "화강암 벽돌 계단",
+  "block.ore_dredging.granite_brick_slab": "화강암 벽돌 반 블록",
+  "block.ore_dredging.granite_brick_wall": "화강암 벽돌 담장",
+
+  "block.ore_dredging.diorite_bricks": "섬록암 벽돌",
+  "block.ore_dredging.diorite_brick_stairs": "섬록암 벽돌 계단",
+  "block.ore_dredging.diorite_brick_slab": "섬록암 벽돌 반 블록",
+  "block.ore_dredging.diorite_brick_wall": "섬록암 벽돌 담장",
+
+  "block.ore_dredging.andesite_bricks": "안산암 벽돌",
+  "block.ore_dredging.andesite_brick_stairs": "안산암 벽돌 계단",
+  "block.ore_dredging.andesite_brick_slab": "안산암 벽돌 반 블록",
+  "block.ore_dredging.andesite_brick_wall": "안산암 벽돌 담장",
+
+  "block.ore_dredging.stone_gravel_piles": "돌 자갈 더미",
+  "block.ore_dredging.diorite_gravel_piles": "섬록암 자갈 더미",
+  "block.ore_dredging.andesite_gravel_piles": "안산암 자갈 더미",
+  "block.ore_dredging.granite_gravel_piles": "화강암 자갈 더미",
+  "block.ore_dredging.sandstone_gravel_piles": "사암 자갈 더미",
+  "block.ore_dredging.deepslate_gravel_piles": "심층암 자갈 더미",
+
+  "ore_dredging.cimelia.nature": "자연의 보물",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "무광의 서리 낀 광택이 나는 무거운 작은 구슬.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "손에 쥐면 그 안에서 따뜻하고 거대한 에너지가 천천히 흐르는 것을 느낄 수 있습니다.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW의 광석 채취",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "당신의 채굴 경험을 풍부하게! 암석에 합리적이고 풍부한 드롭을 추가합니다. 그리고 숨겨진 신비한 유물까지!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "당신의 채굴 경험을 풍부하게! 암석에 풍부한 드롭과 숨겨진 유물을 추가합니다."
+}

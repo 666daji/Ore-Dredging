@@ -1,0 +1,150 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:sandstone_gravel_piles"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8600
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_iron_nugget",
+          "weight": 1400,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8700
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_gold_nugget",
+          "weight": 1300,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9920
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 80,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9960
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 40,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8800
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flint",
+          "weight": 1200,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

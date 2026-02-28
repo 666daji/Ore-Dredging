@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 6640
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_copper_nugget",
+          "weight": 3360,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

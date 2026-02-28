@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" },
+    { "item": "ore_dredging:raw_copper_nugget" }
+  ],
+  "result": {
+    "item": "minecraft:raw_copper"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "TW's Erzbaggerei",
+  "jade.modName.ore_dredging": "TW's Erzbaggerei",
+
+  "item.ore_dredging.raw_copper_nugget": "Rohkupferklumpen",
+  "item.ore_dredging.raw_iron_nugget": "Roheisenklumpen",
+  "item.ore_dredging.raw_gold_nugget": "Rohgoldklumpen",
+
+  "item.ore_dredging.golden_ball": "Goldkugel",
+  "item.ore_dredging.gray_quartz": "Grauer Quarz",
+
+  "block.ore_dredging.granite_bricks": "Granitziegel",
+  "block.ore_dredging.granite_brick_stairs": "Granitziegeltreppe",
+  "block.ore_dredging.granite_brick_slab": "Granitziegelstufe",
+  "block.ore_dredging.granite_brick_wall": "Granitziegelmauer",
+
+  "block.ore_dredging.diorite_bricks": "Dioritziegel",
+  "block.ore_dredging.diorite_brick_stairs": "Dioritziegeltreppe",
+  "block.ore_dredging.diorite_brick_slab": "Dioritziegelstufe",
+  "block.ore_dredging.diorite_brick_wall": "Dioritziegelmauer",
+
+  "block.ore_dredging.andesite_bricks": "Andesitziegel",
+  "block.ore_dredging.andesite_brick_stairs": "Andesitziegeltreppe",
+  "block.ore_dredging.andesite_brick_slab": "Andesitziegelstufe",
+  "block.ore_dredging.andesite_brick_wall": "Andesitziegelmauer",
+
+  "block.ore_dredging.stone_gravel_piles": "Steinschotterhaufen",
+  "block.ore_dredging.diorite_gravel_piles": "Dioritschotterhaufen",
+  "block.ore_dredging.andesite_gravel_piles": "Andesitschotterhaufen",
+  "block.ore_dredging.granite_gravel_piles": "Granitschotterhaufen",
+  "block.ore_dredging.sandstone_gravel_piles": "Sandsteinschotterhaufen",
+  "block.ore_dredging.deepslate_gravel_piles": "Tiefenschieferschotterhaufen",
+
+  "ore_dredging.cimelia.nature": "Naturschätze",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "Eine schwere, kleine Kugel mit matter Oberfläche.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Wenn man sie in der Hand hält, spürt man die warme und gewaltige Energie, die langsam in ihr fließt.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW's Erzbaggerei",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "Bereichere dein Bergbauerlebnis! Fügt Gestein vernünftige, reichhaltige Beute und verborgene, mysteriöse Artefakte hinzu!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "Bereichere dein Bergbauerlebnis! Fügt Gestein vernünftige, reichhaltige Beute und verborgene, mysteriöse Artefakte hinzu!"
+}

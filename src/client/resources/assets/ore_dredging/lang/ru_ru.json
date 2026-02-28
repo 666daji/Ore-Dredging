@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "Добыча руды от TW",
+  "jade.modName.ore_dredging": "Добыча руды от TW",
+
+  "item.ore_dredging.raw_copper_nugget": "Самородок необработанной меди",
+  "item.ore_dredging.raw_iron_nugget": "Самородок необработанного железа",
+  "item.ore_dredging.raw_gold_nugget": "Самородок необработанного золота",
+
+  "item.ore_dredging.golden_ball": "Золотой шар",
+  "item.ore_dredging.gray_quartz": "Серый кварц",
+
+  "block.ore_dredging.granite_bricks": "Гранитные кирпичи",
+  "block.ore_dredging.granite_brick_stairs": "Ступеньки из гранитных кирпичей",
+  "block.ore_dredging.granite_brick_slab": "Плита из гранитных кирпичей",
+  "block.ore_dredging.granite_brick_wall": "Стена из гранитных кирпичей",
+
+  "block.ore_dredging.diorite_bricks": "Диоритовые кирпичи",
+  "block.ore_dredging.diorite_brick_stairs": "Ступеньки из диоритовых кирпичей",
+  "block.ore_dredging.diorite_brick_slab": "Плита из диоритовых кирпичей",
+  "block.ore_dredging.diorite_brick_wall": "Стена из диоритовых кирпичей",
+
+  "block.ore_dredging.andesite_bricks": "Андезитовые кирпичи",
+  "block.ore_dredging.andesite_brick_stairs": "Ступеньки из андезитовых кирпичей",
+  "block.ore_dredging.andesite_brick_slab": "Плита из андезитовых кирпичей",
+  "block.ore_dredging.andesite_brick_wall": "Стена из андезитовых кирпичей",
+
+  "block.ore_dredging.stone_gravel_piles": "Кучи каменного гравия",
+  "block.ore_dredging.diorite_gravel_piles": "Кучи диоритового гравия",
+  "block.ore_dredging.andesite_gravel_piles": "Кучи андезитового гравия",
+  "block.ore_dredging.granite_gravel_piles": "Кучи гранитного гравия",
+  "block.ore_dredging.sandstone_gravel_piles": "Кучи песчаникового гравия",
+  "block.ore_dredging.deepslate_gravel_piles": "Кучи гравия из глубинного сланца",
+
+  "ore_dredging.cimelia.nature": "Сокровища природы",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "Тяжелый маленький шарик с матовой, морозной поверхностью.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Держа его в руке, вы чувствуете, как теплая и огромная энергия медленно течет внутри.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "Добыча руды от TW",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "Обогатите свой опыт добычи! Добавляет логичные и обильные ресурсы из камней, а также скрытые таинственные реликвии!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "Обогатите свой опыт добычи! Добавляет обильные ресурсы из камней и скрытые реликвии."
+}

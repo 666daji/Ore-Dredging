@@ -1,0 +1,33 @@
+{
+  "feature": "ore_dredging:diorite_gravel_piles",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING_NO_LEAVES"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "ore_dredging:stone_gravel_piles",
+          "Properties": {
+            "shape": "1",
+            "facing": "north"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 8
+    }
+  ]
+}

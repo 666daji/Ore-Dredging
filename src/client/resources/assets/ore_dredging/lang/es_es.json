@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "Dragado de minerales de TW",
+  "jade.modName.ore_dredging": "Dragado de minerales de TW",
+
+  "item.ore_dredging.raw_copper_nugget": "Pepita de cobre en bruto",
+  "item.ore_dredging.raw_iron_nugget": "Pepita de hierro en bruto",
+  "item.ore_dredging.raw_gold_nugget": "Pepita de oro en bruto",
+
+  "item.ore_dredging.golden_ball": "Bola dorada",
+  "item.ore_dredging.gray_quartz": "Cuarzo gris",
+
+  "block.ore_dredging.granite_bricks": "Ladrillos de granito",
+  "block.ore_dredging.granite_brick_stairs": "Escaleras de ladrillos de granito",
+  "block.ore_dredging.granite_brick_slab": "Losa de ladrillos de granito",
+  "block.ore_dredging.granite_brick_wall": "Muro de ladrillos de granito",
+
+  "block.ore_dredging.diorite_bricks": "Ladrillos de diorita",
+  "block.ore_dredging.diorite_brick_stairs": "Escaleras de ladrillos de diorita",
+  "block.ore_dredging.diorite_brick_slab": "Losa de ladrillos de diorita",
+  "block.ore_dredging.diorite_brick_wall": "Muro de ladrillos de diorita",
+
+  "block.ore_dredging.andesite_bricks": "Ladrillos de andesita",
+  "block.ore_dredging.andesite_brick_stairs": "Escaleras de ladrillos de andesita",
+  "block.ore_dredging.andesite_brick_slab": "Losa de ladrillos de andesita",
+  "block.ore_dredging.andesite_brick_wall": "Muro de ladrillos de andesita",
+
+  "block.ore_dredging.stone_gravel_piles": "Montones de grava de piedra",
+  "block.ore_dredging.diorite_gravel_piles": "Montones de grava de diorita",
+  "block.ore_dredging.andesite_gravel_piles": "Montones de grava de andesita",
+  "block.ore_dredging.granite_gravel_piles": "Montones de grava de granito",
+  "block.ore_dredging.sandstone_gravel_piles": "Montones de grava de arenisca",
+  "block.ore_dredging.deepslate_gravel_piles": "Montones de grava de pizarra profunda",
+
+  "ore_dredging.cimelia.nature": "Tesoros de la naturaleza",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "Una pequeña bola pesada con un brillo mate y satinado.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Al sostenerla, puedes sentir la energía cálida e inmensa fluyendo lentamente en su interior.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "Dragado de minerales de TW",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! ¡Añade gotas lógicas y abundantes a las rocas, así como reliquias misteriosas ocultas!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! Añade gotas abundantes a las rocas y reliquias ocultas."
+}

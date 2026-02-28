@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "TW的礦石淘採",
+  "jade.modName.ore_dredging": "TW的礦石淘採",
+
+  "item.ore_dredging.raw_copper_nugget": "粗銅粒",
+  "item.ore_dredging.raw_iron_nugget": "粗鐵粒",
+  "item.ore_dredging.raw_gold_nugget": "粗金粒",
+
+  "item.ore_dredging.golden_ball": "金球",
+  "item.ore_dredging.gray_quartz": "灰石英",
+
+  "block.ore_dredging.granite_bricks": "花崗岩磚",
+  "block.ore_dredging.granite_brick_stairs": "花崗岩磚樓梯",
+  "block.ore_dredging.granite_brick_slab": "花崗岩磚半磚",
+  "block.ore_dredging.granite_brick_wall": "花崗岩磚牆",
+
+  "block.ore_dredging.diorite_bricks": "閃長岩磚",
+  "block.ore_dredging.diorite_brick_stairs": "閃長岩磚樓梯",
+  "block.ore_dredging.diorite_brick_slab": "閃長岩磚半磚",
+  "block.ore_dredging.diorite_brick_wall": "閃長岩磚牆",
+
+  "block.ore_dredging.andesite_bricks": "安山岩磚",
+  "block.ore_dredging.andesite_brick_stairs": "安山岩磚樓梯",
+  "block.ore_dredging.andesite_brick_slab": "安山岩磚半磚",
+  "block.ore_dredging.andesite_brick_wall": "安山岩磚牆",
+
+  "block.ore_dredging.stone_gravel_piles": "石頭碎石堆",
+  "block.ore_dredging.diorite_gravel_piles": "閃長岩碎石堆",
+  "block.ore_dredging.andesite_gravel_piles": "安山岩碎石堆",
+  "block.ore_dredging.granite_gravel_piles": "花崗岩碎石堆",
+  "block.ore_dredging.sandstone_gravel_piles": "砂岩碎石堆",
+  "block.ore_dredging.deepslate_gravel_piles": "深板岩碎石堆",
+
+  "ore_dredging.cimelia.nature": "自然珍寶",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "一顆沉甸甸的泛著磨砂光澤的小球。",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "將它拿在手中時，能感受到其中溫熱而磅礴的能量正在緩慢的流動。",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW的礦石淘採",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "豐富你的採礦體驗！為岩石增加了合理、豐富的掉落物，以及隱藏的神祕遺物！",
+  "modmenu.summaryTranslation.tw-ore-dredging": "豐富你的採礦體驗！為岩石增加了合理的豐富掉落物，以及隱藏的神祕遺物！"
+}

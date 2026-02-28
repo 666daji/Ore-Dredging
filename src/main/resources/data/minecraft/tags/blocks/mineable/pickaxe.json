@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "ore_dredging:granite_bricks",
+    "ore_dredging:granite_brick_stairs",
+    "ore_dredging:granite_brick_slab",
+    "ore_dredging:granite_brick_wall",
+    "ore_dredging:diorite_bricks",
+    "ore_dredging:diorite_brick_stairs",
+    "ore_dredging:diorite_brick_slab",
+    "ore_dredging:diorite_brick_wall",
+    "ore_dredging:andesite_bricks",
+    "ore_dredging:andesite_brick_stairs",
+    "ore_dredging:andesite_brick_slab",
+    "ore_dredging:andesite_brick_wall",
+    "ore_dredging:stone_gravel_piles",
+    "ore_dredging:diorite_gravel_piles",
+    "ore_dredging:andesite_gravel_piles",
+    "ore_dredging:granite_gravel_piles",
+    "ore_dredging:sandstone_gravel_piles",
+    "ore_dredging:deepslate_gravel_piles"
+  ]
+}

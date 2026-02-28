@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "TW`s Ore Dredging",
+  "jade.modName.ore_dredging": "TW`s Ore Dredging",
+
+  "item.ore_dredging.raw_copper_nugget": "Raw Copper Nugget",
+  "item.ore_dredging.raw_iron_nugget": "Raw Iron Nugget",
+  "item.ore_dredging.raw_gold_nugget": "Raw Gold Nugget",
+
+  "item.ore_dredging.golden_ball": "Golden Ball",
+  "item.ore_dredging.gray_quartz": "Gray Quartz",
+
+  "block.ore_dredging.granite_bricks": "Granite Bricks",
+  "block.ore_dredging.granite_brick_stairs": "Granite Brick Stairs",
+  "block.ore_dredging.granite_brick_slab": "Granite Brick Slab",
+  "block.ore_dredging.granite_brick_wall": "Granite Brick Wall",
+
+  "block.ore_dredging.diorite_bricks": "Diorite Bricks",
+  "block.ore_dredging.diorite_brick_stairs": "Diorite Brick Stairs",
+  "block.ore_dredging.diorite_brick_slab": "Diorite Brick Slab",
+  "block.ore_dredging.diorite_brick_wall": "Diorite Brick Wall",
+
+  "block.ore_dredging.andesite_bricks": "Andesite Bricks",
+  "block.ore_dredging.andesite_brick_stairs": "Andesite Brick Stairs",
+  "block.ore_dredging.andesite_brick_slab": "Andesite Brick Slab",
+  "block.ore_dredging.andesite_brick_wall": "Andesite Brick Wall",
+
+  "block.ore_dredging.stone_gravel_piles": "Stone Gravel Piles",
+  "block.ore_dredging.diorite_gravel_piles": "Diorite Gravel Piles",
+  "block.ore_dredging.andesite_gravel_piles": "Andesite Gravel Piles",
+  "block.ore_dredging.granite_gravel_piles": "Granite Gravel Piles",
+  "block.ore_dredging.sandstone_gravel_piles": "Sandstone Gravel Piles",
+  "block.ore_dredging.deepslate_gravel_piles": "Deepslate Gravel Piles",
+
+  "ore_dredging.cimelia.nature": "Nature Cimelia",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "A heavy little ball with a matte, frosted sheen.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Holding it, you can feel the warm and immense energy slowly flowing within.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW`s Ore Dredging",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!"
+}

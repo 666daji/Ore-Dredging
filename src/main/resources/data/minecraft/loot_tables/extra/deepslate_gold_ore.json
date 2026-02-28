@@ -1,0 +1,83 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8160
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_gold_nugget",
+          "weight": 1840,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 7520
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_nugget",
+          "weight": 2480,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9680
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:golden_ball",
+          "weight": 320,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

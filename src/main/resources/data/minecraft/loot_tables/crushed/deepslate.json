@@ -1,0 +1,202 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:deepslate_gravel_piles"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 7600
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_iron_nugget",
+          "weight": 2400,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8520
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_gold_nugget",
+          "weight": 1480,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9880
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 120,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9896
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 104,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9400
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:raw_copper_nugget",
+          "weight": 600,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9976
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:golden_ball",
+          "weight": 24,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 9200
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:quartz",
+          "weight": 800,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

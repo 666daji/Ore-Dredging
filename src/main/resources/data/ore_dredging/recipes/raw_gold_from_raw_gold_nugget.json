@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" },
+    { "item": "ore_dredging:raw_gold_nugget" }
+  ],
+  "result": {
+    "item": "minecraft:raw_gold"
+  }
+}

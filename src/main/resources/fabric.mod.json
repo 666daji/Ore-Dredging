@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "tw-ore-dredging",
+  "version": "${version}",
+  "name": "TW`s Ore Dredging",
+  "description": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!",
+  "authors": ["Tenacious Wonder"],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/ore-dredging",
+    "sources": "https://github.com/666daji/Ore-Dredging",
+    "issues": "https://github.com/666daji/Ore-Dredging/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/ore_dredging/icon.jpg",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "org.oredredging.client.OreDredgingDataGenerator"
+    ],
+    "client": [
+      "org.oredredging.client.OreDredgingClient"
+    ],
+    "main": [
+      "org.oredredging.OreDredging"
+    ]
+  },
+  "mixins": [
+    "ore_dredging.mixins.json",
+    {
+      "config": "ore_dredging.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.9",
+    "fabric-api": "*",
+    "minecraft": "~${minecraft_version}"
+  }
+}

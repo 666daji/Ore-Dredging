@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "ore_dredging:granite_brick_slab",
+    "ore_dredging:diorite_brick_slab",
+    "ore_dredging:andesite_brick_slab"
+  ]
+}

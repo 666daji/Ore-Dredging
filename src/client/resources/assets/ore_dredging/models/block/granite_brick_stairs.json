@@ -1,0 +1,8 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "ore_dredging:block/granite_bricks",
+    "top": "ore_dredging:block/granite_bricks",
+    "side": "ore_dredging:block/granite_bricks"
+  }
+}

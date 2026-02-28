@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "TW's 鉱石採掘",
+  "jade.modName.ore_dredging": "TW's 鉱石採掘",
+
+  "item.ore_dredging.raw_copper_nugget": "銅の原石塊",
+  "item.ore_dredging.raw_iron_nugget": "鉄の原石塊",
+  "item.ore_dredging.raw_gold_nugget": "金の原石塊",
+
+  "item.ore_dredging.golden_ball": "黄金の球",
+  "item.ore_dredging.gray_quartz": "灰色の石英",
+
+  "block.ore_dredging.granite_bricks": "花崗岩レンガ",
+  "block.ore_dredging.granite_brick_stairs": "花崗岩レンガの階段",
+  "block.ore_dredging.granite_brick_slab": "花崗岩レンガのハーフブロック",
+  "block.ore_dredging.granite_brick_wall": "花崗岩レンガの壁",
+
+  "block.ore_dredging.diorite_bricks": "閃緑岩レンガ",
+  "block.ore_dredging.diorite_brick_stairs": "閃緑岩レンガの階段",
+  "block.ore_dredging.diorite_brick_slab": "閃緑岩レンガのハーフブロック",
+  "block.ore_dredging.diorite_brick_wall": "閃緑岩レンガの壁",
+
+  "block.ore_dredging.andesite_bricks": "安山岩レンガ",
+  "block.ore_dredging.andesite_brick_stairs": "安山岩レンガの階段",
+  "block.ore_dredging.andesite_brick_slab": "安山岩レンガのハーフブロック",
+  "block.ore_dredging.andesite_brick_wall": "安山岩レンガの壁",
+
+  "block.ore_dredging.stone_gravel_piles": "石の砂利の山",
+  "block.ore_dredging.diorite_gravel_piles": "閃緑岩の砂利の山",
+  "block.ore_dredging.andesite_gravel_piles": "安山岩の砂利の山",
+  "block.ore_dredging.granite_gravel_piles": "花崗岩の砂利の山",
+  "block.ore_dredging.sandstone_gravel_piles": "砂岩の砂利の山",
+  "block.ore_dredging.deepslate_gravel_piles": "深層岩の砂利の山",
+
+  "ore_dredging.cimelia.nature": "自然の宝物",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "重みがあり、つや消しの霜降り状の光沢を持つ小さな球。",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "手に取ると、その内部で温かく膨大なエネルギーがゆっくりと流れているのを感じることができる。",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW's 鉱石採掘",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "あなたの採掘体験を豊かに！岩石に合理的で豊富なドロップを追加します。そして隠された神秘的な遺物も！",
+  "modmenu.summaryTranslation.tw-ore-dredging": "あなたの採掘体験を豊かに！岩石に豊富なドロップと隠された遺物を追加。"
+}

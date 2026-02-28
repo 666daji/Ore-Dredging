@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "ore_dredging:granite_bricks",
+    "ore_dredging:granite_brick_stairs",
+    "ore_dredging:granite_brick_slab",
+    "ore_dredging:granite_brick_wall",
+    "ore_dredging:diorite_bricks",
+    "ore_dredging:diorite_brick_stairs",
+    "ore_dredging:diorite_brick_slab",
+    "ore_dredging:diorite_brick_wall",
+    "ore_dredging:andesite_bricks",
+    "ore_dredging:andesite_brick_stairs",
+    "ore_dredging:andesite_brick_slab",
+    "ore_dredging:andesite_brick_wall"
+  ]
+}

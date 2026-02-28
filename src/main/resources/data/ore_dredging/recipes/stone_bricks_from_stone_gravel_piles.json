@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:stone_gravel_piles" },
+    { "item": "ore_dredging:stone_gravel_piles" },
+    { "item": "ore_dredging:stone_gravel_piles" },
+    { "item": "ore_dredging:stone_gravel_piles" }
+  ],
+  "result": {
+    "item": "minecraft:stone_bricks"
+  }
+}

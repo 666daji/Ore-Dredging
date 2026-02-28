@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": { "item": "ore_dredging:granite_bricks" },
+  "result": "ore_dredging:granite_brick_wall",
+  "count": 1
+}

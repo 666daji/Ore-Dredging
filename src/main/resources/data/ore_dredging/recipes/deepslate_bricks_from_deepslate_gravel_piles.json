@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:deepslate_gravel_piles" },
+    { "item": "ore_dredging:deepslate_gravel_piles" },
+    { "item": "ore_dredging:deepslate_gravel_piles" },
+    { "item": "ore_dredging:deepslate_gravel_piles" }
+  ],
+  "result": {
+    "item": "minecraft:deepslate_bricks"
+  }
+}

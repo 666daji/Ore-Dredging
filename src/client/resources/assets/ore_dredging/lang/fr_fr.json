@@ -1,0 +1,42 @@
+{
+  "itemGroup.ore_dredging": "Dragage de minerais de TW",
+  "jade.modName.ore_dredging": "Dragage de minerais de TW",
+
+  "item.ore_dredging.raw_copper_nugget": "Pépite de cuivre brut",
+  "item.ore_dredging.raw_iron_nugget": "Pépite de fer brut",
+  "item.ore_dredging.raw_gold_nugget": "Pépite d'or brut",
+
+  "item.ore_dredging.golden_ball": "Boule dorée",
+  "item.ore_dredging.gray_quartz": "Quartz gris",
+
+  "block.ore_dredging.granite_bricks": "Briques de granit",
+  "block.ore_dredging.granite_brick_stairs": "Escaliers en briques de granit",
+  "block.ore_dredging.granite_brick_slab": "Dalle en briques de granit",
+  "block.ore_dredging.granite_brick_wall": "Mur en briques de granit",
+
+  "block.ore_dredging.diorite_bricks": "Briques de diorite",
+  "block.ore_dredging.diorite_brick_stairs": "Escaliers en briques de diorite",
+  "block.ore_dredging.diorite_brick_slab": "Dalle en briques de diorite",
+  "block.ore_dredging.diorite_brick_wall": "Mur en briques de diorite",
+
+  "block.ore_dredging.andesite_bricks": "Briques d'andésite",
+  "block.ore_dredging.andesite_brick_stairs": "Escaliers en briques d'andésite",
+  "block.ore_dredging.andesite_brick_slab": "Dalle en briques d'andésite",
+  "block.ore_dredging.andesite_brick_wall": "Mur en briques d'andésite",
+
+  "block.ore_dredging.stone_gravel_piles": "Tas de gravier de pierre",
+  "block.ore_dredging.diorite_gravel_piles": "Tas de gravier de diorite",
+  "block.ore_dredging.andesite_gravel_piles": "Tas de gravier d'andésite",
+  "block.ore_dredging.granite_gravel_piles": "Tas de gravier de granit",
+  "block.ore_dredging.sandstone_gravel_piles": "Tas de gravier de grès",
+  "block.ore_dredging.deepslate_gravel_piles": "Tas de gravier d'ardoise des abîmes",
+
+  "ore_dredging.cimelia.nature": "Trésors de la nature",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "Une petite boule lourde au fini mat et givré.",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "En la tenant, vous pouvez sentir l'énergie chaude et immense qui coule lentement à l'intérieur.",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "Dragage de minerais de TW",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "Enrichissez votre expérience minière ! Ajoute des gouttes logiques et abondantes aux roches, ainsi que des reliques mystérieuses cachées !",
+  "modmenu.summaryTranslation.tw-ore-dredging": "Enrichissez votre expérience minière ! Ajoute des gouttes abondantes aux roches et des reliques cachées."
+}

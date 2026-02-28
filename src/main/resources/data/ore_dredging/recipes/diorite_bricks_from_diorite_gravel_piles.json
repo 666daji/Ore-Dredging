@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:diorite_gravel_piles" },
+    { "item": "ore_dredging:diorite_gravel_piles" },
+    { "item": "ore_dredging:diorite_gravel_piles" },
+    { "item": "ore_dredging:diorite_gravel_piles" }
+  ],
+  "result": {
+    "item": "ore_dredging:diorite_bricks"
+  }
+}
