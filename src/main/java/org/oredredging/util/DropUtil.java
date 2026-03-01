@@ -7,62 +7,39 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
-import org.oredredging.config.DropConfig;
+import org.oredredging.config.CrushedDropsData;
+import org.oredredging.config.ModConfigs;
+import org.oredredging.config.framework.ConfigManager;
 
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
-/**
- * 管理所有定义的具有特殊掉落的方块。
- * 使用 DropConfigManager 加载配置，并提供破碎判断。
- */
-public class DropUtil {
-    // 当前生效的方块集合
-    private static Set<Block> canCrushedBlocks;
-    private static Set<Block> haveExtraDropBlocks;
-
+public final class DropUtil {
     private static boolean mark;
 
-    // 静态初始化：加载配置
-    static {
-        reload();
+    private DropUtil() {}
+
+    /**
+     * 获取当前可破碎方块列表。
+     */
+    private static List<Block> getCanCrushedBlocks() {
+        CrushedDropsData data = ConfigManager.get(ModConfigs.CRUSHED_DROPS);
+        return data != null ? data.canCrushed() : ModConfigs.CRUSHED_DROPS.defaultValue().canCrushed();
     }
 
     /**
-     * 重新加载配置。
+     * 获取当前额外掉落方块列表。
      */
-    public static void reload() {
-        var config = DropConfig.load();
-        canCrushedBlocks = config.get("canCrushed");
-        haveExtraDropBlocks = config.get("haveExtra");
-    }
-
-    /**
-     * 保存当前配置到文件。
-     */
-    public static void saveConfig() {
-        DropConfig.save(canCrushedBlocks, haveExtraDropBlocks);
-    }
-
-    /**
-     * 获取当前可破碎方块集合（只读视图）。
-     */
-    public static Set<Block> getCanCrushedBlocks() {
-        return Set.copyOf(canCrushedBlocks);
-    }
-
-    /**
-     * 获取当前额外掉落方块集合（只读视图）。
-     */
-    public static Set<Block> getHaveExtraDropBlocks() {
-        return Set.copyOf(haveExtraDropBlocks);
+    private static List<Block> getHaveExtraDropBlocks() {
+        CrushedDropsData data = ConfigManager.get(ModConfigs.CRUSHED_DROPS);
+        return data != null ? data.haveExtraDrop() : ModConfigs.CRUSHED_DROPS.defaultValue().haveExtraDrop();
     }
 
     /**
      * 判断方块是否发生“破碎”并应使用 crushed 战利品表。
      */
     public static boolean isCrushed(BlockState state, LootContextParameterSet.Builder builder) {
-        if (!canCrushedBlocks.contains(state.getBlock()) || isSilkTouch(builder)) {
+        if (!getCanCrushedBlocks().contains(state.getBlock()) || isSilkTouch(builder)) {
             return false;
         }
         return RandomUtil.randomBoolean(0.25F);
@@ -72,7 +49,7 @@ public class DropUtil {
      * 判断方块是否发生“破碎+额外”并应附加 extra 战利品表。
      */
     public static boolean isCrushedAndExtra(BlockState state, LootContextParameterSet.Builder builder) {
-        if (!haveExtraDropBlocks.contains(state.getBlock()) || isSilkTouch(builder)) {
+        if (!getHaveExtraDropBlocks().contains(state.getBlock()) || isSilkTouch(builder)) {
             return false;
         }
         return RandomUtil.randomBoolean(0.25F);
@@ -87,14 +64,14 @@ public class DropUtil {
             if (tool != null && !tool.isEmpty()) {
                 return EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, tool) != 0;
             }
-            return false;
-        } catch (NoSuchElementException exception) {
-            return false;
+        } catch (NoSuchElementException ignored) {
+            // 上下文中没有工具，视为无精准采集
         }
+        return false;
     }
 
     public static boolean isCanCrushedBlock(Block block) {
-        return (canCrushedBlocks.contains(block) || haveExtraDropBlocks.contains(block)) && mark;
+        return (getCanCrushedBlocks().contains(block) || getHaveExtraDropBlocks().contains(block)) && mark;
     }
 
     public static void clearMark() {
