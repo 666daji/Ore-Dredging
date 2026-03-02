@@ -31,10 +31,14 @@
   "block.ore_dredging.sandstone_gravel_piles": "砂岩碎石堆",
   "block.ore_dredging.deepslate_gravel_piles": "深板岩碎石堆",
 
+  "item.ore_dredging.miner_bundle": "矿工袋",
+
   "ore_dredging.cimelia.nature": "自然珍宝",
 
   "ore_dredging.cimelia_introduction.golden_ball_1": "一颗沉甸甸的泛着磨砂光泽的小球",
   "ore_dredging.cimelia_introduction.golden_ball_2":"将它拿在手中时，能感受到其中温热而磅礴的能量正在缓慢的流动",
+
+  "item.minerbundle.fullness": "容量:%s/%s",
 
   "modmenu.nameTranslation.tw-ore-dredging": "TW的矿石淘采",
   "modmenu.descriptionTranslation.tw-ore-dredging": "丰富你的采矿体验!为岩石增加了合理,丰富的掉落物!以及隐藏的神秘遗物!",

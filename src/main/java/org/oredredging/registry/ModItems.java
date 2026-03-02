@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.item.CimeliaItem;
+import org.oredredging.item.MinerBundleItem;
 
 public class ModItems {
     // 粗矿粒
@@ -40,6 +41,9 @@ public class ModItems {
     public static final Item GRANITE_GRAVEL_PILES = register(ModBlocks.GRANITE_GRAVEL_PILES);
     public static final Item SANDSTONE_GRAVEL_PILES = register(ModBlocks.SANDSTONE_GRAVEL_PILES);
     public static final Item DEEPSLATE_GRAVEL_PILES = register(ModBlocks.DEEPSLATE_GRAVEL_PILES);
+
+    // 矿工袋
+    public static final Item MinerBundle = register("miner_bundle", new MinerBundleItem(new Item.Settings(), 16));
 
     // 宝物
     public static final Item GOLDEN_BALL = register("golden_ball", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));

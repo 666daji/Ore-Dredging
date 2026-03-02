@@ -15,7 +15,11 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * 袋子配置数据，包含解析后的谓词映射和原始规则映射。
+ * 配置{@link MinerBundleItem}可装入的物品堆栈谓词。
+ * <p>每个矿工袋实例都可以拥有一个独立的谓词。</p>
+ *
+ * @see MinerBundleItem
+ * @see PredicateParser
  */
 public record BundlesData(
         Map<MinerBundleItem, Predicate<ItemStack>> predicates, // 运行时使用的谓词

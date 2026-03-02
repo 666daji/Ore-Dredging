@@ -7,5 +7,6 @@ public class RegistryInit {
         ModLootFunctionTypes.registerAll();
         ModBlockStateProviderTypes.registerAll();
         ModBiomeFeatures.registerAll();
+        ModEnchantments.registerAll();
     }
 }

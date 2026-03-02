@@ -11,14 +11,20 @@ import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 import org.oredredging.OreDredging;
 import org.oredredging.config.framework.ConfigMigrator;
+import org.oredredging.mixin.AbstractBlockMixin;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * 破碎掉落配置数据，对应 crushedDrops.json 文件内容。
- * 内部使用 Block 对象，但序列化时自动转换为方块的 Identifier 字符串。
+ * 配置拥有破碎行为的方块。
+ * <h2>替换</h2>
+ * 包含在{@link #canCrushed}中的方块，破碎时会替换原有的战利品表为新的战利品表。
+ * <h2>额外</h2>
+ * 包含在{@link #haveExtraDrop}中的方块，破碎时会在原本的战利品表上附加一张新的战利品表。
+ *
+ * @see AbstractBlockMixin
  */
 public record CrushedDropsData(
         List<Block> canCrushed,

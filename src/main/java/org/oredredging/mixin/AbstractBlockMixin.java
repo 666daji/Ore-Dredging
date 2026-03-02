@@ -61,6 +61,9 @@ public abstract class AbstractBlockMixin {
         return original;
     }
 
+    /**
+     * 应用破碎效果。
+     */
     @Inject(method = "onStacksDropped", at = @At("RETURN"))
     private void applyCrushed(BlockState state, ServerWorld world, BlockPos pos, ItemStack tool, boolean dropExperience, CallbackInfo ci) {
         if (DropUtil.isCanCrushedBlock(state.getBlock())) {

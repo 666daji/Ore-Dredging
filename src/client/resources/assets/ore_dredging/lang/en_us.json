@@ -33,6 +33,8 @@
 
   "ore_dredging.cimelia.nature": "Nature Cimelia",
 
+  "item.minerbundle.fullness": "容量:%s/%s",
+
   "ore_dredging.cimelia_introduction.golden_ball_1": "A heavy little ball with a matte, frosted sheen.",
   "ore_dredging.cimelia_introduction.golden_ball_2": "Holding it, you can feel the warm and immense energy slowly flowing within.",
 
