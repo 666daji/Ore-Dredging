@@ -12,86 +12,120 @@ import net.minecraft.item.ItemUsage;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.recipe.*;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oredredging.OreDredging;
 import org.oredredging.config.BundlesData;
+import org.oredredging.config.ConvergenceRecipesData;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
 import org.oredredging.registry.ModEnchantments;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * 一个可存储多种物品的袋子，只计数不计算权重，最大容量固定，不可嵌套。
- * 存储结构为NBT列表，每个元素是一个物品堆（ItemStack）。
+ * 矿工收纳袋 - 可存储多种物品，仅计数不计重量，容量固定，不可嵌套。
+ * <p>
+ * 该物品支持三种附魔效果：
+ * <ul>
+ *   <li><b>洞天 (EXPANSION)</b> - 每级提升 50% 的存储容量（乘算，向下取整）。</li>
+ *   <li><b>聚拢 (CONVERGENCE)</b> - 袋子内物品发生变化时，自动尝试匹配配置的合成配方，
+ *       若满足原料数量则消耗原料并生成产物（无视形状，仅按数量匹配）。</li>
+ *   <li><b>收纳 (AUTO_PICKING)</b> - 玩家捡起物品时，若物品允许放入且袋子有空间，则自动收入袋中。</li>
+ * </ul>
  */
 public class MinerBundleItem extends Item {
     public static final String ITEMS_KEY = "Items";
     private final int baseStorage;
 
     /**
-     * 构造函数
-     * @param settings      物品设置
-     * @param baseStorage    最大容量
+     * @param settings    物品设置
+     * @param baseStorage 基础容量（以组为单位，例如 1 = 64 个物品）
      */
     public MinerBundleItem(Settings settings, int baseStorage) {
         super(settings.maxCount(1));
         this.baseStorage = baseStorage * 64;
     }
 
+    // ============================== 公共 API ==============================
+
     /**
-     * 获取允许放入的物品谓词。
-     *
-     * @return 允许放入的物品谓词
+     * 获取袋子允许存储的物品谓词（通过配置定义）。
      */
     public Predicate<ItemStack> getAllowedItems() {
         BundlesData data = ConfigManager.get(ModConfigs.BUNDLES);
         if (data != null) {
             return data.getPredicate(this);
         }
-
         return stack -> false;
     }
 
     /**
-     * 获取袋子的最终容量。
+     * 计算袋子的最终容量（考虑洞天附魔加成）。
      *
-     * @param stack 袋子
-     * @return 最终容量
+     * @param stack 袋子物品栈
+     * @return 最大可存储物品总数
      */
     public static int getStorage(ItemStack stack) {
         if (!(stack.getItem() instanceof MinerBundleItem bundleItem)) {
             return 0;
         }
-
         int base = bundleItem.baseStorage;
         int level = EnchantmentHelper.getLevel(ModEnchantments.EXPANSION, stack);
         if (level == 0) {
             return base;
         }
-
-        // 计算 (1.5)^level，然后乘以基础容量，最后向下取整
+        // 容量 = 基础容量 × (1.5^附魔等级)，向下取整
         double multiplier = Math.pow(1.5, level);
         return (int) Math.floor(base * multiplier);
     }
 
-    // ==================== NBT 辅助方法 ====================
+    /**
+     * 检查袋子是否具有收纳附魔。
+     */
+    public static boolean hasAutoPicking(ItemStack stack) {
+        return stack.getItem() instanceof MinerBundleItem &&
+                EnchantmentHelper.getLevel(ModEnchantments.AUTO_PICKING, stack) != 0;
+    }
 
     /**
-     * 从袋子的NBT中读取存储的物品列表
+     * 尝试将物品自动收纳到袋子中（收纳附魔功能）。
+     *
+     * @param bag    袋子物品栈（会被修改）
+     * @param toAdd  要收纳的物品（不会被修改）
+     * @param player 相关玩家，用于播放音效
+     * @return true 表示成功收纳
      */
+    public static boolean tryAutoPickup(ItemStack bag, ItemStack toAdd, PlayerEntity player) {
+        if (!(bag.getItem() instanceof MinerBundleItem bundleItem)) return false;
+        if (!hasAutoPicking(bag)) return false;
+        if (!bundleItem.getAllowedItems().test(toAdd)) return false;
+        if (bundleItem.addStack(bag, toAdd, player)) {
+            bundleItem.playInsertSound(player);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断袋子是否为空。
+     */
+    public static boolean isEmpty(ItemStack stack) {
+        return getTotalCount(stack) == 0;
+    }
+
+    // ============================== NBT 辅助 ==============================
+
     private static List<ItemStack> getItems(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         if (nbt == null || !nbt.contains(ITEMS_KEY, NbtElement.LIST_TYPE)) {
@@ -109,9 +143,6 @@ public class MinerBundleItem extends Item {
         return items;
     }
 
-    /**
-     * 将物品列表写回袋子的NBT
-     */
     private static void setItems(ItemStack stack, List<ItemStack> items) {
         NbtCompound nbt = stack.getOrCreateNbt();
         NbtList list = new NbtList();
@@ -125,26 +156,12 @@ public class MinerBundleItem extends Item {
         nbt.put(ITEMS_KEY, list);
     }
 
-    /**
-     * 获取当前袋子中的物品总个数
-     */
     private static int getTotalCount(ItemStack stack) {
-        List<ItemStack> items = getItems(stack);
-        return items.stream().mapToInt(ItemStack::getCount).sum();
+        return getItems(stack).stream().mapToInt(ItemStack::getCount).sum();
     }
 
-    /**
-     * 判断袋子是否为空
-     */
-    public static boolean isEmpty(ItemStack stack) {
-        return getTotalCount(stack) == 0;
-    }
+    // ============================== 核心操作 ==============================
 
-    // ==================== 核心操作（整堆为单位） ====================
-
-    /**
-     * 检查袋子是否有足够容量容纳整个给定的物品堆。
-     */
     private boolean canAddStack(ItemStack bag, ItemStack stackToAdd) {
         int currentTotal = getTotalCount(bag);
         int addCount = stackToAdd.getCount();
@@ -153,18 +170,20 @@ public class MinerBundleItem extends Item {
 
     /**
      * 向袋子中添加一个完整的物品堆（全部数量）。
-     * @param bag   袋子
-     * @param toAdd 要添加的物品堆（不会被修改）
-     * @return true 添加成功，false 失败（超出容量或不允许放入）
+     *
+     * @param bag    袋子
+     * @param toAdd  要添加的物品堆（不会被修改）
+     * @param player 玩家（用于音效和世界访问）
+     * @return true 添加成功
      */
-    private boolean addStack(ItemStack bag, ItemStack toAdd) {
+    private boolean addStack(ItemStack bag, ItemStack toAdd, PlayerEntity player) {
         if (!getAllowedItems().test(toAdd)) return false;
         if (!canAddStack(bag, toAdd)) return false;
 
         List<ItemStack> contents = getItems(bag);
         int remaining = toAdd.getCount();
 
-        // 优先合并到现有堆叠中
+        // 合并到现有堆叠
         for (ItemStack existing : contents) {
             if (ItemStack.canCombine(existing, toAdd)) {
                 int maxCount = existing.getMaxCount();
@@ -178,7 +197,7 @@ public class MinerBundleItem extends Item {
             }
         }
 
-        // 如果还有剩余，创建新的堆叠
+        // 剩余部分创建新堆叠
         while (remaining > 0) {
             int stackSize = Math.min(remaining, toAdd.getMaxCount());
             ItemStack newStack = toAdd.copyWithCount(stackSize);
@@ -187,12 +206,14 @@ public class MinerBundleItem extends Item {
         }
 
         setItems(bag, contents);
+        tryConverge(bag, player); // 触发聚拢合成
         return true;
     }
 
     /**
-     * 从袋子中移除一个完整的物品堆（第一个堆叠）。
-     * @return 被移除的物品堆（全部数量），若袋子为空则返回空Optional
+     * 从袋子中移除第一个堆叠（整个堆叠）。
+     *
+     * @return 被移除的堆叠副本，若袋子为空则返回空 Optional
      */
     private Optional<ItemStack> removeStack(ItemStack bag) {
         List<ItemStack> contents = getItems(bag);
@@ -200,45 +221,208 @@ public class MinerBundleItem extends Item {
 
         ItemStack first = contents.remove(0);
         setItems(bag, contents);
-        return Optional.of(first.copy()); // 返回副本，避免外部修改影响袋子
-    }
-
-    // ==================== 收纳 ====================
-
-    /**
-     * 检查袋子是由含有收纳的附魔。
-     *
-     * @param stack 要检查的物品堆栈
-     * @return 是否含有收纳效果
-     */
-    public static boolean hasAutoPicking(ItemStack stack) {
-        return stack.getItem() instanceof MinerBundleItem &&
-                EnchantmentHelper.getLevel(ModEnchantments.AUTO_PICKING, stack) != 0;
+        return Optional.of(first.copy());
     }
 
     /**
-     * 尝试将物品自动收纳到袋子中
-     * @param bag    袋子物品栈（会被修改）
-     * @param toAdd  要收纳的物品（不会被修改，方法内会复制）
-     * @param player 玩家，用于播放音效
-     * @return true 表示成功收纳
+     * 清空袋子并返回所有物品的副本。
      */
-    public static boolean tryAutoPickup(ItemStack bag, ItemStack toAdd, PlayerEntity player) {
-        if (!(bag.getItem() instanceof MinerBundleItem bundleItem)) return false;
+    private List<ItemStack> removeAll(ItemStack bag) {
+        List<ItemStack> contents = getItems(bag);
+        List<ItemStack> copy = new ArrayList<>();
+        for (ItemStack stack : contents) {
+            copy.add(stack.copy());
+        }
+        bag.removeSubNbt(ITEMS_KEY);
+        return copy;
+    }
 
-        if (!hasAutoPicking(bag)) return false;
+    // ============================== 聚拢附魔逻辑 ==============================
 
-        if (!bundleItem.getAllowedItems().test(toAdd)) return false;
-
-        if (bundleItem.addStack(bag, toAdd)) {
-            bundleItem.playInsertSound(player);
-            return true;
+    /**
+     * 从配置中获取所有允许自动合成的配方。
+     */
+    private Set<CraftingRecipe> getConvergenceRecipes(World world) {
+        ConvergenceRecipesData config = ConfigManager.get(ModConfigs.CONVERGENCE_RECIPES);
+        if (config == null || config.recipes().isEmpty()) {
+            return Set.of();
         }
 
+        RecipeManager recipeManager = world.getRecipeManager();
+        Set<CraftingRecipe> recipes = new HashSet<>();
+
+        for (Identifier id : config.recipes()) {
+            Optional<? extends Recipe<?>> optional = recipeManager.get(id);
+            if (optional.isPresent()) {
+                Recipe<?> recipe = optional.get();
+                if (recipe instanceof CraftingRecipe craftingRecipe &&
+                        (craftingRecipe instanceof ShapedRecipe || craftingRecipe instanceof ShapelessRecipe)) {
+                    recipes.add(craftingRecipe);
+                } else {
+                    OreDredging.LOGGER.warn("Convergence recipe {} is not a shaped or shapeless crafting recipe, ignored", id);
+                }
+            } else {
+                OreDredging.LOGGER.warn("Convergence recipe {} not found", id);
+            }
+        }
+        return recipes;
+    }
+
+    /**
+     * 尝试触发聚拢合成（仅当袋子拥有聚拢附魔时）。
+     */
+    private void tryConverge(ItemStack bag, PlayerEntity player) {
+        if (player == null) return;
+        if (EnchantmentHelper.getLevel(ModEnchantments.CONVERGENCE, bag) == 0) return;
+
+        Set<CraftingRecipe> recipes = getConvergenceRecipes(player.getWorld());
+        if (recipes.isEmpty()) return;
+
+        int maxIterations = 10; // 防止无限循环
+        boolean crafted;
+        int iter = 0;
+        do {
+            crafted = false;
+            for (CraftingRecipe recipe : recipes) {
+                if (recipe.isEmpty()) continue;
+                if (tryCraftOnce(bag, recipe, player)) {
+                    crafted = true;
+                    break; // 合成一次后重新扫描所有配方
+                }
+            }
+            iter++;
+        } while (crafted && iter < maxIterations);
+    }
+
+    /**
+     * 尝试使用袋子内的物品合成一次指定的配方（无位置要求，仅按数量匹配）。
+     *
+     * @return true 表示合成成功
+     */
+    private boolean tryCraftOnce(ItemStack bag, CraftingRecipe recipe, PlayerEntity player) {
+        List<ItemStack> contents = getItems(bag);
+        // 展开为单个物品列表，便于匹配
+        List<ItemStack> flattened = flattenStacks(contents);
+
+        DefaultedList<Ingredient> ingredients = recipe.getIngredients();
+        if (ingredients.isEmpty()) return false;
+
+        DynamicRegistryManager registryManager = player.getWorld().getRegistryManager();
+        ItemStack result = recipe.getOutput(registryManager);
+        if (result.isEmpty() || !getAllowedItems().test(result)) return false;
+
+        // 容量检查
+        int currentTotal = flattened.size();
+        int requiredCount = ingredients.size();
+        int resultCount = result.getCount();
+        int newTotal = currentTotal - requiredCount + resultCount;
+        if (newTotal > getStorage(bag)) return false;
+
+        // 尝试匹配原料
+        List<Integer> matchedIndices = new ArrayList<>();
+        boolean[] used = new boolean[flattened.size()];
+        if (matchIngredients(flattened, ingredients, 0, used, matchedIndices)) {
+            // 扣除原料
+            matchedIndices.sort(Collections.reverseOrder());
+            for (int idx : matchedIndices) {
+                flattened.remove(idx);
+            }
+            // 重新压缩为堆叠
+            List<ItemStack> newContents = compressStacks(flattened);
+            // 添加产物
+            mergeStack(newContents, result.copy());
+            // 更新袋子
+            setItems(bag, newContents);
+            playInsertSound(player); // 播放合成音效
+            return true;
+        }
         return false;
     }
 
-    // ==================== 物品交互方法 ====================
+    /**
+     * 将堆叠列表展开为单个物品列表（每个物品独立为 1 个单位的堆叠）。
+     */
+    private List<ItemStack> flattenStacks(List<ItemStack> stacks) {
+        List<ItemStack> flattened = new ArrayList<>();
+        for (ItemStack stack : stacks) {
+            for (int i = 0; i < stack.getCount(); i++) {
+                flattened.add(stack.copyWithCount(1));
+            }
+        }
+        return flattened;
+    }
+
+    /**
+     * 回溯匹配：从展开的物品列表中找出能匹配所有原料的物品索引。
+     */
+    private boolean matchIngredients(List<ItemStack> items, List<Ingredient> ingredients,
+                                     int ingIndex, boolean[] used, List<Integer> matchedIndices) {
+        if (ingIndex == ingredients.size()) return true;
+        Ingredient ing = ingredients.get(ingIndex);
+        for (int i = 0; i < items.size(); i++) {
+            if (!used[i] && ing.test(items.get(i))) {
+                used[i] = true;
+                matchedIndices.add(i);
+                if (matchIngredients(items, ingredients, ingIndex + 1, used, matchedIndices)) {
+                    return true;
+                }
+                matchedIndices.remove(matchedIndices.size() - 1);
+                used[i] = false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 将单个物品列表重新压缩为堆叠列表（尽可能合并相同物品）。
+     */
+    private List<ItemStack> compressStacks(List<ItemStack> items) {
+        List<ItemStack> result = new ArrayList<>();
+        for (ItemStack item : items) {
+            boolean merged = false;
+            for (ItemStack stack : result) {
+                if (ItemStack.canCombine(stack, item)) {
+                    int maxCount = stack.getMaxCount();
+                    if (stack.getCount() < maxCount) {
+                        stack.increment(1);
+                        merged = true;
+                        break;
+                    }
+                }
+            }
+            if (!merged) {
+                result.add(item.copy());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 将一个物品堆叠合并到已有的堆叠列表中（尽可能填满现有堆叠）。
+     */
+    private void mergeStack(List<ItemStack> stacks, ItemStack toAdd) {
+        int remaining = toAdd.getCount();
+        for (ItemStack stack : stacks) {
+            if (ItemStack.canCombine(stack, toAdd)) {
+                int maxCount = stack.getMaxCount();
+                int space = maxCount - stack.getCount();
+                if (space > 0) {
+                    int merge = Math.min(space, remaining);
+                    stack.increment(merge);
+                    remaining -= merge;
+                    if (remaining == 0) return;
+                }
+            }
+        }
+        while (remaining > 0) {
+            int size = Math.min(remaining, toAdd.getMaxCount());
+            ItemStack newStack = toAdd.copyWithCount(size);
+            stacks.add(newStack);
+            remaining -= size;
+        }
+    }
+
+    // ============================== 物品交互 ==============================
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
@@ -246,26 +430,26 @@ public class MinerBundleItem extends Item {
 
         ItemStack slotStack = slot.getStack();
         if (slotStack.isEmpty()) {
-            // 右键空槽 -> 尝试从袋子中取出一个完整的堆叠放入槽位
+            // 右键空槽 -> 尝试从袋子取出一个堆叠放入槽位
             Optional<ItemStack> removed = removeStack(stack);
             if (removed.isPresent()) {
                 ItemStack toInsert = removed.get();
                 ItemStack remaining = slot.insertStack(toInsert);
                 if (!remaining.isEmpty()) {
-                    // 如果槽位放不下（通常不会发生），尝试加回袋子
-                    addStack(stack, remaining);
+                    // 槽位放不下，剩余部分放回袋子
+                    addStack(stack, remaining, player);
                 }
-                playRemoveOneSound(player); // 沿用原音效，语义为取出
+                playRemoveOneSound(player);
                 return true;
             }
         } else if (getAllowedItems().test(slotStack)) {
-            // 右键可接受的物品 -> 尝试将槽位中的整个堆叠放入袋子
+            // 右键可接受的物品 -> 尝试将槽位整个堆叠放入袋子
             int count = slotStack.getCount();
-            ItemStack toAdd = slotStack.copy(); // 复制用于容量检查
+            ItemStack toAdd = slotStack.copy();
             if (canAddStack(stack, toAdd)) {
                 ItemStack taken = slot.takeStackRange(count, count, player);
                 if (!taken.isEmpty() && taken.getCount() == count) {
-                    boolean added = addStack(stack, taken);
+                    boolean added = addStack(stack, taken, player);
                     if (added) {
                         playInsertSound(player);
                     } else {
@@ -285,22 +469,28 @@ public class MinerBundleItem extends Item {
 
         // 手持袋子，右键点击其他物品（光标上有物品）
         if (!otherStack.isEmpty() && getAllowedItems().test(otherStack)) {
-            // 尝试将光标上的整个堆叠放入袋子
             int count = otherStack.getCount();
-            ItemStack toAdd = otherStack.copy(); // 复制用于容量检查
+            ItemStack toAdd = otherStack.copy();
             if (canAddStack(stack, toAdd)) {
-                otherStack.decrement(count); // 从光标移除整个堆叠
-                boolean added = addStack(stack, toAdd);
+                otherStack.decrement(count);
+                boolean added = addStack(stack, toAdd, player);
                 if (added) {
                     playInsertSound(player);
                 } else {
-                    // 添加失败（理论上不会发生），恢复光标数量
+                    // 添加失败，恢复光标数量
                     otherStack.increment(count);
                 }
                 return true;
             }
         }
-        // 此处不处理右键空光标取出所有（保持简单）
+
+        // 空堆栈时尝试取出
+        if (otherStack.isEmpty()) {
+            Optional<ItemStack> removed = removeStack(stack);
+            removed.ifPresent(cursorStackReference::set);
+            return true;
+        }
+
         return false;
     }
 
@@ -322,27 +512,14 @@ public class MinerBundleItem extends Item {
         return TypedActionResult.pass(stack);
     }
 
+    // ============================== 工具提示与显示 ==============================
+
     @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
         List<ItemStack> contents = getItems(stack);
         int current = getTotalCount(stack);
         return Optional.of(new MinerBundleTooltipData(contents, current, getStorage(stack)));
     }
-
-    /**
-     * 清空袋子，返回所有物品的列表（复制）
-     */
-    private List<ItemStack> removeAll(ItemStack bag) {
-        List<ItemStack> contents = getItems(bag);
-        List<ItemStack> copy = new ArrayList<>();
-        for (ItemStack stack : contents) {
-            copy.add(stack.copy());
-        }
-        bag.removeSubNbt(ITEMS_KEY);
-        return copy;
-    }
-
-    // ==================== 进度条显示 ====================
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
@@ -357,11 +534,9 @@ public class MinerBundleItem extends Item {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        // 自定义颜色，例如青色
+        // 青色
         return MathHelper.packRgb(0.2F, 0.8F, 0.8F);
     }
-
-    // ==================== 工具提示 ====================
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, net.minecraft.client.item.TooltipContext context) {
@@ -369,7 +544,7 @@ public class MinerBundleItem extends Item {
         tooltip.add(Text.translatable("item.minerbundle.fullness", count, getStorage(stack)).formatted(Formatting.GRAY));
     }
 
-    // ==================== 物品实体销毁时散落内容 ====================
+    // ============================== 物品实体销毁 ==============================
 
     @Override
     public void onItemEntityDestroyed(ItemEntity entity) {
@@ -381,7 +556,7 @@ public class MinerBundleItem extends Item {
         }
     }
 
-    // ==================== 音效辅助 ====================
+    // ============================== 音效辅助 ==============================
 
     private void playRemoveOneSound(Entity entity) {
         entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F,
@@ -397,6 +572,8 @@ public class MinerBundleItem extends Item {
         entity.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.8F,
                 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
+
+    // ============================== 内部工具提示数据类 ==============================
 
     public record MinerBundleTooltipData(List<ItemStack> contents, int currentCount, int maxCapacity) implements TooltipData {}
 }

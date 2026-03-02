@@ -9,7 +9,12 @@ import org.oredredging.enchantment.MinerBundleEnchantment;
 
 public class ModEnchantments {
     // 洞天
-    public static final Enchantment EXPANSION = register("expansion", new MinerBundleEnchantment(Enchantment.Rarity.UNCOMMON));
+    public static final Enchantment EXPANSION = register("expansion", new MinerBundleEnchantment(Enchantment.Rarity.UNCOMMON) {
+        @Override
+        public int getMaxLevel() {
+            return 3;
+        }
+    });
 
     // 聚拢
     public static final Enchantment CONVERGENCE = register("convergence", new MinerBundleEnchantment(Enchantment.Rarity.UNCOMMON));

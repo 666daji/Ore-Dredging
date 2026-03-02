@@ -18,9 +18,17 @@ public final class ModConfigs {
             null
     );
 
+    public static final ConfigType<ConvergenceRecipesData> CONVERGENCE_RECIPES = ConfigType.of(
+            "convergenceRecipes",
+            ConvergenceRecipesData.CODEC,
+            ConvergenceRecipesData.DEFAULT,
+            null
+    );
+
     public static void registerAll() {
         ConfigManager.register(CRUSHED_DROPS);
         ConfigManager.register(BUNDLES);
+        ConfigManager.register(CONVERGENCE_RECIPES);
 
         ConfigManager.loadAll();
     }
