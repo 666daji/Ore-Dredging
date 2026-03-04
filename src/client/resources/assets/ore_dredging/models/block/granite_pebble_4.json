@@ -1,0 +1,6 @@
+{
+  "parent": "ore_dredging:block/pebble_4",
+  "textures": {
+    "stone": "minecraft:block/granite"
+  }
+}

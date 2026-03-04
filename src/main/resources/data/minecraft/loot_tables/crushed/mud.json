@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "ore_dredging:probability_item",
+          "name": "minecraft:iron_nugget",
+          "quality": 2,
+          "probability": 2000,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "ore_dredging:tag_item",
+          "tag": "ore_dredging:gravel_piles",
+          "quality": 2,
+          "exclude": [
+            "ore_dredging:deepslate_pebble"
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

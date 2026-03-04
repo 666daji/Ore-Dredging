@@ -1,10 +1,13 @@
 package org.oredredging.client.render;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import org.oredredging.client.render.model.ModModelLoader;
 import org.oredredging.client.render.tooltip.MinerBundleTooltipComponent;
 import org.oredredging.item.MinerBundleItem;
+import org.oredredging.registry.ModEntities;
 
 public class ModFabricEvents {
     public static void registryAll() {
@@ -16,5 +19,6 @@ public class ModFabricEvents {
         });
 
         ModelLoadingPlugin.register(new ModModelLoader());
+        EntityRendererRegistry.register(ModEntities.PEBBLE, FlyingItemEntityRenderer::new);
     }
 }

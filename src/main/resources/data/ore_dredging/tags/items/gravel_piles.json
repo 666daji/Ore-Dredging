@@ -1,0 +1,11 @@
+{
+  "values": [
+    "ore_dredging:stone_gravel_piles",
+    "ore_dredging:diorite_gravel_piles",
+    "ore_dredging:andesite_gravel_piles",
+    "ore_dredging:granite_gravel_piles",
+    "ore_dredging:sandstone_gravel_piles",
+    "ore_dredging:deepslate_gravel_piles",
+    "ore_dredging:tuff_gravel_piles"
+  ]
+}

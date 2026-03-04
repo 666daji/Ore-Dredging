@@ -30,8 +30,22 @@
   "block.ore_dredging.granite_gravel_piles": "花岗岩碎石堆",
   "block.ore_dredging.sandstone_gravel_piles": "砂岩碎石堆",
   "block.ore_dredging.deepslate_gravel_piles": "深板岩碎石堆",
+  "block.ore_dredging.tuff_gravel_piles": "凝灰岩碎石堆",
 
-  "item.ore_dredging.miner_bundle": "矿工袋",
+  "block.ore_dredging.stone_pebble": "石子",
+  "block.ore_dredging.diorite_pebble": "闪长岩石子",
+  "block.ore_dredging.andesite_pebble": "安山岩石子",
+  "block.ore_dredging.granite_pebble": "花岗岩石子",
+  "block.ore_dredging.deepslate_pebble": "深板岩石子",
+  "block.ore_dredging.tuff_pebble": "凝灰岩石子",
+
+  "item.ore_dredging.leather_miner_bundle": "皮革储矿袋",
+  "item.ore_dredging.chain_miner_bundle": "锁链储矿袋",
+  "item.ore_dredging.phantom_miner_bundle": "幻翼储矿袋",
+
+  "enchantment.ore_dredging.expansion": "洞天",
+  "enchantment.ore_dredging.convergence": "聚拢",
+  "enchantment.ore_dredging.auto_picking": "收纳",
 
   "ore_dredging.cimelia.nature": "自然珍宝",
 

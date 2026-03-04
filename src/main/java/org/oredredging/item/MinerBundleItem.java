@@ -278,7 +278,7 @@ public class MinerBundleItem extends Item {
         Set<CraftingRecipe> recipes = getConvergenceRecipes(player.getWorld());
         if (recipes.isEmpty()) return;
 
-        int maxIterations = 10; // 防止无限循环
+        int maxIterations = 10;
         boolean crafted;
         int iter = 0;
         do {
@@ -510,6 +510,16 @@ public class MinerBundleItem extends Item {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.pass(stack);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 2;
     }
 
     // ============================== 工具提示与显示 ==============================

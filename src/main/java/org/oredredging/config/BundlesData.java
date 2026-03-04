@@ -32,34 +32,40 @@ public record BundlesData(
             .xmap(BundlesData::fromRaw, BundlesData::toRaw);
 
     public static final List<String> BASE_ALLOWED_ITEMS = List.of(
-            "item|minecraft:iron_nugget",      // 铁粒
-            "item|minecraft:coal",                  // 煤炭
-            "item|minecraft:raw_copper",             // 粗铜
-            "item|minecraft:raw_gold",               // 粗金
-            "item|minecraft:emerald",                // 绿宝石
-            "item|minecraft:diamond",                // 钻石
-            "item|minecraft:lapis_lazuli",           // 青金石
-            "item|minecraft:ancient_debris",         // 远古残骸
-            "item|minecraft:amethyst_shard",         // 紫水晶碎片
-            "item|minecraft:gold_nugget",            // 金粒
-            "item|minecraft:iron_ingot",             // 铁锭
-            "item|minecraft:gold_ingot",             // 金锭
-            "item|minecraft:copper_ingot",           // 铜锭
-            "item|minecraft:netherite_ingot",        // 下界合金锭
-            "item|minecraft:netherite_scrap",        // 下界合金碎片
-            "item|minecraft:gravel",                  // 碎石
-            "item|minecraft:clay",                    // 粘土块
-            "item|minecraft:prismarine_shard",        // 海晶沙砾
-            "item|minecraft:clay_ball",               // 粘土球
-            "item|ore_dredging:raw_copper_nugget",    // 粗铜粒
-            "item|ore_dredging:raw_iron_nugget",      // 粗铁粒
-            "item|ore_dredging:raw_gold_nugget",      // 粗金粒
-            "item|ore_dredging:golden_ball",          // 金球
-            "item|ore_dredging:gray_quartz"           // 灰石英
+            "item|minecraft:iron_nugget",
+            "item|minecraft:coal",
+            "item|minecraft:raw_copper",
+            "item|minecraft:raw_iron",
+            "item|minecraft:raw_gold",
+            "item|minecraft:emerald",
+            "item|minecraft:diamond",
+            "item|minecraft:lapis_lazuli",
+            "item|minecraft:ancient_debris",
+            "item|minecraft:amethyst_shard",
+            "item|minecraft:gold_nugget",
+            "item|minecraft:iron_ingot",
+            "item|minecraft:gold_ingot",
+            "item|minecraft:copper_ingot",
+            "item|minecraft:netherite_ingot",
+            "item|minecraft:netherite_scrap",
+            "item|minecraft:gravel",
+            "item|minecraft:clay",
+            "item|minecraft:prismarine_crystals",
+            "item|minecraft:clay_ball",
+            "item|minecraft:flint",
+            "item|ore_dredging:raw_copper_nugget",
+            "item|ore_dredging:raw_iron_nugget",
+            "item|ore_dredging:raw_gold_nugget",
+            "item|ore_dredging:golden_ball",
+            "item|ore_dredging:gray_quartz",
+            "tag|ore_dredging:pebble",
+            "tag|ore_dredging:gravel_piles"
     );
 
     public static final BundlesData DEFAULT = fromRaw(
-            Map.of(ModItems.MinerBundle, BASE_ALLOWED_ITEMS));
+            Map.of(ModItems.LEATHER_MINER_BUNDLE, BASE_ALLOWED_ITEMS,
+                    ModItems.CHAIN_MINER_BUNDLE, List.of("base"),
+                    ModItems.PHANTOM_MINER_BUNDLE, List.of("base")));
 
     /**
      * 从原始规则映射构建 BundlesData，同时解析谓词。

@@ -19,4 +19,8 @@ public class RandomUtil {
 
         return RANDOM.nextFloat() < probability;
     }
+
+    public static int nextInt(int bound) {
+        return RANDOM.nextInt(bound);
+    }
 }

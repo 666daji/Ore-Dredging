@@ -52,6 +52,20 @@ public class ModItemGroups {
                             entries.add(ModItems.GRANITE_GRAVEL_PILES);
                             entries.add(ModItems.SANDSTONE_GRAVEL_PILES);
                             entries.add(ModItems.DEEPSLATE_GRAVEL_PILES);
+                            entries.add(ModItems.TUFF_GRAVEL_PILES);
+
+                            // 碎石堆
+                            entries.add(ModItems.STONE_PEBBLE);
+                            entries.add(ModItems.DIORITE_PEBBLE);
+                            entries.add(ModItems.ANDESITE_PEBBLE);
+                            entries.add(ModItems.GRANITE_PEBBLE);
+                            entries.add(ModItems.DEEPSLATE_PEBBLE);
+                            entries.add(ModItems.TUFF_PEBBLE);
+
+                            // 储矿袋
+                            entries.add(ModItems.LEATHER_MINER_BUNDLE);
+                            entries.add(ModItems.CHAIN_MINER_BUNDLE);
+                            entries.add(ModItems.PHANTOM_MINER_BUNDLE);
                         }))
                         .build()
         );

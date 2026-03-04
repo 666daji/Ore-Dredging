@@ -10,14 +10,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 8320
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:raw_copper_nugget",
-          "weight": 1680,
-          "quality": 1,
+          "quality": 2,
+          "probability": 1680,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

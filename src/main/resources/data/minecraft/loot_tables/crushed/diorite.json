@@ -10,8 +10,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "ore_dredging:diorite_gravel_piles"
+          "type": "ore_dredging:probability_item",
+          "name": "ore_dredging:diorite_gravel_piles",
+          "quality": 2,
+          "probability": 10000
         }
       ],
       "rolls": 1.0
@@ -25,14 +27,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 8600
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "minecraft:iron_nugget",
-          "weight": 1400,
-          "quality": 1,
+          "quality": 2,
+          "probability": 1400,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -51,14 +49,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 7200
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:gray_quartz",
-          "weight": 2800,
-          "quality": 1,
+          "quality": 2,
+          "probability": 2800,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

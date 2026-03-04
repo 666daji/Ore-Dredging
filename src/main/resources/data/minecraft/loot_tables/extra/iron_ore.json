@@ -10,14 +10,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 8720
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:raw_iron_nugget",
-          "weight": 1280,
-          "quality": 1,
+          "quality": 2,
+          "probability": 1280,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -36,14 +32,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9080
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "minecraft:iron_nugget",
-          "weight": 920,
-          "quality": 1,
+          "quality": 2,
+          "probability": 920,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

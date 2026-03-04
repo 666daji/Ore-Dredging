@@ -1,0 +1,10 @@
+{
+  "values": [
+    "ore_dredging:stone_pebble",
+    "ore_dredging:diorite_pebble",
+    "ore_dredging:andesite_pebble",
+    "ore_dredging:granite_pebble",
+    "ore_dredging:deepslate_pebble",
+    "ore_dredging:tuff_pebble"
+  ]
+}

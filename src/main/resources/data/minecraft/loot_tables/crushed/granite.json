@@ -25,14 +25,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 4400
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:gray_quartz",
-          "weight": 5600,
-          "quality": 1,
+          "quality": 2,
+          "probability": 5600,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

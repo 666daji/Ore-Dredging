@@ -10,14 +10,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9200
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:raw_iron_nugget",
-          "weight": 800,
-          "quality": 1,
+          "quality": 2,
+          "probability": 800,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -36,14 +32,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 8560
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:raw_gold_nugget",
-          "weight": 1440,
-          "quality": 1,
+          "quality": 2,
+          "probability": 1440,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -62,14 +54,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9948
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "minecraft:diamond",
-          "weight": 52,
-          "quality": 1,
+          "quality": 2,
+          "probability": 52,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -88,14 +76,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9952
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "minecraft:emerald",
-          "weight": 48,
-          "quality": 1,
+          "quality": 2,
+          "probability": 48,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -114,14 +98,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9300
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:raw_copper_nugget",
-          "weight": 700,
-          "quality": 1,
+          "quality": 2,
+          "probability": 700,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -140,14 +120,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 9996
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "ore_dredging:golden_ball",
-          "weight": 4,
-          "quality": 1,
+          "quality": 2,
+          "probability": 4,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"
@@ -166,14 +142,10 @@
       ],
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 8800
-        },
-        {
-          "type": "minecraft:item",
+          "type": "ore_dredging:probability_item",
           "name": "minecraft:flint",
-          "weight": 1200,
-          "quality": 1,
+          "quality": 2,
+          "probability": 1200,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

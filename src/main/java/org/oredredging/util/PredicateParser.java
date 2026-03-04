@@ -41,7 +41,6 @@ public final class PredicateParser {
             }
             String itemId = args.get(0);
             Item item = Registries.ITEM.get(Identifier.tryParse(itemId));
-            ItemStack stacks = new ItemStack(Items.IRON_NUGGET);
             return stack -> stack.isOf(item);
         });
 
@@ -92,6 +91,9 @@ public final class PredicateParser {
 
         // 基础类型：base
         FACTORIES.put("base", args -> PredicateParser.combine(BundlesData.BASE_ALLOWED_ITEMS));
+
+        // 全部类型：all
+        FACTORIES.put("all", args -> stack -> true);
     }
 
     private PredicateParser() {}

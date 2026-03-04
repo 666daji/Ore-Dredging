@@ -49,7 +49,9 @@ public record CrushedDropsData(
                     Blocks.ANDESITE,
                     Blocks.DIORITE,
                     Blocks.GRANITE,
-                    Blocks.GRAVEL
+                    Blocks.GRAVEL,
+                    Blocks.TUFF,
+                    Blocks.MUD
             ),
             List.of(
                     Blocks.GOLD_ORE,

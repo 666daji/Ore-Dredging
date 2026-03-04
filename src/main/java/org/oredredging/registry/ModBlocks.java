@@ -7,6 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.block.GravelPilesBlock;
+import org.oredredging.block.PebbleBlock;
 
 public class ModBlocks {
     // 花岗岩系列
@@ -52,6 +53,22 @@ public class ModBlocks {
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.PALE_YELLOW)));
     public static final Block DEEPSLATE_GRAVEL_PILES = register("deepslate_gravel_piles",
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.DEEPSLATE_GRAY)));
+    public static final Block TUFF_GRAVEL_PILES = register("tuff_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.TERRACOTTA_GRAY)));
+
+    // 小石子
+    public static final Block STONE_PEBBLE = register("stone_pebble",
+            new PebbleBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).strength(1.0F, 1.0F).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
+    public static final Block DIORITE_PEBBLE = register("diorite_pebble",
+            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.OFF_WHITE)));
+    public static final Block ANDESITE_PEBBLE = register("andesite_pebble",
+            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.STONE_GRAY)));
+    public static final Block GRANITE_PEBBLE = register("granite_pebble",
+            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DIRT_BROWN)));
+    public static final Block DEEPSLATE_PEBBLE = register("deepslate_pebble",
+            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DEEPSLATE_GRAY)));
+    public static final Block TUFF_PEBBLE = register("tuff_pebble",
+            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.TERRACOTTA_GRAY).air()));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);

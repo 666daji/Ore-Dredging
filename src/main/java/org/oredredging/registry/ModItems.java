@@ -9,6 +9,9 @@ import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.item.CimeliaItem;
 import org.oredredging.item.MinerBundleItem;
+import org.oredredging.item.PebbleItem;
+
+import java.util.function.BiFunction;
 
 public class ModItems {
     // 粗矿粒
@@ -41,9 +44,20 @@ public class ModItems {
     public static final Item GRANITE_GRAVEL_PILES = register(ModBlocks.GRANITE_GRAVEL_PILES);
     public static final Item SANDSTONE_GRAVEL_PILES = register(ModBlocks.SANDSTONE_GRAVEL_PILES);
     public static final Item DEEPSLATE_GRAVEL_PILES = register(ModBlocks.DEEPSLATE_GRAVEL_PILES);
+    public static final Item TUFF_GRAVEL_PILES = register(ModBlocks.TUFF_GRAVEL_PILES);
+
+    // 小石子
+    public static final Item STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);
+    public static final Item DIORITE_PEBBLE = register(ModBlocks.DIORITE_PEBBLE, PebbleItem::new);
+    public static final Item ANDESITE_PEBBLE = register(ModBlocks.ANDESITE_PEBBLE, PebbleItem::new);
+    public static final Item GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE, PebbleItem::new);
+    public static final Item DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE, PebbleItem::new);
+    public static final Item TUFF_PEBBLE = register(ModBlocks.TUFF_PEBBLE, PebbleItem::new);
 
     // 矿工袋
-    public static final Item MinerBundle = register("miner_bundle", new MinerBundleItem(new Item.Settings(), 16));
+    public static final Item LEATHER_MINER_BUNDLE = register("leather_miner_bundle", new MinerBundleItem(new Item.Settings(), 4));
+    public static final Item CHAIN_MINER_BUNDLE = register("chain_miner_bundle", new MinerBundleItem(new Item.Settings(), 8));
+    public static final Item PHANTOM_MINER_BUNDLE = register("phantom_miner_bundle", new MinerBundleItem(new Item.Settings(), 12));
 
     // 宝物
     public static final Item GOLDEN_BALL = register("golden_ball", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
@@ -55,7 +69,11 @@ public class ModItems {
     }
 
     private static Item register(Block block) {
-        return register(Registries.BLOCK.getId(block).getPath(), new BlockItem(block, new Item.Settings()));
+        return register(block, BlockItem::new);
+    }
+
+    private static Item register(Block block, BiFunction<Block, Item.Settings, BlockItem> create) {
+        return register(Registries.BLOCK.getId(block).getPath(), create.apply(block, new Item.Settings()));
     }
 
     private static Item register(String id, Item item) {

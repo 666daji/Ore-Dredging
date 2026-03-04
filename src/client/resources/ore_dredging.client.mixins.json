@@ -4,6 +4,7 @@
   "package": "org.oredredging.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
