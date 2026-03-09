@@ -59,7 +59,8 @@ public class CimeliaItem extends Item {
      * 表示珍宝的类别
      */
     public enum Category implements StringIdentifiable {
-        NATURE("nature");
+        NATURE("nature"),
+        ANCIENT("ancient");
 
         private final String id;
 

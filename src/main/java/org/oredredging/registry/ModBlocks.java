@@ -1,6 +1,7 @@
 package org.oredredging.registry;
 
 import net.minecraft.block.*;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -67,8 +68,10 @@ public class ModBlocks {
             new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DIRT_BROWN)));
     public static final Block DEEPSLATE_PEBBLE = register("deepslate_pebble",
             new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DEEPSLATE_GRAY)));
-    public static final Block TUFF_PEBBLE = register("tuff_pebble",
-            new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.TERRACOTTA_GRAY).air()));
+
+    // 矿石
+    public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",
+            new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F)));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);

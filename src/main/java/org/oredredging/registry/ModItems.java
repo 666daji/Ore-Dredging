@@ -19,6 +19,8 @@ public class ModItems {
     public static final Item RAW_IRON_NUGGET = register("raw_iron_nugget");
     public static final Item RAW_GOLD_NUGGET = register("raw_gold_nugget");
 
+    public static final Item NETHERITE_NUGGET = register("netherite_nugget");
+
     // 花岗岩砖
     public static final Item GRANITE_BRICKS = register(ModBlocks.GRANITE_BRICKS);
     public static final Item GRANITE_BRICK_STAIRS = register(ModBlocks.GRANITE_BRICK_STAIRS);
@@ -48,11 +50,10 @@ public class ModItems {
 
     // 小石子
     public static final Item STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);
-    public static final Item DIORITE_PEBBLE = register(ModBlocks.DIORITE_PEBBLE, PebbleItem::new);
-    public static final Item ANDESITE_PEBBLE = register(ModBlocks.ANDESITE_PEBBLE, PebbleItem::new);
-    public static final Item GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE, PebbleItem::new);
-    public static final Item DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE, PebbleItem::new);
-    public static final Item TUFF_PEBBLE = register(ModBlocks.TUFF_PEBBLE, PebbleItem::new);
+    public static final Item DIORITE_PEBBLE = register(ModBlocks.DIORITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.DIORITE)));
+    public static final Item ANDESITE_PEBBLE = register(ModBlocks.ANDESITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.ANDESITE)));
+    public static final Item GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.GRANITE)));
+    public static final Item DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.DEEPSLATE)));
 
     // 矿工袋
     public static final Item LEATHER_MINER_BUNDLE = register("leather_miner_bundle", new MinerBundleItem(new Item.Settings(), 4));
@@ -61,8 +62,15 @@ public class ModItems {
 
     // 宝物
     public static final Item GOLDEN_BALL = register("golden_ball", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
+    public static final Item NEPHRITE = register("nephrite", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
+    public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.ANCIENT, 2));
+    public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
+    public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
+
+    // 矿石
+    public static final Item SWAMP_IRON_ORE = register(ModBlocks.SWAMP_IRON_ORE);
 
     private static Item register(String id) {
         return register(id, new Item(new Item.Settings()));

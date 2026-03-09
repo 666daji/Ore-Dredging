@@ -44,6 +44,5 @@ public class ModBlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.ANDESITE_PEBBLE);
         addDrop(ModBlocks.GRANITE_PEBBLE);
         addDrop(ModBlocks.DEEPSLATE_PEBBLE);
-        addDrop(ModBlocks.TUFF_PEBBLE);
     }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "X": {
+      "item": "minecraft:slime_ball"
+    },
+    "Y": {
+      "item": "ore_dredging:chain_miner_bundle"
+    }
+  },
+  "pattern": [
+    "  X",
+    "## ",
+    "Y# "
+  ],
+  "result": {
+    "count": 1,
+    "item": "ore_dredging:phantom_miner_bundle"
+  }
+}

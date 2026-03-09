@@ -5,9 +5,13 @@
   "item.ore_dredging.raw_copper_nugget": "粗铜粒",
   "item.ore_dredging.raw_iron_nugget": "粗铁粒",
   "item.ore_dredging.raw_gold_nugget": "粗金粒",
+  "item.ore_dredging.netherite_nugget": "下界合金粒",
 
   "item.ore_dredging.golden_ball": "金球",
+  "item.ore_dredging.nephrite": "软玉",
+  "item.ore_dredging.armor_fragments": "盔甲残片",
   "item.ore_dredging.gray_quartz": "灰石英",
+  "item.ore_dredging.soft_armor_template": "软甲模板",
 
   "block.ore_dredging.granite_bricks": "花岗岩砖",
   "block.ore_dredging.granite_brick_stairs": "花岗岩砖楼梯",
@@ -43,16 +47,31 @@
   "item.ore_dredging.chain_miner_bundle": "锁链储矿袋",
   "item.ore_dredging.phantom_miner_bundle": "幻翼储矿袋",
 
+  "block.ore_dredging.swamp_iron_ore": "沼铁矿",
+
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚拢",
   "enchantment.ore_dredging.auto_picking": "收纳",
+  "enchantment.ore_dredging.toughness": "坚韧",
 
   "ore_dredging.cimelia.nature": "自然珍宝",
+  "ore_dredging.cimelia.ancient": "远古珍宝",
 
   "ore_dredging.cimelia_introduction.golden_ball_1": "一颗沉甸甸的泛着磨砂光泽的小球",
   "ore_dredging.cimelia_introduction.golden_ball_2":"将它拿在手中时，能感受到其中温热而磅礴的能量正在缓慢的流动",
 
+  "ore_dredging.cimelia_introduction.nephrite_1": "一块轻盈的半透明岩石，似玉非玉，坚不可摧",
+  "ore_dredging.cimelia_introduction.nephrite_2":"将它握在手中时状若无物，微微用力却能让其改变形状",
+
+  "ore_dredging.cimelia_introduction.armor_fragments_1": "一块沉重的漆黑色装甲碎片，具体部位已经难以辨认",
+  "ore_dredging.cimelia_introduction.armor_fragments_2":"有明显的融化过的痕迹，其中有些部分还包裹着原主人的骨骼",
+
   "item.minerbundle.fullness": "容量:%s/%s",
+
+  "subtitles.ore_dredging.piles_fall": "石子碎裂",
+  "subtitle.ore_dredging.pebble_break": "石子碎裂",
+
+  "death.attack.pebble_hit": "%s被%s使用小石子击败",
 
   "modmenu.nameTranslation.tw-ore-dredging": "TW的矿石淘采",
   "modmenu.descriptionTranslation.tw-ore-dredging": "丰富你的采矿体验!为岩石增加了合理,丰富的掉落物!以及隐藏的神秘遗物!",

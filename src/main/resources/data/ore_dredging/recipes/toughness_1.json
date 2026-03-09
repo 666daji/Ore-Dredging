@@ -1,0 +1,13 @@
+{
+  "type": "ore_dredging:smithing_enchantment",
+  "template": {
+    "item": "ore_dredging:soft_armor_template"
+  },
+  "addition": {
+    "item": "ore_dredging:nephrite"
+  },
+  "enchantment": {
+    "enchantment": "ore_dredging:toughness",
+    "level": 1
+  }
+}

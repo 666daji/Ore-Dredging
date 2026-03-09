@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:granite_pebble" },
+    { "item": "ore_dredging:granite_pebble" },
+    { "item": "ore_dredging:granite_pebble" },
+    { "item": "ore_dredging:granite_pebble" }
+  ],
+  "result": {
+    "item": "ore_dredging:granite_gravel_piles",
+    "count": 1
+  }
+}

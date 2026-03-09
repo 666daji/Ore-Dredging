@@ -16,8 +16,15 @@ import net.minecraft.world.World;
 import org.oredredging.entity.PebbleEntity;
 
 public class PebbleItem extends BlockItem {
-    public PebbleItem(Block block, Item.Settings settings) {
+    protected final Performance performance;
+
+    public PebbleItem(Block block, Item.Settings settings, Performance performance) {
         super(block, settings);
+        this.performance = performance;
+    }
+
+    public PebbleItem(Block block, Item.Settings settings) {
+        this(block, settings, Performance.STONE);
     }
 
     @Override
@@ -29,11 +36,11 @@ public class PebbleItem extends BlockItem {
         if (!world.isClient) {
             PebbleEntity pebbleEntity = new PebbleEntity(world, user);
             pebbleEntity.setItem(itemStack);
-            pebbleEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.5F, 2.5F, 1.0F);
+            pebbleEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.5F, performance.speed(), 1.0F);
             world.spawnEntity(pebbleEntity);
 
             if (user instanceof PlayerEntity) {
-                user.getItemCooldownManager().set(this, 5);
+                user.getItemCooldownManager().set(this, performance.attackSpeed());
             }
         }
 
@@ -52,5 +59,24 @@ public class PebbleItem extends BlockItem {
         }
 
         return ActionResult.PASS;
+    }
+
+    public Performance getPerformance() {
+        return performance;
+    }
+
+    /**
+     * 表示一个石子的投掷属性。
+     *
+     * @param attackSpeed
+     * @param hurt
+     * @param speed
+     */
+    public record Performance(int attackSpeed, float hurt, float speed, float gravity) {
+        public static final Performance STONE = new Performance(8, 4F, 2.5F, 0.1F);
+        public static final Performance DEEPSLATE = new Performance(4, 3F, 3.5F, 0.07F);
+        public static final Performance DIORITE = new Performance(10, 5F, 2.5F, 0.14F);
+        public static final Performance GRANITE = new Performance(12, 4.5F, 3F, 0.08F);
+        public static final Performance ANDESITE = new Performance(9, 4.5F, 2.5F, 0.13F);
     }
 }

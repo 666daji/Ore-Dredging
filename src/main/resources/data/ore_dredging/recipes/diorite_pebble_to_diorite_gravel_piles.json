@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:diorite_pebble" },
+    { "item": "ore_dredging:diorite_pebble" },
+    { "item": "ore_dredging:diorite_pebble" },
+    { "item": "ore_dredging:diorite_pebble" }
+  ],
+  "result": {
+    "item": "ore_dredging:diorite_gravel_piles",
+    "count": 1
+  }
+}

@@ -19,13 +19,18 @@ public class ModItemGroups {
                         .entries(((displayContext, entries) -> {
                             // 宝物
                             entries.add(ModItems.GOLDEN_BALL);
+                            entries.add(ModItems.NEPHRITE);
+                            entries.add(ModItems.ARMOR_FRAGMENTS);
+                            entries.add(ModItems.ENERGETIC_CRYSTAL);
 
                             entries.add(ModItems.GRAY_QUARTZ);
+                            entries.add(ModItems.SOFT_ARMOR_TEMPLATE);
 
                             // 粗矿粒
                             entries.add(ModItems.RAW_COPPER_NUGGET);
                             entries.add(ModItems.RAW_IRON_NUGGET);
                             entries.add(ModItems.RAW_GOLD_NUGGET);
+                            entries.add(ModItems.NETHERITE_NUGGET);
 
                             // 花岗岩砖系列
                             entries.add(ModItems.GRANITE_BRICKS);
@@ -54,13 +59,15 @@ public class ModItemGroups {
                             entries.add(ModItems.DEEPSLATE_GRAVEL_PILES);
                             entries.add(ModItems.TUFF_GRAVEL_PILES);
 
+                            // 矿石
+                            entries.add(ModItems.SWAMP_IRON_ORE);
+
                             // 碎石堆
                             entries.add(ModItems.STONE_PEBBLE);
                             entries.add(ModItems.DIORITE_PEBBLE);
                             entries.add(ModItems.ANDESITE_PEBBLE);
                             entries.add(ModItems.GRANITE_PEBBLE);
                             entries.add(ModItems.DEEPSLATE_PEBBLE);
-                            entries.add(ModItems.TUFF_PEBBLE);
 
                             // 储矿袋
                             entries.add(ModItems.LEATHER_MINER_BUNDLE);

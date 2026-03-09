@@ -34,10 +34,15 @@
         {
           "type": "ore_dredging:tag_item",
           "tag": "ore_dredging:gravel_piles",
+          "weight": 8,
           "quality": 2,
           "exclude": [
             "ore_dredging:deepslate_pebble"
           ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 92
         }
       ],
       "rolls": 1.0

@@ -25,7 +25,7 @@ public class EnchantmentHelperMixin {
             List<EnchantmentLevelEntry> list = Lists.newArrayList();
 
             for (Enchantment enchantment : enchantments) {
-                int i = enchantment == ModEnchantments.EXPANSION? RandomUtil.nextInt(3):1;
+                int i = enchantment == ModEnchantments.EXPANSION? RandomUtil.nextInt(2) + 1:1;
                 list.add(new EnchantmentLevelEntry(enchantment, i));
             }
 

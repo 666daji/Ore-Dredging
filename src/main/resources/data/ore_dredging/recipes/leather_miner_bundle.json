@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:leather"
+    },
+    "X": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "  X",
+    "## ",
+    "## "
+  ],
+  "result": {
+    "count": 1,
+    "item": "ore_dredging:leather_miner_bundle"
+  }
+}

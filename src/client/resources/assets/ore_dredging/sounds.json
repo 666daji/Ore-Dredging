@@ -1,0 +1,17 @@
+{
+  "piles_fall": {
+    "sounds": [
+      "ore_dredging:piles_fall_1",
+      "ore_dredging:piles_fall_2"
+    ],
+    "subtitle": "subtitles.ore_dredging.piles_fall"
+  },
+  "pebble_break": {
+    "sounds": [
+      "ore_dredging:pebble_break_1",
+      "ore_dredging:pebble_break_2",
+      "ore_dredging:pebble_break_3"
+    ],
+    "subtitle": "subtitle.ore_dredging.pebble_break"
+  }
+}

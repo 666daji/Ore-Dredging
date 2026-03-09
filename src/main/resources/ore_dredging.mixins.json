@@ -6,7 +6,9 @@
   "mixins": [
     "AbstractBlockMixin",
     "EnchantmentHelperMixin",
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "ItemStackMixin",
+    "ShapedRecipeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

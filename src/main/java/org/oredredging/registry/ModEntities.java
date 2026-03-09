@@ -14,7 +14,7 @@ import org.oredredging.entity.PebbleEntity;
 public class ModEntities {
     public static final EntityType<PebbleEntity> PEBBLE = register("pebble", FabricEntityTypeBuilder.<PebbleEntity>create(SpawnGroup.MISC, (PebbleEntity::new))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .trackRangeBlocks(40)
+            .trackRangeBlocks(100)
             .trackedUpdateRate(40)
             .build());
 

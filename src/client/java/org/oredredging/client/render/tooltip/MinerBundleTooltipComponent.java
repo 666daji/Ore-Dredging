@@ -20,7 +20,8 @@ public class MinerBundleTooltipComponent implements TooltipComponent {
     private static final int SLOTS_PER_ROW = 4;
     private static final int SLOT_SIZE = 24;
     private static final int GRID_WIDTH = 96;
-    private static final int PADDING = 4; // 网格与进度条间距
+    private static final int PADDING = 4;
+    private static final int MAX_VISIBLE_SLOTS = 20; // 最多显示20个占位格子（包括剩余数量格子）
 
     private final List<ItemStack> contents;
 
@@ -43,43 +44,51 @@ public class MinerBundleTooltipComponent implements TooltipComponent {
     }
 
     private int getNumVisibleSlots() {
-        return Math.min(20, contents.size());
+        return Math.min(MAX_VISIBLE_SLOTS, contents.size());
     }
 
     @Override
     public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
-        // x, y 是 tooltip 系统计算好的左上角位置，我们直接在这个区域绘制
         if (!contents.isEmpty()) {
             drawNonEmpty(x, y, textRenderer, context);
         }
     }
 
     private void drawNonEmpty(int x, int y, TextRenderer textRenderer, DrawContext context) {
-        boolean hasMore = contents.size() > 12;
-        List<ItemStack> shown = contents.subList(0, Math.min(12, contents.size()));
+        boolean hasMore = contents.size() > MAX_VISIBLE_SLOTS;
+
+        // 实际显示的普通物品堆叠（不包含剩余数量格子）
+        List<ItemStack> shown;
+        if (hasMore) {
+            shown = contents.subList(0, MAX_VISIBLE_SLOTS - 1);
+        } else {
+            shown = contents.subList(0, contents.size());
+        }
 
         int rows = getRows();
-        int slotIndex = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < SLOTS_PER_ROW; col++) {
+                int slotIndexOverall = row * SLOTS_PER_ROW + col;
                 int slotX = x + col * SLOT_SIZE;
                 int slotY = y + row * SLOT_SIZE;
 
-                if (shouldDrawExtraItemsCount(hasMore, col, row)) {
-                    int extraCount = contents.stream().skip(12).mapToInt(ItemStack::getCount).sum();
+                // 第一个格子且有多余物品时，绘制剩余数量
+                if (hasMore && slotIndexOverall == 0) {
+                    int extraCount = contents.stream()
+                            .skip(MAX_VISIBLE_SLOTS)
+                            .mapToInt(ItemStack::getCount)
+                            .sum();
                     drawExtraItemsCount(slotX, slotY, extraCount, textRenderer, context);
-                } else if (slotIndex < shown.size()) {
-                    drawItem(shown.get(slotIndex++), slotX, slotY, context, textRenderer);
-                } else {
-                    context.drawTexture(SLOT_BACKGROUND, slotX, slotY, 0, 0, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE);
+                }
+                else {
+                    // 计算在 shown 列表中的索引
+                    int shownIndex = hasMore ? slotIndexOverall - 1 : slotIndexOverall;
+                    if (shownIndex >= 0 && shownIndex < shown.size()) {
+                        drawItem(shown.get(shownIndex), slotX, slotY, context, textRenderer);
+                    }
                 }
             }
         }
-    }
-
-    // 原版收纳袋在第一个格子显示剩余物品数量（左上角）
-    private static boolean shouldDrawExtraItemsCount(boolean hasMore, int col, int row) {
-        return hasMore && col == 0 && row == 0;
     }
 
     private void drawItem(ItemStack stack, int x, int y, DrawContext context, TextRenderer textRenderer) {
