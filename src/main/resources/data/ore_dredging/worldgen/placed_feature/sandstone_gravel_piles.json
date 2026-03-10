@@ -15,19 +15,6 @@
     {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
-        "type": "minecraft:would_survive",
-        "state": {
-          "Name": "ore_dredging:stone_gravel_piles",
-          "Properties": {
-            "shape": "1",
-            "facing": "north"
-          }
-        }
-      }
-    },
-    {
-      "type": "minecraft:block_predicate_filter",
-      "predicate": {
         "type": "minecraft:matching_block_tag",
         "tag": "minecraft:sand",
         "offset": [0, -1, 0]

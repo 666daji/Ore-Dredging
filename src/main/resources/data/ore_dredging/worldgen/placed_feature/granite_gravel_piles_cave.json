@@ -1,5 +1,5 @@
 {
-  "feature": "ore_dredging:deepslate_gravel_piles",
+  "feature": "ore_dredging:granite_gravel_piles",
   "placement": [
     {
       "type": "minecraft:count",
@@ -13,26 +13,24 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "absolute": -64
+          "absolute": 0
         },
         "max_inclusive": {
-          "absolute": 0
+          "absolute": 50
         }
       }
     },
     {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
-        "type": "minecraft:matching_blocks",
-        "blocks": ["minecraft:air"],
+        "type": "minecraft:solid",
         "offset": [0, -1, 0]
       }
     },
     {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
-        "type": "minecraft:matching_block_tag",
-        "tag": "minecraft:deepslate_ore_replaceables",
+        "type": "minecraft:solid",
         "offset": [0, -1, 0]
       }
     }

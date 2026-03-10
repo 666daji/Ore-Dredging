@@ -9,8 +9,8 @@
           "Name": "ore_dredging:swamp_iron_ore"
         },
         "target": {
-          "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:stone_ore_replaceables"
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:mud"
         }
       }
     ]

@@ -53,11 +53,11 @@ public class RandomGravelPilesStateProvider extends BlockStateProvider {
         // 随机生成碎石的方块状态数据
         GravelPilesBlock selectedBlock = blocks.get(random.nextInt(blocks.size()));
         Direction facing = Direction.fromHorizontal(random.nextInt(4));
-        int shape = random.nextInt(5) + 1;
+        int shape = random.nextInt(selectedBlock.getMaxShapeCount()) + 1;
 
         // 应用属性
         return selectedBlock.getDefaultState()
                 .with(GravelPilesBlock.FACING, facing)
-                .with(GravelPilesBlock.SHAPE, shape);
+                .with(selectedBlock.getShape(), shape);
     }
 }

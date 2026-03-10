@@ -1,9 +1,9 @@
 {
-  "feature": "ore_dredging:deepslate_gravel_piles",
+  "feature": "ore_dredging:deepslate_pebble",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 16
+      "count": 32
     },
     {
       "type": "minecraft:in_square"
@@ -25,7 +25,7 @@
       "predicate": {
         "type": "minecraft:matching_blocks",
         "blocks": ["minecraft:air"],
-        "offset": [0, -1, 0]
+        "offset": [0, 0, 0]
       }
     },
     {

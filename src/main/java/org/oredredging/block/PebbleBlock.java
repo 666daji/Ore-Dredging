@@ -54,6 +54,16 @@ public class PebbleBlock extends GravelPilesBlock {
     }
 
     @Override
+    public int getMaxShapeCount() {
+        return 4;
+    }
+
+    @Override
+    public IntProperty getShape() {
+        return SHAPE;
+    }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(SHAPE, FACING);
     }

@@ -60,6 +60,14 @@ public class GravelPilesBlock extends FallingBlock {
         return random.nextInt(5) + 1;
     }
 
+    public int getMaxShapeCount() {
+        return 5;
+    }
+
+    public IntProperty getShape() {
+        return SHAPE;
+    }
+
     @Override
     protected void configureFallingBlockEntity(FallingBlockEntity entity) {
         entity.setHurtEntities(2.0F, 20);

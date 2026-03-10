@@ -25,7 +25,7 @@
       "predicate": {
         "type": "minecraft:matching_blocks",
         "blocks": ["minecraft:air"],
-        "offset": [0, 1, 0]
+        "offset": [0, 0, 0]
       }
     },
     {

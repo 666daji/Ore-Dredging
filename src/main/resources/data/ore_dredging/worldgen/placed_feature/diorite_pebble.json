@@ -1,5 +1,5 @@
 {
-  "feature": "ore_dredging:diorite_gravel_piles",
+  "feature": "ore_dredging:diorite_pebble",
   "placement": [
     {
       "type": "minecraft:count",
@@ -21,7 +21,7 @@
     },
     {
       "type": "minecraft:rarity_filter",
-      "chance": 8
+      "chance": 4
     }
   ]
 }
