@@ -9,8 +9,6 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -32,9 +30,9 @@ public abstract class AbstractBlockMixin {
      */
     @ModifyVariable(method = "getDroppedStacks", at = @At(value = "INVOKE", target = "Lnet/minecraft/loot/context/LootContextParameterSet;getWorld()Lnet/minecraft/server/world/ServerWorld;"))
     private Identifier dropCrushed(Identifier lootId, BlockState state, LootContextParameterSet.Builder builder) {
-        if (DropUtil.isCrushed(state, builder)) {
+        if (DropUtil.shouldTrigger(state, builder, DropUtil.CrushType.CRUSHED)) {
             Identifier identifier = Registries.BLOCK.getId(state.getBlock());
-            DropUtil.mark();
+
             return identifier.withPrefixedPath("crushed/");
         }
 
@@ -48,38 +46,20 @@ public abstract class AbstractBlockMixin {
      */
     @ModifyExpressionValue(method = "getDroppedStacks", at = @At(value = "INVOKE", target = "Lnet/minecraft/loot/LootTable;generateLoot(Lnet/minecraft/loot/context/LootContextParameterSet;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
     private ObjectArrayList<ItemStack> dropExtra(ObjectArrayList<ItemStack> original, BlockState state, LootContextParameterSet.Builder builder) {
-        if (DropUtil.isCrushedAndExtra(state, builder)) {
+        if (DropUtil.shouldTrigger(state, builder, DropUtil.CrushType.EXTRA)) {
             LootContextParameterSet lootContextParameterSet = builder.add(LootContextParameters.BLOCK_STATE, state).build(LootContextTypes.BLOCK);
             ServerWorld serverWorld = lootContextParameterSet.getWorld();
             Identifier identifier = Registries.BLOCK.getId(state.getBlock()).withPrefixedPath("extra/");
             LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(identifier);
 
             original.addAll(lootTable.generateLoot(lootContextParameterSet));
-            DropUtil.mark();
         }
 
         return original;
     }
 
-    /**
-     * 应用破碎效果。
-     */
     @Inject(method = "onStacksDropped", at = @At("RETURN"))
     private void applyCrushed(BlockState state, ServerWorld world, BlockPos pos, ItemStack tool, boolean dropExperience, CallbackInfo ci) {
-        if (DropUtil.isCanCrushedBlock(state.getBlock())) {
-            for (int i = 0; i < 30; i++) {
-                world.spawnParticles(
-                        new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
-                        pos.getX(),
-                        pos.getY(),
-                        pos.getZ(),
-                        10,
-                        0, 0, 0,
-                        3.2
-                );
-            }
-
-            DropUtil.clearMark();
-        }
+        DropUtil.applyCrushedEffect(state, world, pos);
     }
 }

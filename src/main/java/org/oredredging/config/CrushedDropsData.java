@@ -12,6 +12,7 @@ import net.minecraft.registry.Registries;
 import org.oredredging.OreDredging;
 import org.oredredging.config.framework.ConfigMigrator;
 import org.oredredging.mixin.AbstractBlockMixin;
+import org.oredredging.util.DropUtil;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Set;
  * 包含在{@link #haveExtraDrop}中的方块，破碎时会在原本的战利品表上附加一张新的战利品表。
  *
  * @see AbstractBlockMixin
+ * @see DropUtil
  */
 public record CrushedDropsData(
         List<Block> canCrushed,
