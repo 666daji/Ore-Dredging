@@ -61,6 +61,7 @@ public class ModItemGroups {
 
                             // 矿石
                             entries.add(ModItems.SWAMP_IRON_ORE);
+                            entries.add(ModItems.QUARTZ_GLASS);
 
                             // 碎石堆
                             entries.add(ModItems.STONE_PEBBLE);
@@ -73,6 +74,13 @@ public class ModItemGroups {
                             entries.add(ModItems.LEATHER_MINER_BUNDLE);
                             entries.add(ModItems.CHAIN_MINER_BUNDLE);
                             entries.add(ModItems.PHANTOM_MINER_BUNDLE);
+
+                            // 工具
+                            entries.add(ModItems.GEOLOGICAL_HAMMER);
+                            entries.add(ModItems.COLLAPSE_STONE_HAMMER);
+
+                            // 装备
+                            entries.add(ModItems.MINER_HELMET);
                         }))
                         .build()
         );

@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import org.oredredging.config.CrushedDropsData;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
+import org.oredredging.registry.ModItems;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,13 +56,24 @@ public final class DropUtil {
             return false;
         }
 
-        boolean trigger = RandomUtil.randomBoolean(0.25F);
+        boolean trigger = RandomUtil.randomBoolean(getCrushedProbability(state, builder));
 
         if (trigger) {
             mark = true;
         }
 
         return trigger;
+    }
+
+    private static float getCrushedProbability(BlockState state, LootContextParameterSet.Builder builder) {
+        try {
+            ItemStack tool = builder.get(LootContextParameters.TOOL);
+            if (tool.isOf(ModItems.GEOLOGICAL_HAMMER)) {
+                return 1F;
+            }
+        } catch (NoSuchElementException ignored) {}
+
+        return 0.25F;
     }
 
     /**

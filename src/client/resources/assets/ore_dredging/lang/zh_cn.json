@@ -10,6 +10,8 @@
   "item.ore_dredging.golden_ball": "金球",
   "item.ore_dredging.nephrite": "软玉",
   "item.ore_dredging.armor_fragments": "盔甲残片",
+  "item.ore_dredging.energetic_crystal": "盈能水晶",
+
   "item.ore_dredging.gray_quartz": "灰石英",
   "item.ore_dredging.soft_armor_template": "软甲模板",
 
@@ -47,7 +49,11 @@
   "item.ore_dredging.chain_miner_bundle": "锁链储矿袋",
   "item.ore_dredging.phantom_miner_bundle": "幻翼储矿袋",
 
+  "item.ore_dredging.geological_hammer": "地质锤",
+  "item.ore_dredging.collapse_stone_hammer": "崩石锤",
+
   "block.ore_dredging.swamp_iron_ore": "沼铁矿",
+  "block.ore_dredging.quartz_glass": "石英玻璃",
 
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚拢",
@@ -65,6 +71,10 @@
 
   "ore_dredging.cimelia_introduction.armor_fragments_1": "一块沉重的漆黑色装甲碎片，具体部位已经难以辨认",
   "ore_dredging.cimelia_introduction.armor_fragments_2":"有明显的融化过的痕迹，其中有些部分还包裹着原主人的骨骼",
+
+  "ore_dredging.cimelia_introduction.energetic_crystal_1": "一支闪闪发光的，颜色深的发暗的紫水晶",
+  "ore_dredging.cimelia_introduction.energetic_crystal_2":"仅用肉眼便能看到玄奥而庞大的能量在其中沿着每一寸晶体结构流淌",
+  "ore_dredging.cimelia_introduction.energetic_crystal_3":"将其握在手中时，能感受到它在轻轻律动",
 
   "item.minerbundle.fullness": "容量:%s/%s",
 

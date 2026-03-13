@@ -80,6 +80,8 @@ public class SmithingEnchantmentRecipe implements SmithingRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<SmithingEnchantmentRecipe> {
+
+        @Override
         public SmithingEnchantmentRecipe read(Identifier identifier, JsonObject jsonObject) {
             Ingredient template = Ingredient.fromJson(JsonHelper.getElement(jsonObject, "template"));
             Ingredient addition = Ingredient.fromJson(JsonHelper.getElement(jsonObject, "addition"));

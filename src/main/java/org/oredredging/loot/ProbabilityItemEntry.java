@@ -8,6 +8,7 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.entry.LeafEntry;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.entry.LootPoolEntryType;
@@ -16,6 +17,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.MathHelper;
+import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModLootPoolEntryTypes;
 
 import java.util.function.Consumer;
@@ -41,6 +43,13 @@ public class ProbabilityItemEntry extends LeafEntry {
 
     @Override
     public void generateLoot(Consumer<ItemStack> lootConsumer, LootContext context) {
+        int probability = this.probability;
+        ItemStack stack = context.get(LootContextParameters.TOOL);
+
+        if (stack != null && stack.isOf(ModItems.GEOLOGICAL_HAMMER)) {
+            probability = (int) (probability * 1.5F);
+        }
+
         // 根据概率决定是否生成物品
         if (probability >= 10000 || (probability > 0 && context.getRandom().nextInt(10000) < probability)) {
             lootConsumer.accept(new ItemStack(item));

@@ -1,0 +1,10 @@
+{
+  "type": "ore_dredging:smithing_enchantment_upgrades",
+  "template": {
+    "item": "minecraft:lapis_lazuli"
+  },
+  "addition": {
+    "item": "ore_dredging:energetic_crystal"
+  },
+  "probability": 0.6
+}
