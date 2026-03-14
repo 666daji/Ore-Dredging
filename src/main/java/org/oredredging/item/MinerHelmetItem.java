@@ -16,7 +16,7 @@ public class MinerHelmetItem extends ArmorItem {
     }
 
     public enum ArmorMaterials implements StringIdentifiable, ArmorMaterial {
-        MINER_HELMET("miner_helmet", 200, 39, 1,
+        MINER_HELMET("miner_helmet", 200, 3, 1,
                 SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0F, 0.0F, () -> Ingredient.ofItems(Items.IRON_INGOT));
 
         private final String name;

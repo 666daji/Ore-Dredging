@@ -1,6 +1,8 @@
 package org.oredredging.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -79,7 +81,9 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
 
         // 判断是否能破坏方块
         if (accumulatedEnergy >= hardness) {
-            world.breakBlock(currentPos, true);
+            world.breakBlock(currentPos, false, player);
+            BlockEntity blockEntity = state.hasBlockEntity() ? world.getBlockEntity(currentPos) : null;
+            Block.dropStacks(state, world, currentPos, blockEntity, player, stack);
             stack.damage(1, player, p -> p.sendToolBreakStatus(player.getActiveHand()));
             clearTargetAndProgress(stack, world, player);
         } else {

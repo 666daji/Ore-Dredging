@@ -68,7 +68,7 @@ public final class DropUtil {
     private static float getCrushedProbability(BlockState state, LootContextParameterSet.Builder builder) {
         try {
             ItemStack tool = builder.get(LootContextParameters.TOOL);
-            if (tool.isOf(ModItems.GEOLOGICAL_HAMMER)) {
+            if (tool.isOf(ModItems.GEOLOGICAL_HAMMER) || tool.isOf(ModItems.COLLAPSE_STONE_HAMMER)) {
                 return 1F;
             }
         } catch (NoSuchElementException ignored) {}
