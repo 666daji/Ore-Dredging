@@ -10,11 +10,16 @@ import net.minecraft.item.Item;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
+import org.oredredging.config.CanPebbleBreakData;
+import org.oredredging.config.ModConfigs;
+import org.oredredging.config.framework.ConfigManager;
 import org.oredredging.item.PebbleItem;
 import org.oredredging.registry.ModDamageTypes;
 import org.oredredging.registry.ModEntities;
@@ -71,9 +76,42 @@ public class PebbleEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
+        // 实体碰撞处理
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
+            onEntityHit((EntityHitResult) hitResult);
+            playBreakEffects(hitResult.getPos());
+            if (!this.getWorld().isClient) {
+                this.discard();
+            }
+            return;
+        }
 
-        Vec3d pos = hitResult.getPos();
+        // 方块碰撞处理
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHit = (BlockHitResult) hitResult;
+            BlockPos pos = blockHit.getBlockPos();
+            World world = this.getWorld();
+            Vec3d hitPos = hitResult.getPos();
+
+            // 检查是否可破坏
+            if (canBreakBlock(world, pos)) {
+                // 破坏方块
+                world.breakBlock(pos, true, this.getOwner());
+                world.playSound(null, pos, ModSoundEvent.PEBBLE_BREAK, SoundCategory.BLOCKS, 0.3F, 1.2F);
+            } else {
+                // 不可破坏
+                playBreakEffects(hitPos);
+                if (!world.isClient) {
+                    this.discard();
+                }
+            }
+        }
+    }
+
+    /**
+     * 播放碰撞时的音效和粒子（原逻辑提取）
+     */
+    private void playBreakEffects(Vec3d pos) {
         this.getWorld().playSound(
                 null,
                 new BlockPos((int) pos.x, (int) pos.y, (int) pos.z),
@@ -81,17 +119,29 @@ public class PebbleEntity extends ThrownItemEntity {
                 SoundCategory.BLOCKS,
                 0.5F, 10.0F
         );
+
         if (!this.getWorld().isClient) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
-            this.discard();
         }
+    }
+
+    /**
+     * 检查指定位置的方块是否可被石子破坏（依据配置）
+     */
+    private boolean canBreakBlock(World world, BlockPos pos) {
+        CanPebbleBreakData data = ConfigManager.get(ModConfigs.CAN_PEBBLE_BREAK);
+        if (data == null) return false;
+        if (!(world instanceof StructureWorldAccess structureWorld)) {
+            return false;
+        }
+
+        return data.blocks().stream().anyMatch(predicate -> predicate.test(structureWorld, pos));
     }
 
     public PebbleItem.Performance getItemPerformance() {
         if (getItem().getItem() instanceof PebbleItem pebbleItem) {
             return pebbleItem.getPerformance();
         }
-
         return PebbleItem.Performance.STONE;
     }
 
