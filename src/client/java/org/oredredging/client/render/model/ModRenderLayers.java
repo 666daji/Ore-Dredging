@@ -9,5 +9,6 @@ public class ModRenderLayers {
 
     public static void registryRenderLayer() {
         instance.putBlock(ModBlocks.QUARTZ_GLASS, RenderLayer.getTranslucent());
+        instance.putBlock(ModBlocks.QUARTZ_GLASS_PANES, RenderLayer.getTranslucent());
     }
 }

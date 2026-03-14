@@ -56,6 +56,7 @@
 
   "block.ore_dredging.swamp_iron_ore": "沼铁矿",
   "block.ore_dredging.quartz_glass": "石英玻璃",
+  "block.ore_dredging.quartz_glass_panes": "石英玻璃板",
 
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚拢",

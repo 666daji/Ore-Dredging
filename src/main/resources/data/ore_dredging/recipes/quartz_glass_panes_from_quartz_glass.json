@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": { "item": "ore_dredging:quartz_glass" }
+  },
+  "result": {
+    "item": "ore_dredging:quartz_glass_panes",
+    "count": 16
+  }
+}

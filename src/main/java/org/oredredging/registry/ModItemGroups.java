@@ -64,6 +64,7 @@ public class ModItemGroups {
                             // 矿石
                             entries.add(ModItems.SWAMP_IRON_ORE);
                             entries.add(ModItems.QUARTZ_GLASS);
+                            entries.add(ModItems.QUARTZ_GLASS_PANES);
 
                             // 碎石堆
                             entries.add(ModItems.STONE_PEBBLE);

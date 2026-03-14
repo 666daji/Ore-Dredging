@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:gray_quartz" },
+    { "item": "ore_dredging:gray_quartz" },
+    { "item": "ore_dredging:gray_quartz" },
+    { "item": "ore_dredging:gray_quartz" }
+  ],
+  "result": {
+    "item": "ore_dredging:quartz_glass",
+    "count": 2
+  }
+}

@@ -70,9 +70,10 @@ public class ModItems {
     // 矿石
     public static final Item SWAMP_IRON_ORE = register(ModBlocks.SWAMP_IRON_ORE);
     public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);
+    public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
 
     // 工具
-    public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new PickaxeItem(ToolMaterials.DIAMOND, 1, -2.8F, new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new PickaxeItem(ModToolMaterials.GEOLOGICAL_HAMMER, 2, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
     public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(new Item.Settings().maxCount(1).maxDamage(230)));
 
     // 装备

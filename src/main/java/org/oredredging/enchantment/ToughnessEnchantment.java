@@ -20,4 +20,9 @@ public class ToughnessEnchantment extends Enchantment {
     public ToughnessEnchantment(Rarity weight, EnchantmentTarget target, EquipmentSlot... slotTypes) {
         super(weight, target, slotTypes);
     }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return false;
+    }
 }

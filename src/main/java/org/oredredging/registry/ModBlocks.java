@@ -79,6 +79,8 @@ public class ModBlocks {
             new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F)));
     public static final Block QUARTZ_GLASS = register("quartz_glass",
             new GlassBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
+    public static final Block QUARTZ_GLASS_PANES = register("quartz_glass_panes",
+            new PaneBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);

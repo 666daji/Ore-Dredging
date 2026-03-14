@@ -3,8 +3,9 @@ package org.oredredging.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -16,12 +17,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
-public class CollapseStoneHammerItem extends Item {
+public class CollapseStoneHammerItem extends SwordItem {
     private static final float CHARGE_PER_TICK = 0.05F;
     private static final double MAX_DISTANCE = 7.0;
 
     public CollapseStoneHammerItem(Settings settings) {
-        super(settings);
+        super(ToolMaterials.IRON, 9, -0.5F, settings);
     }
 
     @Override
