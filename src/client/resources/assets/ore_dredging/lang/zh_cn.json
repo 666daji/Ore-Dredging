@@ -37,6 +37,8 @@
   "block.ore_dredging.sandstone_gravel_piles": "砂岩碎石堆",
   "block.ore_dredging.deepslate_gravel_piles": "深板岩碎石堆",
   "block.ore_dredging.tuff_gravel_piles": "凝灰岩碎石堆",
+  "block.ore_dredging.netherrack_gravel_piles": "地狱岩碎石堆",
+  "block.ore_dredging.basalt_gravel_piles": "玄武岩碎石堆",
 
   "block.ore_dredging.stone_pebble": "石子",
   "block.ore_dredging.diorite_pebble": "闪长岩石子",

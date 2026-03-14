@@ -57,6 +57,10 @@ public class ModBlocks {
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.DEEPSLATE_GRAY)));
     public static final Block TUFF_GRAVEL_PILES = register("tuff_gravel_piles",
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.TERRACOTTA_GRAY)));
+    public static final Block NETHERRACK_GRAVEL_PILES = register("netherrack_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.RED)));
+    public static final Block BASALT_GRAVEL_PILES = register("basalt_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.BLACK)));
 
     // 小石子
     public static final Block STONE_PEBBLE = register("stone_pebble",

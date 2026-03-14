@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ore_dredging:basalt_gravel_piles"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "ore_dredging:probability_item",
+          "name": "ore_dredging:armor_fragments",
+          "quality": 2,
+          "probability": 40,
+          "functions": [
+            {
+              "function": "ore_dredging:crushed_drop"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

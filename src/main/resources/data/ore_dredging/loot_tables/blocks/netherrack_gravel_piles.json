@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ore_dredging:deepslate_pebble"
+          "name": "ore_dredging:netherrack_gravel_piles"
         }
       ],
       "rolls": 1.0

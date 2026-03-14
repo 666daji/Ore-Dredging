@@ -58,6 +58,8 @@ public class ModItemGroups {
                             entries.add(ModItems.SANDSTONE_GRAVEL_PILES);
                             entries.add(ModItems.DEEPSLATE_GRAVEL_PILES);
                             entries.add(ModItems.TUFF_GRAVEL_PILES);
+                            entries.add(ModItems.NETHERRACK_GRAVEL_PILES);
+                            entries.add(ModItems.BASALT_GRAVEL_PILES);
 
                             // 矿石
                             entries.add(ModItems.SWAMP_IRON_ORE);

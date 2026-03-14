@@ -43,6 +43,8 @@ public class ModItems {
     public static final Item SANDSTONE_GRAVEL_PILES = register(ModBlocks.SANDSTONE_GRAVEL_PILES);
     public static final Item DEEPSLATE_GRAVEL_PILES = register(ModBlocks.DEEPSLATE_GRAVEL_PILES);
     public static final Item TUFF_GRAVEL_PILES = register(ModBlocks.TUFF_GRAVEL_PILES);
+    public static final Item NETHERRACK_GRAVEL_PILES = register(ModBlocks.NETHERRACK_GRAVEL_PILES);
+    public static final Item BASALT_GRAVEL_PILES = register(ModBlocks.BASALT_GRAVEL_PILES);
 
     // 小石子
     public static final Item STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);

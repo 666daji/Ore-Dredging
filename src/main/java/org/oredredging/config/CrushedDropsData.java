@@ -63,7 +63,9 @@ public record CrushedDropsData(
                     Blocks.COPPER_ORE,
                     Blocks.DEEPSLATE_COPPER_ORE,
                     Blocks.IRON_ORE,
-                    Blocks.DEEPSLATE_IRON_ORE
+                    Blocks.DEEPSLATE_IRON_ORE,
+                    Blocks.AMETHYST_BLOCK,
+                    Blocks.BUDDING_AMETHYST
             )
     );
 

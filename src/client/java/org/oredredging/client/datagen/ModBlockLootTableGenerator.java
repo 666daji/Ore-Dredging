@@ -37,6 +37,8 @@ public class ModBlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.SANDSTONE_GRAVEL_PILES);
         addDrop(ModBlocks.DEEPSLATE_GRAVEL_PILES);
         addDrop(ModBlocks.TUFF_GRAVEL_PILES);
+        addDrop(ModBlocks.NETHERRACK_GRAVEL_PILES);
+        addDrop(ModBlocks.BASALT_GRAVEL_PILES);
 
         // 碎石堆方块
         addDrop(ModBlocks.STONE_PEBBLE);
