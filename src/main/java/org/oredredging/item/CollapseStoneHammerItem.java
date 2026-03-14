@@ -9,7 +9,6 @@ import net.minecraft.item.ToolMaterials;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
-public class CollapseStoneHammerItem extends SwordItem {
+public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain{
     private static final float CHARGE_PER_TICK = 0.05F;
     private static final double MAX_DISTANCE = 7.0;
 
@@ -29,9 +28,9 @@ public class CollapseStoneHammerItem extends SwordItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (!(user instanceof PlayerEntity player)) return;
 
-        BlockHitResult hitResult = raycast(world, user, MAX_DISTANCE);
+        BlockHitResult hitResult = raycast(world, user);
         if (hitResult.getType() != HitResult.Type.BLOCK) {
-            // 没有瞄准方块：清除数据和进度
+            // 没有瞄准方块
             clearTargetAndProgress(stack, world, player);
             return;
         }
@@ -40,7 +39,7 @@ public class CollapseStoneHammerItem extends SwordItem {
         BlockState state = world.getBlockState(currentPos);
         float hardness = state.getHardness(world, currentPos);
 
-        // 方块不可破坏（硬度<0 或为空气）则清除
+        // 方块不可破坏则清除
         if (hardness < 0.0F || state.isAir()) {
             clearTargetAndProgress(stack, world, player);
             return;
@@ -66,7 +65,6 @@ public class CollapseStoneHammerItem extends SwordItem {
         if (!sameTarget) {
             // 目标改变：清除旧位置的进度条
             if (storedPos != null) {
-                // -1 表示移除破坏进度
                 world.setBlockBreakingInfo(player.getId(), storedPos, -1);
             }
 
@@ -85,22 +83,23 @@ public class CollapseStoneHammerItem extends SwordItem {
             stack.damage(1, player, p -> p.sendToolBreakStatus(player.getActiveHand()));
             clearTargetAndProgress(stack, world, player);
         } else {
-            // 未达到破坏阈值：更新NBT中的能量，并刷新破坏进度条
             nbt.putFloat("Energy", accumulatedEnergy);
 
-            // 计算进度值（0-9）
+            // 计算进度值
             int progress = (int) ((accumulatedEnergy / hardness) * 9);
             world.setBlockBreakingInfo(player.getId(), currentPos, progress);
         }
+
+        player.swingHand(Hand.MAIN_HAND);
     }
 
     /**
      * 执行射线检测，获取玩家瞄准的方块
      */
-    private BlockHitResult raycast(World world, LivingEntity user, double maxDistance) {
+    private BlockHitResult raycast(World world, LivingEntity user) {
         Vec3d eyePos = user.getEyePos();
         Vec3d lookVec = user.getRotationVec(1.0F);
-        Vec3d endPos = eyePos.add(lookVec.multiply(maxDistance));
+        Vec3d endPos = eyePos.add(lookVec.multiply(CollapseStoneHammerItem.MAX_DISTANCE));
         RaycastContext context = new RaycastContext(
                 eyePos,
                 endPos,
@@ -155,7 +154,7 @@ public class CollapseStoneHammerItem extends SwordItem {
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return super.getUseAction(stack);
+    public int getProbability(int original) {
+        return (int) (original * 1.5);
     }
 }

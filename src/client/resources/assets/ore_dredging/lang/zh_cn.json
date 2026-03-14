@@ -58,6 +58,8 @@
   "block.ore_dredging.quartz_glass": "石英玻璃",
   "block.ore_dredging.quartz_glass_panes": "石英玻璃板",
 
+  "item.ore_dredging.miner_helmet": "矿工帽",
+
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚拢",
   "enchantment.ore_dredging.auto_picking": "收纳",

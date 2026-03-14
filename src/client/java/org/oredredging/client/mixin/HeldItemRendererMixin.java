@@ -45,8 +45,9 @@ public abstract class HeldItemRendererMixin {
             float direction = (arm == Arm.RIGHT) ? 1.0F : -1.0F;
 
             // 应用动画变换：上下移动和绕 X 轴旋转，模拟挥动
-            matrices.translate(0.0F, 0.1F * progress, 0.1F * progress);
+            matrices.translate(0.0F, -1F, 0F);
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(progress * 30.0F * direction));
+            matrices.translate(0.0F, 1F, 0F);
         }
     }
 }

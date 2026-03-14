@@ -17,6 +17,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.MathHelper;
+import org.oredredging.item.CrushedDropGain;
 import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModLootPoolEntryTypes;
 
@@ -46,8 +47,9 @@ public class ProbabilityItemEntry extends LeafEntry {
         int probability = this.probability;
         ItemStack stack = context.get(LootContextParameters.TOOL);
 
-        if (stack != null && stack.isOf(ModItems.GEOLOGICAL_HAMMER)) {
-            probability = (int) (probability * 1.5F);
+        // 依据物品获取概率增益
+        if (stack != null && stack.getItem() instanceof CrushedDropGain gainItem) {
+            probability = gainItem.getProbability(probability);
         }
 
         // 根据概率决定是否生成物品
