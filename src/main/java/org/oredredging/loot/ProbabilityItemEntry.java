@@ -18,7 +18,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.MathHelper;
 import org.oredredging.item.CrushedDropGain;
-import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModLootPoolEntryTypes;
 
 import java.util.function.Consumer;
