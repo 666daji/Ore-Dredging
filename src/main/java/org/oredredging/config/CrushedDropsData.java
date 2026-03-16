@@ -65,7 +65,8 @@ public record CrushedDropsData(
                     Blocks.IRON_ORE,
                     Blocks.DEEPSLATE_IRON_ORE,
                     Blocks.AMETHYST_BLOCK,
-                    Blocks.BUDDING_AMETHYST
+                    Blocks.BUDDING_AMETHYST,
+                    Blocks.AMETHYST_CLUSTER
             )
     );
 

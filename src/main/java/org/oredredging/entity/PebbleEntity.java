@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -24,7 +25,6 @@ import org.oredredging.item.PebbleItem;
 import org.oredredging.registry.ModDamageTypes;
 import org.oredredging.registry.ModEntities;
 import org.oredredging.registry.ModItems;
-import org.oredredging.registry.ModSoundEvent;
 
 public class PebbleEntity extends ThrownItemEntity {
     public PebbleEntity(EntityType<? extends PebbleEntity> entityType, World world) {
@@ -97,7 +97,7 @@ public class PebbleEntity extends ThrownItemEntity {
             if (canBreakBlock(world, pos)) {
                 // 破坏方块
                 world.breakBlock(pos, true, this.getOwner());
-                world.playSound(null, pos, ModSoundEvent.PEBBLE_BREAK, SoundCategory.BLOCKS, 0.3F, 1.2F);
+                world.playSound(this, pos, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.BLOCKS, 1.0F, 10.2F);
             } else {
                 // 不可破坏
                 playBreakEffects(hitPos);
@@ -115,9 +115,9 @@ public class PebbleEntity extends ThrownItemEntity {
         this.getWorld().playSound(
                 null,
                 new BlockPos((int) pos.x, (int) pos.y, (int) pos.z),
-                ModSoundEvent.PEBBLE_BREAK,
+                SoundEvents.BLOCK_DEEPSLATE_BREAK,
                 SoundCategory.BLOCKS,
-                0.5F, 10.0F
+                1.0F, 10.0F
         );
 
         if (!this.getWorld().isClient) {

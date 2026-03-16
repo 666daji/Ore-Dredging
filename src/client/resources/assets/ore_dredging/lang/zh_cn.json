@@ -14,6 +14,7 @@
 
   "item.ore_dredging.gray_quartz": "灰石英",
   "item.ore_dredging.soft_armor_template": "软甲模板",
+  "item.ore_dredging.ashes": "灰烬",
 
   "block.ore_dredging.granite_bricks": "花岗岩砖",
   "block.ore_dredging.granite_brick_stairs": "花岗岩砖楼梯",
@@ -64,6 +65,7 @@
   "enchantment.ore_dredging.convergence": "聚拢",
   "enchantment.ore_dredging.auto_picking": "收纳",
   "enchantment.ore_dredging.toughness": "坚韧",
+  "enchantment.ore_dredging.unyielding": "不屈意志",
 
   "ore_dredging.cimelia.nature": "自然珍宝",
   "ore_dredging.cimelia.ancient": "远古珍宝",

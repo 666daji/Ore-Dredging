@@ -13,7 +13,7 @@
           "type": "ore_dredging:probability_item",
           "name": "ore_dredging:energetic_crystal",
           "quality": 2,
-          "probability": 40,
+          "probability": 200,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

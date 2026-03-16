@@ -76,7 +76,7 @@ public class ModBlocks {
 
     // 矿石
     public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",
-            new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F)));
+            new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).strength(1.0F, 1.0F)));
     public static final Block QUARTZ_GLASS = register("quartz_glass",
             new GlassBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
     public static final Block QUARTZ_GLASS_PANES = register("quartz_glass_panes",

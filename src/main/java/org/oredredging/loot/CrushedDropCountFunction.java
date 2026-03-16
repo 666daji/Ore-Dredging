@@ -12,7 +12,11 @@ import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.util.JsonSerializer;
 import net.minecraft.util.math.random.Random;
+import org.oredredging.registry.ModEnchantments;
+import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModLootFunctionTypes;
+
+import java.util.Map;
 
 public class CrushedDropCountFunction implements LootFunction {
     private static final double[] DEFAULT_PROBABILITIES = new double[]{0.25, 0.35, 0.10, 0.30};
@@ -52,6 +56,12 @@ public class CrushedDropCountFunction implements LootFunction {
 
         // 设置物品数量并返回
         stack.setCount(count);
+
+        // 附魔
+        if (stack.isOf(ModItems.ARMOR_FRAGMENTS)) {
+            EnchantmentHelper.set(Map.of(ModEnchantments.UNYIELDING, 1), stack);
+        }
+
         return stack;
     }
 

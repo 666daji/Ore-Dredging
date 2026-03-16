@@ -8,7 +8,7 @@ import net.minecraft.recipe.Ingredient;
 
 public enum ModToolMaterials implements ToolMaterial {
     GEOLOGICAL_HAMMER(MiningLevels.DIAMOND, 1561, 7.0F, 4.0F, 10, () -> Ingredient.ofItems(Items.IRON_INGOT)),
-    COLLAPSE_STONE_HAMMER(MiningLevels.DIAMOND, 1561, 1.0F, 4.0F, 10, () -> Ingredient.ofItems(Items.IRON_INGOT));
+    COLLAPSE_STONE_HAMMER(MiningLevels.DIAMOND, 1561, 1.0F, 2.0F, 10, () -> Ingredient.ofItems(Items.IRON_INGOT));
 
     private final int miningLevel;
     private final int itemDurability;

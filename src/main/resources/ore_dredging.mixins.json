@@ -6,6 +6,9 @@
   "mixins": [
     "AbstractBlockMixin",
     "EnchantmentHelperMixin",
+    "GrindstoneScreenHandlerInputMixin",
+    "GrindstoneScreenHandlerMixin",
+    "GrindstoneScreenHandlerOutputMixin",
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",

@@ -4,7 +4,7 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"hammer": "ore_dredging:item/collapse_stone_hammer",
-        "particle": "minecraft:block/stone"
+		"particle": "block/stone"
 	},
 	"elements": [
 		{
@@ -73,7 +73,7 @@
 		"firstperson_righthand": {
 			"rotation": [-10, 85, 0],
 			"translation": [2.25, 0.75, 0],
-			"scale": [0.8, 0.8, 0.8]
+			"scale": [0.8, 0.8, 1.1]
 		},
 		"firstperson_lefthand": {
 			"rotation": [-10, 85, 0],

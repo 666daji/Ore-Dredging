@@ -29,16 +29,24 @@ public class CimeliaItem extends Item {
     }
 
     /**
-     * 获取显示名称后缀。
+     * 获取显示名称后缀，包含类别样式。
      *
-     * @return 后缀
+     * @return 带样式的类别文本
      */
     protected Text getCategoryDisplay() {
-        return Text.translatable("ore_dredging.cimelia." + this.category.asString()).formatted(Formatting.YELLOW, Formatting.ITALIC);
+        return Text.translatable("ore_dredging.cimelia." + this.category.asString())
+                .setStyle(category.getDisplayStyle());
     }
 
+    /**
+     * 获取指定行数的简介文本。
+     *
+     * @param line 行号（从1开始）
+     * @return 带样式的简介文本
+     */
     public Text getIntroduction(int line) {
         if (introductionKey == null) {
+            // 懒加载简介的翻译键前缀，基于物品ID的路径
             String path = Registries.ITEM.getId(this).getPath();
             introductionKey = INTRODUCTION_PREFIX + path;
         }
@@ -50,31 +58,37 @@ public class CimeliaItem extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         tooltip.add(getCategoryDisplay());
-        for (int i = 1; i < lineCount + 1; i++) {
+        for (int i = 1; i <= lineCount; i++) {
             tooltip.add(getIntroduction(i));
         }
     }
 
     /**
-     * 表示珍宝的类别
+     * 表示珍宝的类别，包含其特有的样式。
      */
     public enum Category implements StringIdentifiable {
-        NATURE("nature"),
-        ANCIENT("ancient");
+        NATURE("nature", Style.EMPTY.withColor(Formatting.GREEN).withItalic(true)),
+        ANCIENT("ancient", Style.EMPTY.withColor(Formatting.GOLD).withItalic(true));
 
         private final String id;
+        private final Style displayStyle;
 
-        Category(String id) {
+        Category(String id, Style displayStyle) {
             this.id = id;
+            this.displayStyle = displayStyle;
         }
 
         @Override
         public String asString() {
             return id;
         }
+
+        public Style getDisplayStyle() {
+            return displayStyle;
+        }
     }
 
     static {
-        INTRODUCTION_STYLE = Style.EMPTY.withColor(0x9A3C78);
+        INTRODUCTION_STYLE = Style.EMPTY.withColor(0x9A3C78).withItalic(true);
     }
 }

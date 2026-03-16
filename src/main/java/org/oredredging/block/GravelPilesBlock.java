@@ -92,7 +92,7 @@ public class GravelPilesBlock extends FallingBlock {
         super.onLanding(world, pos, fallingBlockState, currentStateInPos, fallingBlockEntity);
         world.playSound(null,
                 pos,
-                ModSoundEvent.PEBBLE_BREAK,
+                ModSoundEvent.PILES_FALL,
                 SoundCategory.BLOCKS,
                 0.5F, 10.0F);
     }

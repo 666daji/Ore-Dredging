@@ -88,7 +88,7 @@ public final class DropUtil {
             for (int i = 0; i < 30; i++) {
                 world.spawnParticles(
                         new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
-                        pos.getX(), pos.getY(), pos.getZ(),
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                         10, 0, 0, 0, 3.2
                 );
             }

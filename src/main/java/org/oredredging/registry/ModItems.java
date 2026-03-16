@@ -66,6 +66,7 @@ public class ModItems {
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
     public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
+    public static final Item ASHES = register("ashes");
 
     // 矿石
     public static final Item SWAMP_IRON_ORE = register(ModBlocks.SWAMP_IRON_ORE);
@@ -73,8 +74,8 @@ public class ModItems {
     public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
 
     // 工具
-    public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new GeologicalHammerItem(2, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
-    public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new GeologicalHammerItem(ModToolMaterials.GEOLOGICAL_HAMMER, 0, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(ModToolMaterials.COLLAPSE_STONE_HAMMER, 7, -3.7F, new Item.Settings().maxCount(1).maxDamage(230)));
 
     // 装备
     public static final Item MINER_HELMET = register("miner_helmet", new MinerHelmetItem(MinerHelmetItem.ArmorMaterials.MINER_HELMET, new Item.Settings().maxCount(1).maxDamage(230)));

@@ -138,7 +138,7 @@
           "type": "ore_dredging:probability_item",
           "name": "ore_dredging:nephrite",
           "quality": 2,
-          "probability": 240,
+          "probability": 60,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

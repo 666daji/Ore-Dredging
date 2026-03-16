@@ -7,8 +7,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -17,13 +20,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.oredredging.util.RandomUtil;
 
 public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain{
     private static final float CHARGE_PER_TICK = 0.05F;
     private static final double MAX_DISTANCE = 7.0;
 
-    public CollapseStoneHammerItem(Settings settings) {
-        super(ToolMaterials.IRON, 9, -0.5F, settings);
+    public CollapseStoneHammerItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+        super(toolMaterial, attackDamage, attackSpeed, settings);
     }
 
     @Override
@@ -92,9 +96,18 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
             // 计算进度值
             int progress = (int) ((accumulatedEnergy / hardness) * 9);
             world.setBlockBreakingInfo(player.getId(), currentPos, progress);
+            for (int i = 0; i < 10; i++) {
+                world.addParticle(
+                        new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
+                        currentPos.getX() + 0.5, currentPos.getY() + 0.5, currentPos.getZ() + 0.5,
+                        RandomUtil.nextInt(7) - 3, RandomUtil.nextInt(7) - 3, RandomUtil.nextInt(7) - 3
+                );
+            }
+            world.playSound(player, currentPos, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.8F, 1.0F);
         }
 
         player.swingHand(Hand.MAIN_HAND);
+        player.getItemCooldownManager().set(this, 10);
     }
 
     /**
@@ -159,6 +172,6 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
 
     @Override
     public int getProbability(int original) {
-        return (int) (original * 1.5);
+        return (int) (original * 0.38);
     }
 }

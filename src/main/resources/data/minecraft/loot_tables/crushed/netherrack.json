@@ -28,7 +28,7 @@
           "type": "ore_dredging:probability_item",
           "name": "ore_dredging:armor_fragments",
           "quality": 2,
-          "probability": 20,
+          "probability": 200,
           "functions": [
             {
               "function": "ore_dredging:crushed_drop"

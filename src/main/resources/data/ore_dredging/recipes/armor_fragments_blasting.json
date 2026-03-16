@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smelting",
+  "type": "minecraft:blasting",
   "group": "ore_dredging",
   "ingredient": {
     "item": "ore_dredging:armor_fragments"
