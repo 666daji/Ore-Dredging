@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "tag": "minecraft:logs"
+    },
+    "Y": {
+      "item": "minecraft:anvil"
+    }
+  },
+  "pattern": [
+    "Y",
+    "X",
+    "X"
+  ],
+  "result": {
+    "count": 1,
+    "item": "ore_dredging:collapse_stone_hammer"
+  }
+}
