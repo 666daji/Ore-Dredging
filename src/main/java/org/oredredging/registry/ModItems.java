@@ -80,6 +80,11 @@ public class ModItems {
     // 装备
     public static final Item MINER_HELMET = register("miner_helmet", new MinerHelmetItem(MinerHelmetItem.ArmorMaterials.MINER_HELMET, new Item.Settings().maxCount(1).maxDamage(230)));
 
+    // 雷管
+    public static final Item DETONATOR = register(ModBlocks.DETONATOR, ((block, settings) -> new DetonatorItem(block, settings, 100)));
+    public static final Item SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR, ((block, settings) -> new SlimyDetonatorItem(block, settings, 100)));
+    public static final Item IMPACT_DETONATOR = register("impact_detonator", new ImpactDetonatorItem(new Item.Settings()));
+
     private static Item register(String id) {
         return register(id, new Item(new Item.Settings()));
     }

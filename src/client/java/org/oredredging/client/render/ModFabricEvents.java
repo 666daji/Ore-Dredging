@@ -9,6 +9,7 @@ import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
+import org.oredredging.client.render.entity.DetonatorEntityRenderer;
 import org.oredredging.client.render.model.MinerHelmetArmorRenderer;
 import org.oredredging.client.render.model.MinerHelmetItemRenderer;
 import org.oredredging.client.render.model.ModModelLoader;
@@ -33,6 +34,9 @@ public class ModFabricEvents {
 
         ModelLoadingPlugin.register(new ModModelLoader());
         EntityRendererRegistry.register(ModEntities.PEBBLE, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.DETONATOR, DetonatorEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SLIMY_DETONATOR, DetonatorEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.IMPACT_DETONATOR, DetonatorEntityRenderer::new);
         ModRenderLayers.registryRenderLayer();
 
         // 注册模型层，使用渲染器中的静态方法提供模型数据

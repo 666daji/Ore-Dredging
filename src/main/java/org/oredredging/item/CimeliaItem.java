@@ -23,7 +23,7 @@ public class CimeliaItem extends Item {
     protected final int lineCount;
 
     public CimeliaItem(Settings settings, Category category, int lineCount) {
-        super(settings.rarity(Rarity.UNCOMMON));
+        super(settings.rarity(Rarity.UNCOMMON).fireproof());
         this.category = category;
         this.lineCount = lineCount;
     }

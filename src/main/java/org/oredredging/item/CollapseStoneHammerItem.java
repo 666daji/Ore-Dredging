@@ -20,9 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.oredredging.registry.ModSoundEvent;
 import org.oredredging.util.RandomUtil;
 
-public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain{
+public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain, Wave{
     private static final float CHARGE_PER_TICK = 0.05F;
     private static final double MAX_DISTANCE = 7.0;
 
@@ -104,6 +105,7 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
                 );
             }
             world.playSound(player, currentPos, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.8F, 1.0F);
+            world.playSound(player, currentPos, ModSoundEvent.HAMMER_HIT, SoundCategory.BLOCKS, 0.8F, 1.0F);
         }
 
         player.swingHand(Hand.MAIN_HAND);

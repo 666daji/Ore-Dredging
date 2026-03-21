@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "ore_dredging:block/slimy_detonator",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "ore_dredging:block/slimy_detonator"
+    },
+    "facing=east": {
+      "model": "ore_dredging:block/slimy_detonator",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "ore_dredging:block/slimy_detonator",
+      "y": 90
+    }
+  }
+}

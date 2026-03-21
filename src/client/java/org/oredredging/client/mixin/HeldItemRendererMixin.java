@@ -9,7 +9,9 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import org.oredredging.item.BaseDetonatorItem;
 import org.oredredging.item.CollapseStoneHammerItem;
+import org.oredredging.item.Wave;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,7 +30,7 @@ public abstract class HeldItemRendererMixin {
     private void onRenderFirstPersonItem(
             AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack stack, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         // 仅对锤子物品生效
-        if (!(stack.getItem() instanceof CollapseStoneHammerItem)) return;
+        if (!(stack.getItem() instanceof Wave)) return;
 
         boolean bl = hand == Hand.MAIN_HAND;
         Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();

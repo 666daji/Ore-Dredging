@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
+import org.oredredging.block.DetonatorBlock;
 import org.oredredging.block.GravelPilesBlock;
 import org.oredredging.block.PebbleBlock;
 
@@ -81,6 +82,10 @@ public class ModBlocks {
             new GlassBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
     public static final Block QUARTZ_GLASS_PANES = register("quartz_glass_panes",
             new PaneBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
+
+    // 雷管
+    public static final Block DETONATOR = register("detonator", new DetonatorBlock(AbstractBlock.Settings.create().nonOpaque(), ModEntities.DETONATOR));
+    public static final Block SLIMY_DETONATOR = register("slimy_detonator", new DetonatorBlock(AbstractBlock.Settings.create().nonOpaque(), ModEntities.SLIMY_DETONATOR));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);

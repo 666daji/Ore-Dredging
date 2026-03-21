@@ -74,4 +74,4 @@ Three incredibly useful enchantments for miner bundle:
 
 ---
 
-> 🛠️ Continuously updated with more exciting content coming soon! Thank you for your support and for playing!
+> 🛠️ For a more detailed description of the mod, please visit the [wiki](https://github.com/666daji/Ore-Dredging/wiki)!

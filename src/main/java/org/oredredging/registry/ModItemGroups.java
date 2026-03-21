@@ -84,6 +84,11 @@ public class ModItemGroups {
 
                             // 装备
                             entries.add(ModItems.MINER_HELMET);
+
+                            // 雷管
+                            entries.add(ModItems.DETONATOR);
+                            entries.add(ModItems.SLIMY_DETONATOR);
+                            entries.add(ModItems.IMPACT_DETONATOR);
                         }))
                         .build()
         );

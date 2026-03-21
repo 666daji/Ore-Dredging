@@ -8,7 +8,7 @@ import org.oredredging.OreDredging;
 
 public class ModSoundEvent {
     public static final SoundEvent PILES_FALL = registerSoundEvent("piles_fall");
-    public static final SoundEvent PEBBLE_BREAK = registerSoundEvent("pebble_break");
+    public static final SoundEvent HAMMER_HIT = registerSoundEvent("hammer_hit");
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = new Identifier(OreDredging.MOD_ID, name);
