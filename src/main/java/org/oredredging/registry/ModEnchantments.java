@@ -7,6 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
+import org.oredredging.enchantment.HeavyEnchantment;
 import org.oredredging.enchantment.MinerBundleEnchantment;
 import org.oredredging.enchantment.ToughnessEnchantment;
 
@@ -30,6 +31,9 @@ public class ModEnchantments {
 
     // 不屈意志
     public static final Enchantment UNYIELDING = register("unyielding", new Enchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.ARMOR, EquipmentSlot.values()) {});
+
+    // 沉重
+    public static final Enchantment HEAVY = register("heavy", new HeavyEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND));
 
     private static Enchantment register(String id, Enchantment enchantment) {
         return Registry.register(Registries.ENCHANTMENT, new Identifier(OreDredging.MOD_ID, id), enchantment);

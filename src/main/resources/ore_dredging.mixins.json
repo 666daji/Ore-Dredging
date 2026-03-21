@@ -12,6 +12,7 @@
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "PlayerEntityMixin",
     "ShapedRecipeMixin"
   ],
   "injectors": {
