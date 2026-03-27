@@ -18,22 +18,67 @@ public class ModEnchantments {
         public int getMaxLevel() {
             return 3;
         }
+
+        @Override
+        public int getMinPower(int level) {
+            return super.getMinPower(level) - 7;
+        }
+
+        @Override
+        public int getMaxPower(int level) {
+            return super.getMaxPower(level) + 5;
+        }
     });
 
     // 聚拢
-    public static final Enchantment CONVERGENCE = register("convergence", new MinerBundleEnchantment(Enchantment.Rarity.VERY_RARE));
+    public static final Enchantment CONVERGENCE = register("convergence", new MinerBundleEnchantment(Enchantment.Rarity.VERY_RARE) {
+        @Override
+        public int getMinPower(int level) {
+            return 25;
+        }
+
+        @Override
+        public int getMaxPower(int level) {
+            return 30;
+        }
+    });
 
     // 收纳
-    public static final Enchantment AUTO_PICKING = register("auto_picking", new MinerBundleEnchantment(Enchantment.Rarity.VERY_RARE));
+    public static final Enchantment AUTO_PICKING = register("auto_picking", new MinerBundleEnchantment(Enchantment.Rarity.VERY_RARE) {
+        @Override
+        public int getMinPower(int level) {
+            return 10;
+        }
+
+        @Override
+        public int getMaxPower(int level) {
+            return 30;
+        }
+    });
 
     // 坚韧
     public static final Enchantment TOUGHNESS = register("toughness", new ToughnessEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentTarget.ARMOR, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
 
     // 不屈意志
-    public static final Enchantment UNYIELDING = register("unyielding", new Enchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.ARMOR, EquipmentSlot.values()) {});
+    public static final Enchantment UNYIELDING = register("unyielding", new Enchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.ARMOR, EquipmentSlot.values()) {
+        @Override
+        public boolean isAvailableForRandomSelection() {
+            return false;
+        }
+
+        @Override
+        public int getMinPower(int level) {
+            return super.getMinPower(level) - 7;
+        }
+
+        @Override
+        public int getMaxPower(int level) {
+            return super.getMaxPower(level) + 5;
+        }
+    });
 
     // 沉重
-    public static final Enchantment HEAVY = register("heavy", new HeavyEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND));
+    public static final Enchantment HEAVY = register("heavy", new HeavyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND));
 
     private static Enchantment register(String id, Enchantment enchantment) {
         return Registry.register(Registries.ENCHANTMENT, new Identifier(OreDredging.MOD_ID, id), enchantment);

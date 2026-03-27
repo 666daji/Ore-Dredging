@@ -2,33 +2,34 @@ package org.oredredging.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import org.oredredging.enchantment.ToughnessEnchantment;
-import org.oredredging.registry.ModEnchantments;
+import org.oredredging.enchantment.IAttributeModifierEnchantment;
+import org.oredredging.recipe.SmithingEnchantmentUpgradesRecipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
@@ -43,40 +44,30 @@ public abstract class ItemStackMixin {
     public abstract NbtCompound getOrCreateNbt();
 
     @Inject(method = "getAttributeModifiers", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getAttributeModifiers(Lnet/minecraft/entity/EquipmentSlot;)Lcom/google/common/collect/Multimap;"), cancellable = true)
-    private void addedToughness(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
+    private void applyEnchantmentAttributeModifiers(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
         ItemStack self = (ItemStack)(Object)this;
-        // 仅对盔甲生效，且必须是指定槽位
-        if (!(self.getItem() instanceof ArmorItem armorItem) || armorItem.getSlotType() != slot) {
-            return;
-        }
-
-        // 获取附魔等级
-        int level = EnchantmentHelper.getLevel(ModEnchantments.TOUGHNESS, self);
-        if (level <= 0) {
-            return;
-        }
 
         // 获取原始修饰符
         Multimap<EntityAttribute, EntityAttributeModifier> original = getItem().getAttributeModifiers(slot);
-        // 创建可变的副本
         Multimap<EntityAttribute, EntityAttributeModifier> modified = HashMultimap.create(original);
 
-        // 根据盔甲类型获取对应的 UUID
-        ArmorItem.Type armorType = armorItem.getType();
-        UUID uuid = ToughnessEnchantment.TOUGHNESS_BOOST_UUIDS.get(armorType);
-        if (uuid == null) return;
+        // 获取物品上的所有附魔
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(self);
+        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            if (enchantment instanceof IAttributeModifierEnchantment modifierEnchantment) {
+                modifierEnchantment.addAttributeModifiers(self, slot, modified);
+            }
+        }
 
-        // 创建新的护甲韧性修饰符：每级 +2
-        EntityAttributeModifier modifier = new EntityAttributeModifier(
-                uuid,
-                "Toughness boost",
-                level * 2.0,
-                EntityAttributeModifier.Operation.ADDITION
-        );
-        modified.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, modifier);
+        // 如果没有任何修改，直接返回原始值
+        if (modified.equals(original)) {
+            return;
+        }
 
         cir.setReturnValue(modified);
     }
+
 
     @Inject(method = "onCraft", at = @At("HEAD"))
     private void onCraft(World world, PlayerEntity player, int amount, CallbackInfo ci) {
@@ -86,11 +77,15 @@ public abstract class ItemStackMixin {
         }
     }
 
-    @Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V"))
-    private void redirectAppendEnchantments(List<Text> tooltip, NbtList enchantments, PlayerEntity player, net.minecraft.client.item.TooltipContext context) {
-        ItemStack self = (ItemStack) (Object) this;
+    @WrapOperation(
+            method = "getTooltip",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V")
+    )
+    private void wrapAppendEnchantments(List<Text> tooltip, NbtList enchantments, Operation<Void> original) {
+        ItemStack self = (ItemStack)(Object)this;
+
+        // 如果物品有 preview 标记，自定义显示附魔（只显示名称，不显示等级）
         if (self.hasNbt() && self.getNbt().contains("preview")) {
-            // 预览物品：只显示附魔名称，不显示等级
             for (int i = 0; i < enchantments.size(); i++) {
                 NbtCompound nbt = enchantments.getCompound(i);
                 Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbt)).ifPresent(enchantment -> {
@@ -99,7 +94,14 @@ public abstract class ItemStackMixin {
                 });
             }
         } else {
-            ItemStack.appendEnchantments(tooltip, enchantments);
+            original.call(tooltip, enchantments);
+
+            // 充盈提示
+            if (!SmithingEnchantmentUpgradesRecipe.hasUngradedEnchantments(self) && self.hasEnchantments()) {
+                tooltip.add(Text.translatable("ore_dredging.tootip.energetic").setStyle(
+                        Style.EMPTY.withColor(Formatting.LIGHT_PURPLE).withBold(true)
+                ));
+            }
         }
     }
 }

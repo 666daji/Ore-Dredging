@@ -31,7 +31,7 @@ public final class ConfigManager {
     // 基础配置目录
     private static final Path BASE_DIR = FabricLoader.getInstance().getConfigDir().resolve("tw_ore_dredging");
     // 当前全局配置版本号，所有配置共用此版本
-    private static final int CURRENT_VERSION = 1;
+    private static final int CURRENT_VERSION = 2;
 
     // 类型到数据的缓存
     private static final Map<ConfigType<?>, Object> CACHE = new LinkedHashMap<>();
@@ -117,7 +117,7 @@ public final class ConfigManager {
                 data = loaded.get();
             } else {
                 // 文件存在但加载失败（语法错误、字段缺失等），使用默认值并标记需要覆盖
-                LOGGER.warn("Using default configuration for '{}' due to loading failure (invalid or corrupted file)", type.name());
+                LOGGER.info("Using default configuration for '{}' due to loading failure (invalid or corrupted file)", type.name());
                 shouldSave = true;
             }
         } else {
@@ -167,6 +167,8 @@ public final class ConfigManager {
      * 根据文件中的版本号处理加载逻辑：版本匹配直接解析，版本过低则尝试迁移，版本过高则视为无效。
      */
     private static <T> Optional<T> handleVersion(JsonObject obj, int fileVersion, ConfigType<T> type) {
+        obj.remove("version");
+
         if (fileVersion == CURRENT_VERSION) {
             // 版本匹配，直接解析
             return parseWithCodec(obj, type);
@@ -184,7 +186,7 @@ public final class ConfigManager {
                     return Optional.empty();
                 }
             } else {
-                LOGGER.warn("Configuration '{}' version {} is older than current {}, but no migrator provided. Using default.",
+                LOGGER.info("Configuration '{}' version {} is older than current {}, but no migrator provided. Using default.",
                         type.name(), fileVersion, CURRENT_VERSION);
                 return Optional.empty();
             }
@@ -201,7 +203,6 @@ public final class ConfigManager {
      */
     private static <T> Optional<T> parseWithCodec(JsonObject obj, ConfigType<T> type) {
         JsonObject dataObj = obj.deepCopy();
-        dataObj.remove("version");
 
         DataResult<T> result = type.codec().parse(JsonOps.INSTANCE, dataObj);
         return result.resultOrPartial(error ->

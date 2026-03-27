@@ -74,7 +74,7 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
      */
     protected  void spawnPrimeParticle(int igniteTime) {
         // 局部偏移量
-        final double LOCAL_X = 0.3;   // 右侧偏移
+        final double LOCAL_X = -0.3;   // 右侧偏移
         final double LOCAL_Y = 0.2;   // 向上偏移
         final double LOCAL_Z = 0.0;   // 向前偏移
 
@@ -119,6 +119,10 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
      * 使雷管爆炸。
      */
     protected void explode() {
+        if (getWorld().isClient()) {
+            return;
+        }
+
         this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),
                 8.0F, World.ExplosionSourceType.MOB);
         this.getWorld().sendEntityStatus(this, (byte) 3);

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:detonator" },
+    { "item": "minecraft:slime_ball" }
+  ],
+  "result": {
+    "item": "ore_dredging:slimy_detonator"
+  }
+}

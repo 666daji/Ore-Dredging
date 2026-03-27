@@ -14,6 +14,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SmithingRecipe;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -54,9 +55,15 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
 
     @Override
     public boolean matches(Inventory inventory, World world) {
-        return this.template.test(inventory.getStack(0)) &&
-                testBase(inventory.getStack(1)) &&
-                this.addition.test(inventory.getStack(2));
+        // 基础条件检查
+        if (!this.template.test(inventory.getStack(0)) ||
+                !testBase(inventory.getStack(1)) ||
+                !this.addition.test(inventory.getStack(2))) {
+            return false;
+        }
+
+        ItemStack base = inventory.getStack(1);
+        return hasUngradedEnchantments(base);
     }
 
     @Override
@@ -64,9 +71,14 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
         ItemStack base = inventory.getStack(1);
         if (base.isEmpty()) return ItemStack.EMPTY;
 
+        // 如果没有未强化的附魔，直接返回空，避免消耗材料
+        if (!hasUngradedEnchantments(base)) {
+            return ItemStack.EMPTY;
+        }
+
         ItemStack result = base.copy();
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(result);
-        if (enchantments.isEmpty()) return result; // 没有附魔，直接返回
+        if (enchantments.isEmpty()) return result; // 没有附魔，直接返回（正常情况下不会进入这里）
 
         // 获取已强化附魔记录
         NbtCompound tag = result.getOrCreateNbt();
@@ -129,6 +141,40 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.SMITHING_ENCHANTMENT_UPGRADES;
+    }
+
+    /**
+     * 检查物品上是否存在未强化过的附魔（即该附魔尚未被记录在 EnhancedEnchantments 中）
+     *
+     * @param stack           物品
+     * @return 如果存在至少一个未强化的附魔，返回 true；否则返回 false
+     */
+    public static boolean hasUngradedEnchantments(ItemStack stack) {
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(stack);
+        if (enchantments.isEmpty()) {
+            return false;
+        }
+
+        NbtCompound tag = stack.getNbt();
+        if (tag == null) {
+            // 没有 NBT，说明没有任何强化记录，所有附魔均未强化
+            return true;
+        }
+
+        NbtList enhancedList = tag.getList("EnhancedEnchantments", NbtElement.STRING_TYPE);
+        Set<String> enhanced = new HashSet<>();
+        for (int i = 0; i < enhancedList.size(); i++) {
+            enhanced.add(enhancedList.getString(i));
+        }
+
+        for (Enchantment enchantment : enchantments.keySet()) {
+            Identifier id = Registries.ENCHANTMENT.getId(enchantment);
+            if (id != null && !enhanced.contains(id.toString())) {
+                // 找到一个未强化的附魔
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class Serializer implements RecipeSerializer<SmithingEnchantmentUpgradesRecipe> {

@@ -15,6 +15,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -150,32 +151,24 @@ public abstract class BaseDetonatorItem extends BlockItem implements Wave{
         int count = Math.max(1, 5 - (remainingTicks / 20));
         count = Math.min(5, count);
 
-        // 根据玩家朝向计算手部偏移
-        float yaw = user.getYaw();
-        double rad = Math.toRadians(yaw);
-        double cos = Math.cos(rad);
-        double sin = Math.sin(rad);
+        // 计算手部位置
+        Vec3d forward = user.getRotationVec(1.0F);               // 玩家面向方向
+        Vec3d right = forward.rotateY((float) Math.PI / 2);      // 玩家右侧方向
+        double forwardDist = 0.4;   // 前伸距离
+        double rightDist = (hand == Hand.MAIN_HAND) ? -0.5 : 0.5; // 主手右偏正，副手左偏负
+        double upDist = 1.2;        // 手部高度
 
-        // 局部偏移：前、右/左、上
-        double forward = 0.4;
-        double right = (hand == Hand.MAIN_HAND) ? 0.5 : -0.5;  // 主手右偏，副手左偏
-        double up = 1.2;
-
-        // 转换为世界坐标
-        double worldDx = forward * cos + right * sin;
-        double worldDz = forward * sin - right * cos;
-        double worldDy = up;
-
-        double baseX = user.getX() + worldDx;
-        double baseY = user.getY() + worldDy;
-        double baseZ = user.getZ() + worldDz;
+        Vec3d handPos = user.getPos()
+                .add(forward.multiply(forwardDist))
+                .add(right.multiply(rightDist))
+                .add(0, upDist, 0);
 
         for (int i = 0; i < count; i++) {
             // 在基础位置周围添加随机散布
             double spread = 0.1;
-            double x = baseX + (user.getRandom().nextDouble() - 0.5) * spread;
-            double y = baseY + (user.getRandom().nextDouble() - 0.5) * spread;
-            double z = baseZ + (user.getRandom().nextDouble() - 0.5) * spread;
+            double x = handPos.x + (user.getRandom().nextDouble() - 0.5) * spread;
+            double y = handPos.y + (user.getRandom().nextDouble() - 0.5) * spread;
+            double z = handPos.z + (user.getRandom().nextDouble() - 0.5) * spread;
 
             double vx = (user.getRandom().nextDouble() - 0.5) * 0.1;
             double vy = user.getRandom().nextDouble() * 0.2;

@@ -75,7 +75,7 @@ public class ModItems {
 
     // 工具
     public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new GeologicalHammerItem(ModToolMaterials.GEOLOGICAL_HAMMER, 0, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
-    public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(ModToolMaterials.COLLAPSE_STONE_HAMMER, 7, -3.7F, new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(ModToolMaterials.COLLAPSE_STONE_HAMMER, 7, -3.3F, new Item.Settings().maxCount(1).maxDamage(230)));
 
     // 装备
     public static final Item MINER_HELMET = register("miner_helmet", new MinerHelmetItem(MinerHelmetItem.ArmorMaterials.MINER_HELMET, new Item.Settings().maxCount(1).maxDamage(230)));

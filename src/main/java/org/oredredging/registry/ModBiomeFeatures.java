@@ -33,17 +33,6 @@ public class ModBiomeFeatures {
     public static final RegistryKey<PlacedFeature> GRANITE_PEBBLE = of("granite_pebble");
     public static final RegistryKey<PlacedFeature> DEEPSLATE_PEBBLE = of("deepslate_pebble");
 
-    // 浅层洞穴
-    public static final RegistryKey<PlacedFeature> STONE_GRAVEL_PILES_CAVE = of("stone_gravel_piles_cave");
-    public static final RegistryKey<PlacedFeature> DIORITE_GRAVEL_PILES_CAVE = of("diorite_gravel_piles_cave");
-    public static final RegistryKey<PlacedFeature> ANDESITE_GRAVEL_PILES_CAVE = of("andesite_gravel_piles_cave");
-    public static final RegistryKey<PlacedFeature> GRANITE_GRAVEL_PILES_CAVE = of("granite_gravel_piles_cave");
-    public static final RegistryKey<PlacedFeature> TUFF_GRAVEL_PILES_CAVE = of("tuff_gravel_piles_cave");
-    public static final RegistryKey<PlacedFeature> STONE_PEBBLE_CAVE = of("stone_pebble_cave");
-    public static final RegistryKey<PlacedFeature> DIORITE_PEBBLE_CAVE = of("diorite_pebble_cave");
-    public static final RegistryKey<PlacedFeature> ANDESITE_PEBBLE_CAVE = of("andesite_pebble_cave");
-    public static final RegistryKey<PlacedFeature> GRANITE_PEBBLE_CAVE = of("granite_pebble_cave");
-
     // 矿石
     public static final RegistryKey<PlacedFeature> SWAMP_IRON_ORE = of("swamp_iron_ore");
 
@@ -59,16 +48,7 @@ public class ModBiomeFeatures {
     private static final List<RegistryKey<PlacedFeature>> CAVE =  Arrays.asList(
             DEEPSLATE_GRAVEL_PILES,
             DEEPSLATE_PEBBLE,
-            TUFF_GRAVEL_PILES,
-            STONE_GRAVEL_PILES_CAVE,
-            DIORITE_GRAVEL_PILES_CAVE,
-            ANDESITE_GRAVEL_PILES_CAVE,
-            GRANITE_GRAVEL_PILES_CAVE,
-            TUFF_GRAVEL_PILES_CAVE,
-            STONE_PEBBLE_CAVE,
-            DIORITE_PEBBLE_CAVE,
-            ANDESITE_PEBBLE_CAVE,
-            GRANITE_PEBBLE_CAVE
+            TUFF_GRAVEL_PILES
     );
 
     // 群系标签

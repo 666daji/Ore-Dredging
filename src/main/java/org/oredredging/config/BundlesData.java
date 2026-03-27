@@ -1,17 +1,18 @@
 package org.oredredging.config;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import org.oredredging.OreDredging;
+import org.oredredging.config.framework.ConfigMigrator;
 import org.oredredging.item.MinerBundleItem;
 import org.oredredging.registry.ModItems;
 import org.oredredging.util.PredicateParser;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -59,7 +60,8 @@ public record BundlesData(
             "item|ore_dredging:golden_ball",
             "item|ore_dredging:gray_quartz",
             "tag|ore_dredging:pebble",
-            "tag|ore_dredging:gravel_piles"
+            "tag|ore_dredging:gravel_piles",
+            "tag|ore_dredging:cimelia"
     );
 
     public static final BundlesData DEFAULT = fromRaw(
@@ -105,5 +107,47 @@ public record BundlesData(
         }
 
         return stack -> false;
+    }
+
+    /**
+     * 返回一个迁移器，用于将旧版本配置合并当前默认值。
+     * 适用于版本升级时新增默认规则的情况。
+     *
+     * @return 迁移器实例
+     */
+    public static ConfigMigrator<BundlesData> migrator() {
+        return (oldJson, oldVersion) -> {
+            // 解析旧配置为 BundlesData
+            DataResult<BundlesData> parseResult = CODEC.parse(JsonOps.INSTANCE, oldJson);
+            if (parseResult.error().isPresent()) {
+                return DataResult.error(() -> "Failed to parse old BundlesData: " + parseResult.error().get().message());
+            }
+            BundlesData oldData = parseResult.result().get();
+            Map<Item, List<String>> oldRaw = oldData.rawRules();
+
+            // 获取默认配置的原始映射
+            Map<Item, List<String>> defaultRaw = DEFAULT.rawRules();
+
+            // 合并映射
+            Map<Item, List<String>> merged = new HashMap<>(oldRaw);
+            for (Map.Entry<Item, List<String>> entry : defaultRaw.entrySet()) {
+                Item item = entry.getKey();
+                List<String> defaultRules = entry.getValue();
+
+                if (merged.containsKey(item)) {
+                    // 合并规则列表（去重，保持原顺序）
+                    List<String> oldRules = merged.get(item);
+                    Set<String> combined = new LinkedHashSet<>(oldRules);
+                    combined.addAll(defaultRules);
+                    merged.put(item, List.copyOf(combined));
+                } else {
+                    merged.put(item, defaultRules);
+                }
+            }
+
+            // 构建新 BundlesData
+            BundlesData migrated = fromRaw(merged);
+            return DataResult.success(migrated);
+        };
     }
 }

@@ -3,6 +3,7 @@ package org.oredredging.recipe;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -39,9 +40,13 @@ public class SmithingEnchantmentRecipe implements SmithingRecipe {
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
         ItemStack itemStack = inventory.getStack(1).copy();
-        itemStack.addEnchantment(enchantmentEntry.enchantment, enchantmentEntry.level);
 
-        return itemStack;
+        if (EnchantmentHelper.getLevel(enchantmentEntry.enchantment, itemStack) == 0) {
+            itemStack.addEnchantment(enchantmentEntry.enchantment, enchantmentEntry.level);
+            return itemStack;
+        }
+
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -56,7 +61,8 @@ public class SmithingEnchantmentRecipe implements SmithingRecipe {
 
     @Override
     public boolean testBase(ItemStack stack) {
-        return enchantmentEntry.enchantment.isAcceptableItem(stack);
+        return enchantmentEntry.enchantment.isAcceptableItem(stack)
+                && EnchantmentHelper.getLevel(enchantmentEntry.enchantment, stack) == 0;
     }
 
     @Override

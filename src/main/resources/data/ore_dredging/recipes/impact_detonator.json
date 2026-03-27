@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:detonator" },
+    { "item": "minecraft:stone_pressure_plate" },
+    { "item": "minecraft:gunpowder" }
+  ],
+  "result": {
+    "item": "ore_dredging:impact_detonator"
+  }
+}

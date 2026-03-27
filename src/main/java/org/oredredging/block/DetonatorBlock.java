@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oredredging.entity.AbstractDetonatorEntity;
 
 public class DetonatorBlock extends Block {
-    public static final DirectionProperty FACING = Properties.HOPPER_FACING;
+    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty UNSTABLE = Properties.UNSTABLE;
     public static final VoxelShape VOXEL_SHAPE_X = Block.createCuboidShape(6, 0, 2, 10, 4, 14);
     public static final VoxelShape VOXEL_SHAPE_Z = Block.createCuboidShape(2, 0, 6, 14, 4, 10);

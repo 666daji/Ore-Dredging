@@ -3,38 +3,27 @@
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 32
+      "count": 2
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "min_inclusive": {
-          "absolute": -64
+      "type": "ore_dredging:column_scan",
+      "heightmap": "MOTION_BLOCKING_NO_LEAVES",
+      "predicates": [
+        {
+          "type": "minecraft:matching_blocks",
+          "blocks": "minecraft:air"
         },
-        "max_inclusive": {
-          "absolute": 0
+        {
+          "type": "minecraft:matching_block_tag",
+          "tag": "minecraft:deepslate_ore_replaceables",
+          "offset": [0, -1, 0]
         }
-      }
-    },
-    {
-      "type": "minecraft:block_predicate_filter",
-      "predicate": {
-        "type": "minecraft:matching_blocks",
-        "blocks": ["minecraft:air"],
-        "offset": [0, 0, 0]
-      }
-    },
-    {
-      "type": "minecraft:block_predicate_filter",
-      "predicate": {
-        "type": "minecraft:matching_block_tag",
-        "tag": "minecraft:deepslate_ore_replaceables",
-        "offset": [0, -1, 0]
-      }
+      ],
+      "include_top_y": true,
+      "min_y": 0
     }
   ]
 }

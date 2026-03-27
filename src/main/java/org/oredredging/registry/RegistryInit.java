@@ -11,6 +11,7 @@ public class RegistryInit {
         ModEnchantments.registerAll();
         ModLootPoolEntryTypes.registerAll();
         ModRecipeSerializers.registerAll();
+        ModPlacementModifierTypes.registerAll();
         ModSoundEvent.registerAll();
     }
 }

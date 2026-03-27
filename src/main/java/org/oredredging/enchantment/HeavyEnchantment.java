@@ -20,9 +20,4 @@ public class HeavyEnchantment extends Enchantment {
     public int getMaxLevel() {
         return 4;
     }
-
-    @Override
-    public int getMaxPower(int level) {
-        return super.getMaxPower(level) + 2;
-    }
 }

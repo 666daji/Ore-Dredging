@@ -15,7 +15,7 @@ public final class ModConfigs {
             "BundleAllowItems",
             BundlesData.CODEC,
             BundlesData.DEFAULT,
-            null
+            BundlesData.migrator()
     );
 
     public static final ConfigType<ConvergenceRecipesData> CONVERGENCE_RECIPES = ConfigType.of(

@@ -6,6 +6,8 @@
     "ore_dredging:granite_gravel_piles",
     "ore_dredging:sandstone_gravel_piles",
     "ore_dredging:deepslate_gravel_piles",
-    "ore_dredging:tuff_gravel_piles"
+    "ore_dredging:tuff_gravel_piles",
+    "ore_dredging:netherrack_gravel_piles",
+    "ore_dredging:basalt_gravel_piles"
   ]
 }

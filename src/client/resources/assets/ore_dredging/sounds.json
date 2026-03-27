@@ -6,12 +6,10 @@
     ],
     "subtitle": "subtitles.ore_dredging.piles_fall"
   },
-  "pebble_break": {
+  "hammer_hit": {
     "sounds": [
-      "ore_dredging:pebble_break_1",
-      "ore_dredging:pebble_break_2",
-      "ore_dredging:pebble_break_3"
+      "ore_dredging:hammer_hit"
     ],
-    "subtitle": "subtitle.ore_dredging.pebble_break"
+    "subtitle": "subtitle.ore_dredging.hammer_hit"
   }
 }

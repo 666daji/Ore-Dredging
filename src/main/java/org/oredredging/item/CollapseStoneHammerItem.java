@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -36,7 +37,7 @@ import java.util.*;
 /**
  * 崩石锤 - 可通过蓄力破坏方块，支持沉重附魔增强蓄力和连锁破坏
  */
-public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain, Wave {
+public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGain, Wave, PossibleEnchantment {
 
     // ==================== 基础配置常量 ====================
     private static final float CHARGE_PER_TICK = 0.05F;          // 每刻基础能量积累
@@ -114,6 +115,9 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
             // 破坏主目标方块
             breakBlock(world, player, targetPos, targetState, stack);
 
+            // 生成砸碎方块特效
+            spawnBreakingRingEffect(world, targetPos, targetState);
+
             // 尝试触发连锁破坏（仅在附魔等级>0且蓄力超过阈值时）
             boolean shouldChain = heavyLevel > 0 && usedTicks > CHAIN_TRIGGER_THRESHOLD;
             if (shouldChain) {
@@ -131,6 +135,7 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
         // 通用结束操作
         player.swingHand(Hand.MAIN_HAND);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+        world.playSound(player, targetPos, ModSoundEvent.HAMMER_HIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     // ==================== 使用与最大蓄力时间 ====================
@@ -213,11 +218,60 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
         return hardness < 0.0F || state.isAir();
     }
 
+    /**
+     * 破坏方块并播放特效
+     */
     private void breakBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, ItemStack hammer) {
         world.breakBlock(pos, false, player);
         BlockEntity blockEntity = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
         Block.dropStacks(state, world, pos, blockEntity, player, hammer);
         hammer.damage(1, player, p -> p.sendToolBreakStatus(player.getActiveHand()));
+    }
+
+    /**
+     * 生成由内向外扩散的方块粒子圆环（砸碎特效）
+     * @param world 世界
+     * @param pos 方块位置
+     * @param state 方块状态，用于粒子材质
+     */
+    private void spawnBreakingRingEffect(World world, BlockPos pos, BlockState state) {
+        double centerX = pos.getX() + 0.5;
+        double centerY = pos.getY() + 0.5;
+        double centerZ = pos.getZ() + 0.5;
+        int particleCount = 48;
+        BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
+
+        for (int i = 0; i < particleCount; i++) {
+            // 基础角度
+            double angle = 2 * Math.PI * i / particleCount;
+            // 半径随机偏移
+            double radius = 1.2 + (world.random.nextDouble() - 0.5) * 0.8;
+            // 垂直偏移随机
+            double yOffset = (world.random.nextDouble() - 0.5) * 0.8;
+
+            double xOffset =  Math.cos(angle);
+            double zOffset =  Math.sin(angle);
+            double px = centerX + xOffset;
+            double py = centerY;
+            double pz = centerZ + zOffset;
+
+            // 速度方向：径向向外，速度较快（1.2 ~ 2.2）
+            double dx = xOffset;
+            double dy = yOffset;
+            double dz = zOffset;
+            double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (len > 0.01) {
+                dx /= len;
+                dy /= len;
+                dz /= len;
+            }
+            double speed = 1.2 + world.random.nextDouble();
+            double vx = dx * speed;
+            double vy = dy * speed;
+            double vz = dz * speed;
+
+            world.addParticle(particle, px, py, pz, vx, vy, vz);
+        }
     }
 
     private void updateBreakingProgress(World world, PlayerEntity player, BlockPos pos, BlockState state, float energy, float hardness) {
@@ -236,7 +290,6 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
         }
         // 声音效果
         world.playSound(player, pos, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.8F, 1.0F);
-        world.playSound(player, pos, ModSoundEvent.HAMMER_HIT, SoundCategory.BLOCKS, 0.8F, 1.0F);
     }
 
     // ==================== 连锁破坏逻辑 ====================
@@ -301,9 +354,9 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
         // 执行破坏
         for (BlockPos pos : toDestroy) {
             BlockState state = world.getBlockState(pos);
-            breakBlock(world, player, pos, state, hammer);   // 注意：此方法内已包含耐久消耗和掉落物处理
+            breakBlock(world, player, pos, state, hammer);
 
-            // 连锁特效
+            // 连锁特效（额外加一点小粒子，让连锁更明显）
             world.addParticle(
                     new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
@@ -329,7 +382,7 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
     private void shuffleList(List<?> list, net.minecraft.util.math.random.Random random) {
         for (int i = list.size() - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
-            java.util.Collections.swap(list, i, j);
+            Collections.swap(list, i, j);
         }
     }
 
@@ -342,17 +395,29 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
         if (slot == EquipmentSlot.MAINHAND) {
             int heavyLevel = getHeavyLevel(stack);
             if (heavyLevel > 0) {
-                // 增加攻击伤害：每级 +2
+                // 增加攻击伤害
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE,
                         new EntityAttributeModifier(HEAVY_DAMAGE_UUID, "Heavy enchantment damage",
                                 2.0 * heavyLevel, EntityAttributeModifier.Operation.ADDITION));
 
-                // 减缓攻击速度：每级 -0.2
+                // 减缓攻击速度
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_SPEED,
                         new EntityAttributeModifier(HEAVY_SPEED_UUID, "Heavy enchantment speed",
-                                -0.2, EntityAttributeModifier.Operation.ADDITION));
+                                -0.025, EntityAttributeModifier.Operation.ADDITION));
             }
         }
         return modifiers;
+    }
+
+    @Override
+    public List<EnchantmentLevelEntry> modifyList(List<EnchantmentLevelEntry> original, int power, ItemStack stack, boolean treasureAllowed) {
+        List<EnchantmentLevelEntry> result = new ArrayList<>(original);
+        EnchantmentLevelEntry entry = PossibleEnchantment.getBestLevelEntry(ModEnchantments.HEAVY, power);
+
+        if (entry != null) {
+            result.add(entry);
+        }
+
+        return result;
     }
 }
