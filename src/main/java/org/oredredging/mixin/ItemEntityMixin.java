@@ -18,15 +18,16 @@ public class ItemEntityMixin {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack bag = inventory.getStack(i);
             if (MinerBundleItem.hasAutoPicking(bag)) {
-                // 尝试自动收纳
                 if (MinerBundleEnchantment.tryAutoPickup(bag, stack, inventory.player)) {
-                    stack.setCount(0);
-                    return true;
+                    if (stack.isEmpty()) {
+                        // 完全收纳，直接返回成功，不再调用原背包插入逻辑
+                        return true;
+                    }
                 }
             }
         }
 
-        // 未收纳成功，回退到原背包插入逻辑
+        // 仍有剩余，交给原背包插入逻辑
         return original.call(inventory, stack);
     }
 }

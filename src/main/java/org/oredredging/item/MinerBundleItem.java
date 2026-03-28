@@ -187,53 +187,69 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
 
     // ============================== 核心操作 ==============================
 
-    public boolean canAddStack(ItemStack bundle, ItemStack stackToAdd) {
+    /**
+     * 计算当前袋子还能添加多少个指定物品（考虑类型限制和剩余容量）。
+     *
+     * @param bundle 袋子
+     * @param toAdd  待添加的物品
+     * @return 最多可以添加的数量
+     */
+    public int getMaxAddable(ItemStack bundle, ItemStack toAdd) {
+        if (!getAllowedItems().test(toAdd)) return 0;
         int currentTotal = getTotalCount(bundle);
-        int addCount = stackToAdd.getCount();
-        return currentTotal + addCount <= getStorage(bundle);
+        int maxCapacity = getStorage(bundle);
+        int remainingSpace = maxCapacity - currentTotal;
+        return Math.min(toAdd.getCount(), remainingSpace);
     }
 
     /**
-     * 向袋子中添加一个完整的物品堆（全部数量）。
+     * 向袋子中添加物品（尽可能多）。
      *
-     * @param bundle    袋子
+     * @param bundle 袋子
      * @param toAdd  要添加的物品堆（不会被修改）
      * @param player 玩家（用于音效和世界访问）
-     * @return true 添加成功
+     * @return 实际添加的数量
      */
-    public boolean addStack(ItemStack bundle, ItemStack toAdd, PlayerEntity player) {
-        if (!getAllowedItems().test(toAdd)) return false;
-        if (!canAddStack(bundle, toAdd)) return false;
+    public int addStack(ItemStack bundle, ItemStack toAdd, PlayerEntity player) {
+        if (!getAllowedItems().test(toAdd)) return 0;
 
         List<ItemStack> contents = getItems(bundle);
-        int remaining = toAdd.getCount();
+        int currentTotal = contents.stream().mapToInt(ItemStack::getCount).sum();
+        int maxCapacity = getStorage(bundle);
+        int remainingSpace = maxCapacity - currentTotal;
+        if (remainingSpace <= 0) return 0;
 
-        // 合并到现有堆叠
+        int addCount = Math.min(toAdd.getCount(), remainingSpace);
+        if (addCount == 0) return 0;
+
+        int toAddRemaining = addCount;
+
+        // 1. 优先合并到现有堆叠
         for (ItemStack existing : contents) {
+            if (toAddRemaining == 0) break;
             if (ItemStack.canCombine(existing, toAdd)) {
-                int maxCount = existing.getMaxCount();
-                int space = maxCount - existing.getCount();
+                int maxStack = existing.getMaxCount();
+                int space = maxStack - existing.getCount();
                 if (space > 0) {
-                    int merge = Math.min(space, remaining);
+                    int merge = Math.min(space, toAddRemaining);
                     existing.increment(merge);
-                    remaining -= merge;
-                    if (remaining == 0) break;
+                    toAddRemaining -= merge;
                 }
             }
         }
 
-        // 剩余部分创建新堆叠
-        while (remaining > 0) {
-            int stackSize = Math.min(remaining, toAdd.getMaxCount());
+        // 2. 剩余部分创建新堆叠
+        while (toAddRemaining > 0) {
+            int stackSize = Math.min(toAddRemaining, toAdd.getMaxCount());
             ItemStack newStack = toAdd.copyWithCount(stackSize);
             contents.add(newStack);
-            remaining -= stackSize;
+            toAddRemaining -= stackSize;
         }
 
         setItems(bundle, contents);
         // 触发聚拢合成
         MinerBundleEnchantment.triggerConverge(bundle, player);
-        return true;
+        return addCount;
     }
 
     /**
@@ -284,17 +300,16 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
                 return true;
             }
         } else if (getAllowedItems().test(slotStack)) {
-            // 右键可接受的物品 -> 尝试将槽位整个堆叠放入袋子
-            int count = slotStack.getCount();
-            ItemStack toAdd = slotStack.copy();
-            if (canAddStack(stack, toAdd)) {
-                ItemStack taken = slot.takeStackRange(count, count, player);
-                if (!taken.isEmpty() && taken.getCount() == count) {
-                    boolean added = addStack(stack, taken, player);
-                    if (added) {
+            // 右键可接受的物品 -> 尝试将槽位中尽可能多的物品放入袋子
+            int maxAdd = getMaxAddable(stack, slotStack);
+            if (maxAdd > 0) {
+                ItemStack taken = slot.takeStackRange(maxAdd, maxAdd, player);
+                if (!taken.isEmpty()) {
+                    int added = addStack(stack, taken, player);
+                    if (added > 0) {
                         playInsertSound(player);
                     } else {
-                        // 添加失败（理论上不会发生），放回槽位
+                        // 理论上不会失败，但若失败则放回槽位
                         slot.insertStack(taken);
                     }
                     return true;
@@ -310,17 +325,18 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
 
         // 手持袋子，右键点击其他物品（光标上有物品）
         if (!otherStack.isEmpty() && getAllowedItems().test(otherStack)) {
-            int count = otherStack.getCount();
-            ItemStack toAdd = otherStack.copy();
-            if (canAddStack(stack, toAdd)) {
-                otherStack.decrement(count);
-                boolean added = addStack(stack, toAdd, player);
-                if (added) {
+            int maxAdd = getMaxAddable(stack, otherStack);
+            if (maxAdd > 0) {
+                // 尝试将光标上的物品放入袋子，最多 maxAdd 个
+                int toAddCount = Math.min(maxAdd, otherStack.getCount()); // 通常 maxAdd <= otherStack.getCount()
+                ItemStack toAdd = otherStack.copyWithCount(toAddCount);
+                int added = addStack(stack, toAdd, player);
+                if (added > 0) {
+                    // 实际添加了 added 个，从光标中减去
+                    otherStack.decrement(added);
                     playInsertSound(player);
-                } else {
-                    // 添加失败，恢复光标数量
-                    otherStack.increment(count);
                 }
+                // 如果 added == 0，光标不变，且无音效
                 return true;
             }
         }

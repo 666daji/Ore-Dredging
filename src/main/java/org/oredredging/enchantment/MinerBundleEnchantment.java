@@ -102,18 +102,22 @@ public class MinerBundleEnchantment extends Enchantment {
 
     /**
      * 尝试将物品自动收纳到袋子中。
+     * 会尽量多地收纳，并更新 toAdd 的数量。
      *
      * @param bundle    袋子物品栈（会被修改）
-     * @param toAdd  要收纳的物品（不会被修改）
-     * @param player 相关玩家，用于播放音效
-     * @return true 表示成功收纳
+     * @param toAdd     要收纳的物品（会被修改，数量减少实际收纳的数量）
+     * @param player    相关玩家，用于播放音效
+     * @return true 表示至少收纳了一个物品
      */
     public static boolean tryAutoPickup(ItemStack bundle, ItemStack toAdd, PlayerEntity player) {
         if (!(bundle.getItem() instanceof MinerBundleItem bundleItem)) return false;
         if (!MinerBundleItem.hasAutoPicking(bundle)) return false;
         if (!bundleItem.getAllowedItems().test(toAdd)) return false;
 
-        if (bundleItem.addStack(bundle, toAdd, player)) {
+        int added = bundleItem.addStack(bundle, toAdd, player);
+        if (added > 0) {
+            // 减少待收纳物品的数量
+            toAdd.decrement(added);
             bundleItem.playInsertSound(player);
             return true;
         }
