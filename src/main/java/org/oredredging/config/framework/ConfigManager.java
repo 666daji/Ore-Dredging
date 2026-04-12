@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.jetbrains.annotations.Nullable;
 import org.oredredging.OreDredging;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 public final class ConfigManager {
     // 基础配置目录
-    private static final Path BASE_DIR = FabricLoader.getInstance().getConfigDir().resolve("tw_ore_dredging");
+    private static final Path BASE_DIR = FMLPaths.CONFIGDIR.get().resolve("tw_ore_dredging");
     // 当前全局配置版本号，所有配置共用此版本
     private static final int CURRENT_VERSION = 2;
 

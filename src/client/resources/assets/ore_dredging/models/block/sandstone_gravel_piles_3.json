@@ -1,6 +1,0 @@
-{
-  "parent": "ore_dredging:block/gravel_piles_3",
-  "textures": {
-    "stone": "minecraft:block/sandstone"
-  }
-}

@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "org.oredredging.mixin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "ore_dredging.refmap.json",
   "mixins": [
     "AbstractBlockMixin",
     "EnchantmentHelperMixin",
@@ -14,6 +15,8 @@
     "LivingEntityMixin",
     "PlayerEntityMixin",
     "ShapedRecipeMixin"
+  ],
+  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
