@@ -2,30 +2,35 @@ package org.oredredging.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.registry.ModRecipeSerializers;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
 public class SmithingEnchantmentRecipe implements SmithingRecipe {
-    private final Identifier id;
+    private final ResourceLocation id;
     protected final Ingredient template;
     protected final Ingredient addition;
-    protected final EnchantmentLevelEntry enchantmentEntry;
+    protected final EnchantmentInstance enchantmentEntry;
 
-    public SmithingEnchantmentRecipe(Identifier id, Ingredient template, Ingredient addition, EnchantmentLevelEntry enchantmentEntry) {
+    public SmithingEnchantmentRecipe(ResourceLocation id, Ingredient template, Ingredient addition,
+                                     EnchantmentInstance enchantmentEntry) {
         this.id = id;
         this.template = template;
         this.addition = addition;
@@ -33,103 +38,110 @@ public class SmithingEnchantmentRecipe implements SmithingRecipe {
     }
 
     @Override
-    public boolean matches(Inventory inventory, World world) {
-        return this.template.test(inventory.getStack(0)) && testBase(inventory.getStack(1)) && this.addition.test(inventory.getStack(2));
+    public boolean matches(Container container, Level level) {
+        return this.template.test(container.getItem(0)) &&
+                isBaseIngredient(container.getItem(1)) &&
+                this.addition.test(container.getItem(2));
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
-        ItemStack itemStack = inventory.getStack(1).copy();
-
-        if (EnchantmentHelper.getLevel(enchantmentEntry.enchantment, itemStack) == 0) {
-            itemStack.addEnchantment(enchantmentEntry.enchantment, enchantmentEntry.level);
-            return itemStack;
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
+        ItemStack base = container.getItem(1).copy();
+        if (net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(enchantmentEntry.enchantment, base) == 0) {
+            base.enchant(enchantmentEntry.enchantment, enchantmentEntry.level);
+            return base;
         }
-
         return ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean testTemplate(ItemStack stack) {
+    public boolean isTemplateIngredient(ItemStack stack) {
         return this.template.test(stack);
     }
 
     @Override
-    public boolean testBase(ItemStack stack) {
-        return enchantmentEntry.enchantment.isAcceptableItem(stack)
-                && EnchantmentHelper.getLevel(enchantmentEntry.enchantment, stack) == 0;
+    public boolean isBaseIngredient(ItemStack stack) {
+        return enchantmentEntry.enchantment.canEnchant(stack) &&
+                net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(enchantmentEntry.enchantment, stack) == 0;
     }
 
     @Override
-    public boolean testAddition(ItemStack stack) {
+    public boolean isAdditionIngredient(ItemStack stack) {
         return this.addition.test(stack);
     }
 
     @Override
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.SMITHING_ENCHANTMENT;
+        return ModRecipeSerializers.SMITHING_ENCHANTMENT.get();
     }
 
     @Override
-    public boolean isEmpty() {
-        return Stream.of(this.template, this.addition).anyMatch(Ingredient::isEmpty);
+    public boolean canCraftInDimensions(int width, int height) {
+        return width >= 3 && height >= 1;
+    }
+
+    // 可选：覆写 isSpecial 等方法，按需返回
+    @Override
+    public boolean isSpecial() {
+        return true; // 避免在配方书中显示为普通配方
     }
 
     public static class Serializer implements RecipeSerializer<SmithingEnchantmentRecipe> {
 
         @Override
-        public SmithingEnchantmentRecipe read(Identifier identifier, JsonObject jsonObject) {
-            Ingredient template = Ingredient.fromJson(JsonHelper.getElement(jsonObject, "template"));
-            Ingredient addition = Ingredient.fromJson(JsonHelper.getElement(jsonObject, "addition"));
-            EnchantmentLevelEntry enchantmentLevelEntry = fromJson(jsonObject, "enchantment");
-            return new SmithingEnchantmentRecipe(identifier, template, addition, enchantmentLevelEntry);
+        public SmithingEnchantmentRecipe fromJson(ResourceLocation id, JsonObject json) {
+            Ingredient template = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "template"));
+            Ingredient addition = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "addition"));
+            EnchantmentInstance enchantmentEntry = enchantmentFromJson(json, "enchantment");
+            return new SmithingEnchantmentRecipe(id, template, addition, enchantmentEntry);
         }
 
         @Override
-        public SmithingEnchantmentRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-            Ingredient template = Ingredient.fromPacket(packetByteBuf);
-            Ingredient addition = Ingredient.fromPacket(packetByteBuf);
-            Identifier enchantmentId = packetByteBuf.readIdentifier();
-            int level = packetByteBuf.readInt();
-
-            Enchantment enchantment = Registries.ENCHANTMENT.get(enchantmentId);
+        public SmithingEnchantmentRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+            Ingredient template = Ingredient.fromNetwork(buf);
+            Ingredient addition = Ingredient.fromNetwork(buf);
+            ResourceLocation enchantmentId = buf.readResourceLocation();
+            int level = buf.readInt();
+            Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(enchantmentId);
             if (enchantment == null) {
                 throw new IllegalArgumentException("Unknown enchantment: " + enchantmentId);
             }
-            EnchantmentLevelEntry enchantmentEntry = new EnchantmentLevelEntry(enchantment, level);
-            return new SmithingEnchantmentRecipe(identifier, template, addition, enchantmentEntry);
+            EnchantmentInstance entry = new EnchantmentInstance(enchantment, level);
+            return new SmithingEnchantmentRecipe(id, template, addition, entry);
         }
 
         @Override
-        public void write(PacketByteBuf packetByteBuf, SmithingEnchantmentRecipe recipe) {
-            recipe.template.write(packetByteBuf);
-            recipe.addition.write(packetByteBuf);
-            Identifier enchantmentId = Registries.ENCHANTMENT.getId(recipe.enchantmentEntry.enchantment);
+        public void toNetwork(FriendlyByteBuf buf, SmithingEnchantmentRecipe recipe) {
+            recipe.template.toNetwork(buf);
+            recipe.addition.toNetwork(buf);
+            ResourceLocation enchantmentId = ForgeRegistries.ENCHANTMENTS.getKey(recipe.enchantmentEntry.enchantment);
             if (enchantmentId == null) {
                 throw new IllegalStateException("Unregistered enchantment: " + recipe.enchantmentEntry.enchantment);
             }
-            packetByteBuf.writeIdentifier(enchantmentId);
-            packetByteBuf.writeInt(recipe.enchantmentEntry.level);
+            buf.writeResourceLocation(enchantmentId);
+            buf.writeInt(recipe.enchantmentEntry.level);
         }
 
-        private EnchantmentLevelEntry fromJson(JsonObject object, String name) {
-            if (object.has(name)) {
-                JsonObject object1 = JsonHelper.getObject(object, name);
-                Identifier enchantmentId = Identifier.tryParse(JsonHelper.getString(object1, "enchantment"));
-                Enchantment enchantment = Objects.requireNonNull(Registries.ENCHANTMENT.get(enchantmentId));
-                int level = JsonHelper.getInt(object1, "level");
-
-                return new EnchantmentLevelEntry(enchantment, level);
+        private EnchantmentInstance enchantmentFromJson(JsonObject json, String name) {
+            if (json.has(name)) {
+                JsonObject obj = GsonHelper.getAsJsonObject(json, name);
+                ResourceLocation enchantmentId = ResourceLocation.tryParse(GsonHelper.getAsString(obj, "enchantment"));
+                Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(enchantmentId);
+                if (enchantment == null) {
+                    throw new JsonSyntaxException("Unknown enchantment: " + enchantmentId);
+                }
+                int level = GsonHelper.getAsInt(obj, "level");
+                return new EnchantmentInstance(enchantment, level);
             } else {
                 throw new JsonSyntaxException("Missing " + name);
             }

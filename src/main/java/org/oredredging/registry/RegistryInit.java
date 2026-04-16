@@ -1,17 +1,19 @@
 package org.oredredging.registry;
 
+import net.minecraftforge.eventbus.api.IEventBus;
+
 public class RegistryInit {
-    public static void init() {
-        ModItems.registerAll();
-        ModItemGroups.RegistryModItemGroups();
-        ModEntities.registerAll();
-        ModLootFunctionTypes.registerAll();
-        ModBlockStateProviderTypes.registerAll();
-        ModBiomeFeatures.registerAll();
-        ModEnchantments.registerAll();
-        ModLootPoolEntryTypes.registerAll();
-        ModRecipeSerializers.registerAll();
-        ModPlacementModifierTypes.registerAll();
-        ModSoundEvent.registerAll();
+    public static void init(IEventBus modEventBus) {
+        ModEntities.registerAll(modEventBus);
+        ModBlocks.registerAll(modEventBus);
+        ModItems.registerAll(modEventBus);
+        ModItemGroups.registerAll(modEventBus);
+        ModLootFunctionTypes.registerAll(modEventBus);
+        ModBlockStateProviderTypes.registerAll(modEventBus);
+        ModEnchantments.registerAll(modEventBus);
+        ModLootPoolEntryTypes.registerAll(modEventBus);
+        ModRecipeSerializers.registerAll(modEventBus);
+        ModPlacementModifierTypes.registerAll(modEventBus);
+        ModSoundEvent.registerAll(modEventBus);
     }
 }

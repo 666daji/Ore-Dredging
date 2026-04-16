@@ -1,55 +1,56 @@
 package org.oredredging.item;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.oredredging.entity.ImpactDetonatorEntity;
 
-public class ImpactDetonatorItem extends Item implements Wave{
-    public ImpactDetonatorItem(Settings settings) {
-        super(settings);
+public class ImpactDetonatorItem extends Item {
+    public ImpactDetonatorItem(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        user.setCurrentHand(hand);
-        return TypedActionResult.consume(stack);
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (!(user instanceof PlayerEntity player)) return;
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeCharged) {
+        if (!(living instanceof Player player)) return;
 
-        int usedTicks = this.getMaxUseTime(stack) - remainingUseTicks;
+        int usedTicks = this.getUseDuration(stack) - timeCharged;
 
-        world.playSound(null, user.getX(), user.getY(), user.getZ(),
-                SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F,
-                0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F,
+                0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
-        ImpactDetonatorEntity entity = new ImpactDetonatorEntity(world, player);
+        ImpactDetonatorEntity entity = new ImpactDetonatorEntity(level, player);
         entity.setItem(stack);
-        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, usedTicks * 0.05F, 1.0F);
+        entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, usedTicks * 0.05F, 1.0F);
         entity.setIgniteTime(-1);
-        world.spawnEntity(entity);
+        level.addFreshEntity(entity);
 
-        player.incrementStat(Stats.USED.getOrCreateStat(this));
-        if (!player.getAbilities().creativeMode) {
-            stack.decrement(1);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
         }
 
-        player.swingHand(Hand.MAIN_HAND);
+        player.swing(InteractionHand.MAIN_HAND);
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getUseDuration(ItemStack stack) {
         return 10000;
     }
 }

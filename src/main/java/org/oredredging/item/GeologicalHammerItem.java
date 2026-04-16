@@ -1,10 +1,10 @@
 package org.oredredging.item;
 
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ToolMaterial;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Tier;
 
 public class GeologicalHammerItem extends PickaxeItem implements CrushedDropGain{
-    public GeologicalHammerItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
+    public GeologicalHammerItem(Tier material, int attackDamage, float attackSpeed, Properties settings) {
         super(material, attackDamage, attackSpeed, settings);
     }
 

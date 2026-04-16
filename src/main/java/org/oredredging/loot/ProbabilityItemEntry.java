@@ -3,20 +3,17 @@ package org.oredredging.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.entry.LeafEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
-import net.minecraft.loot.entry.LootPoolEntryType;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.item.CrushedDropGain;
 import org.oredredging.registry.ModLootPoolEntryTypes;
 
@@ -26,48 +23,48 @@ import java.util.function.Consumer;
  * 带概率控制的物品条目，当被选中时，只有指定概率实际生成物品。
  * 概率由 probability 字段指定，范围 0~10000（分母固定为10000）。
  */
-public class ProbabilityItemEntry extends LeafEntry {
+public class ProbabilityItemEntry extends LootPoolSingletonContainer {
     private final Item item;
     private final int probability; // 0~10000，分子
 
-    public ProbabilityItemEntry(Item item, int weight, int quality, LootCondition[] conditions, LootFunction[] functions, int probability) {
+    protected ProbabilityItemEntry(Item item, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions, int probability) {
         super(weight, quality, conditions, functions);
         this.item = item;
-        this.probability = MathHelper.clamp(probability, 0, 10000);
+        this.probability = Mth.clamp(probability, 0, 10000);
     }
 
     @Override
     public LootPoolEntryType getType() {
-        return ModLootPoolEntryTypes.PROBABILITY_ITEM;
+        return ModLootPoolEntryTypes.PROBABILITY_ITEM.get();
     }
 
     @Override
-    public void generateLoot(Consumer<ItemStack> lootConsumer, LootContext context) {
+    protected void createItemStack(Consumer<ItemStack> consumer, LootContext context) {
         int probability = this.probability;
-        ItemStack stack = context.get(LootContextParameters.TOOL);
+        ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
 
         // 依据物品获取概率增益
-        if (stack != null && stack.getItem() instanceof CrushedDropGain gainItem) {
+        if (tool != null && tool.getItem() instanceof CrushedDropGain gainItem) {
             probability = gainItem.getProbability(probability);
         }
 
         // 根据概率决定是否生成物品
         if (probability >= 10000 || (probability > 0 && context.getRandom().nextInt(10000) < probability)) {
-            lootConsumer.accept(new ItemStack(item));
+            consumer.accept(new ItemStack(item));
         }
     }
 
     /**
      * 创建构建器
      */
-    public static Builder<?> builder(ItemConvertible item) {
-        return new Builder<>(item.asItem());
+    public static Builder<?> builder(Item item) {
+        return new Builder<>(item);
     }
 
     /**
      * 构建器类，支持设置概率
      */
-    public static class Builder<T extends Builder<T>> extends LeafEntry.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends LootPoolSingletonContainer.Builder<T> {
         private final Item item;
         private int probability = 10000; // 默认100%
 
@@ -76,7 +73,7 @@ public class ProbabilityItemEntry extends LeafEntry {
         }
 
         @Override
-        protected T getThisBuilder() {
+        protected T getThis() {
             return (T) this;
         }
 
@@ -85,42 +82,29 @@ public class ProbabilityItemEntry extends LeafEntry {
          */
         public T probability(int probability) {
             this.probability = probability;
-            return (T) this;
+            return getThis();
         }
 
         @Override
-        public LootPoolEntry build() {
+        public LootPoolSingletonContainer build() {
             return new ProbabilityItemEntry(item, weight, quality, getConditions(), getFunctions(), probability);
-        }
-
-        @Override
-        public T getThisFunctionConsumingBuilder() {
-            return getThisBuilder();
         }
     }
 
-    /**
-     * 序列化器，用于 JSON 与 Java 对象的转换
-     */
-    public static class Serializer extends LeafEntry.Serializer<ProbabilityItemEntry> {
+    public static class Serializer extends LootPoolSingletonContainer.Serializer<ProbabilityItemEntry> {
         @Override
-        public void addEntryFields(JsonObject jsonObject, ProbabilityItemEntry entry, JsonSerializationContext context) {
-            super.addEntryFields(jsonObject, entry, context);
-
-            // 写入物品ID
-            Identifier id = Registries.ITEM.getId(entry.item);
-            jsonObject.addProperty("name", id.toString());
-
-            // 如果概率不是默认值10000，则写入
+        public void serializeCustom(JsonObject json, ProbabilityItemEntry entry, JsonSerializationContext context) {
+            super.serializeCustom(json, entry, context);
+            json.addProperty("name", ForgeRegistries.ITEMS.getKey(entry.item).toString());
             if (entry.probability != 10000) {
-                jsonObject.addProperty("probability", entry.probability);
+                json.addProperty("probability", entry.probability);
             }
         }
 
         @Override
-        protected ProbabilityItemEntry fromJson(JsonObject json, JsonDeserializationContext context, int weight, int quality, LootCondition[] conditions, LootFunction[] functions) {
-            Item item = JsonHelper.getItem(json, "name");
-            int probability = JsonHelper.getInt(json, "probability", 10000);
+        protected ProbabilityItemEntry deserialize(JsonObject json, JsonDeserializationContext context, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions) {
+            Item item = GsonHelper.getAsItem(json, "name");
+            int probability = GsonHelper.getAsInt(json, "probability", 10000);
             return new ProbabilityItemEntry(item, weight, quality, conditions, functions, probability);
         }
     }

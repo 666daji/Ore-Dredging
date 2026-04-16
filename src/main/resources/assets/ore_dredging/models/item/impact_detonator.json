@@ -1,0 +1,6 @@
+{
+  "parent": "ore_dredging:block/detonator",
+  "textures": {
+    "detonator": "ore_dredging:block/impact_detonator"
+  }
+}

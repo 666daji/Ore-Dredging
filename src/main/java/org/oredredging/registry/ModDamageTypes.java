@@ -1,11 +1,11 @@
 package org.oredredging.registry;
 
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import org.oredredging.OreDredging;
 
 public class ModDamageTypes {
-    public static final RegistryKey<DamageType> PEBBLE_HIT = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(OreDredging.MOD_ID, "pebble_hit"));
+    public static final ResourceKey<DamageType> PEBBLE_HIT = ResourceKey.create(Registries.DAMAGE_TYPE,
+            OreDredging.createResourceLocation(OreDredging.MOD_ID, "pebble_hit"));
 }

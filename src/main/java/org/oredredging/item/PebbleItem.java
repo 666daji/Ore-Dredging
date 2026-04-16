@@ -1,64 +1,65 @@
 package org.oredredging.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import org.oredredging.entity.PebbleEntity;
 
 public class PebbleItem extends BlockItem {
     protected final Performance performance;
 
-    public PebbleItem(Block block, Item.Settings settings, Performance performance) {
-        super(block, settings);
+    public PebbleItem(Block block, Properties properties, Performance performance) {
+        super(block, properties);
         this.performance = performance;
     }
 
-    public PebbleItem(Block block, Item.Settings settings) {
-        this(block, settings, Performance.STONE);
+    public PebbleItem(Block block, Properties properties) {
+        this(block, properties, Performance.STONE);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        level.playSound(
+                null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.EGG_THROW, SoundSource.PLAYERS,
+                0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F)
         );
-        if (!world.isClient) {
-            PebbleEntity pebbleEntity = new PebbleEntity(world, user);
+
+        if (!level.isClientSide) {
+            PebbleEntity pebbleEntity = new PebbleEntity(level, player);
             pebbleEntity.setItem(itemStack);
-            pebbleEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.5F, performance.speed(), 1.0F);
-            world.spawnEntity(pebbleEntity);
+            pebbleEntity.shootFromRotation(player, player.getXRot(), player.getYRot(),
+                    0.5F, performance.speed(), 1.0F);
+            level.addFreshEntity(pebbleEntity);
 
-            if (user instanceof PlayerEntity) {
-                user.getItemCooldownManager().set(this, performance.attackSpeed());
-            }
+            player.getCooldowns().addCooldown(this, performance.attackSpeed());
         }
 
-        user.incrementStat(Stats.USED.getOrCreateStat(this));
-        if (!user.getAbilities().creativeMode) {
-            itemStack.decrement(1);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) {
+            itemStack.shrink(1);
         }
 
-        return TypedActionResult.success(itemStack, world.isClient());
+        return InteractionResultHolder.success(itemStack);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getPlayer() != null && context.getPlayer().isSneaking()) {
-            return super.useOnBlock(context);
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+            return super.useOn(context);
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     public Performance getPerformance() {
@@ -68,9 +69,10 @@ public class PebbleItem extends BlockItem {
     /**
      * 表示一个石子的投掷属性。
      *
-     * @param attackSpeed
-     * @param hurt
-     * @param speed
+     * @param attackSpeed 攻击速度（冷却时间 tick）
+     * @param hurt        伤害值
+     * @param speed       初速度
+     * @param gravity     重力加速度
      */
     public record Performance(int attackSpeed, float hurt, float speed, float gravity) {
         public static final Performance STONE = new Performance(8, 4F, 2.5F, 0.1F);

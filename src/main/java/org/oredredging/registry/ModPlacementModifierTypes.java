@@ -1,20 +1,22 @@
 package org.oredredging.registry;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.placementmodifier.PlacementModifier;
-import net.minecraft.world.gen.placementmodifier.PlacementModifierType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.feature.ColumnScanPlacementModifier;
 
 public class ModPlacementModifierTypes {
-    public static final PlacementModifierType<ColumnScanPlacementModifier> COLUMN_SCAN = register("column_scan", ColumnScanPlacementModifier.MODIFIER_CODEC);
+    public static final DeferredRegister<PlacementModifierType<?>> MODIFIER_TYPES =
+            DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, OreDredging.MOD_ID);
 
-    private static <P extends PlacementModifier> PlacementModifierType<P> register(String id, Codec<P> codec) {
-        return Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, new Identifier(OreDredging.MOD_ID, id), () -> codec);
+    public static final RegistryObject<PlacementModifierType<ColumnScanPlacementModifier>> COLUMN_SCAN =
+            MODIFIER_TYPES.register("column_scan",
+                    () -> () -> ColumnScanPlacementModifier.MODIFIER_CODEC);
+
+    public static void registerAll(IEventBus modEventBus) {
+        MODIFIER_TYPES.register(modEventBus);
     }
-
-    public static void registerAll() {}
 }

@@ -1,72 +1,72 @@
 package org.oredredging.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseDetonatorItem extends BlockItem implements Wave{
+public abstract class BaseDetonatorItem extends BlockItem {
     public final int maxIgniteTime;
 
-    public BaseDetonatorItem(Block block, Settings settings, int maxIgniteTime) {
-        super(block, settings);
+    public BaseDetonatorItem(Block block, Properties properties, int maxIgniteTime) {
+        super(block, properties);
         this.maxIgniteTime = maxIgniteTime;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
 
-        if (useConsume(world, user, hand)) {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(stack);
+        if (useConsume(level, player, hand)) {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
         }
-        return TypedActionResult.fail(stack);
+        return InteractionResultHolder.fail(stack);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         if (allowPlace(context)) {
-            return super.useOnBlock(context);
+            return super.useOn(context);
         }
-
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (!(user instanceof PlayerEntity player)) return;
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeCharged) {
+        if (!(living instanceof Player player)) return;
 
-        int usedTicks = this.getMaxUseTime(stack) - remainingUseTicks;
+        int usedTicks = this.getUseDuration(stack) - timeCharged;
 
-        world.playSound(null, user.getX(), user.getY(), user.getZ(),
-                SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F,
-                0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F,
+                0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
-        spawnDetonator(world, player, stack, usedTicks);
+        spawnDetonator(level, player, stack, usedTicks);
 
-        player.incrementStat(Stats.USED.getOrCreateStat(this));
-        if (!player.getAbilities().creativeMode) {
-            stack.decrement(1);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
         }
 
-        player.swingHand(Hand.MAIN_HAND);
-        player.getItemCooldownManager().set(this, 10);
-        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        player.swing(InteractionHand.MAIN_HAND);
+        player.getCooldowns().addCooldown(this, 10);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     /**
@@ -76,38 +76,24 @@ public abstract class BaseDetonatorItem extends BlockItem implements Wave{
      * @param stack 原雷管物品堆栈
      * @param usedTicks 已经使用的时间
      */
-    protected abstract void spawnDetonator(World world, PlayerEntity player, ItemStack stack, int usedTicks);
+    protected abstract void spawnDetonator(Level level, Player player, ItemStack stack, int usedTicks);
 
-    /**
-     * 检查雷管是否允许放置。
-     *
-     * @param context 放置上下文
-     * @return 是否可以放置
-     */
-    protected boolean allowPlace(ItemUsageContext context) {
+    protected boolean allowPlace(UseOnContext context) {
         if (context.getPlayer() != null) {
-            return context.getPlayer().isSneaking();
+            return context.getPlayer().isShiftKeyDown();
         }
 
         return false;
     }
 
-    /**
-     * 使用雷管时产生消耗。
-     * <p>例如减少打火石的耐久。</p>
-     *
-     * @param user 尝试点燃雷管的玩家
-     * @param hand 点燃使用的手
-     * @return 是否成功点燃
-     */
-    protected boolean useConsume(World world, PlayerEntity user, Hand hand) {
-        if (hand == Hand.MAIN_HAND) {
-            ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-            if (offStack.isOf(Items.FLINT_AND_STEEL)) {
-                world.playSound(user, user.getBlockPos(), SoundEvents.ITEM_FLINTANDSTEEL_USE,
-                        SoundCategory.PLAYERS, 1.0F, 1.0F);
-                offStack.damage(1, user, player -> player.sendEquipmentBreakStatus(EquipmentSlot.OFFHAND));
-                user.swingHand(Hand.OFF_HAND);
+    protected boolean useConsume(Level level, Player player, InteractionHand hand) {
+        if (hand == InteractionHand.MAIN_HAND) {
+            ItemStack offStack = player.getItemInHand(InteractionHand.OFF_HAND);
+            if (offStack.is(Items.FLINT_AND_STEEL)) {
+                level.playSound(player, player.blockPosition(), SoundEvents.FLINTANDSTEEL_USE,
+                        SoundSource.PLAYERS, 1.0F, 1.0F);
+                offStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.OFFHAND));
+                player.swing(InteractionHand.OFF_HAND);
                 return true;
             }
         }
@@ -115,89 +101,70 @@ public abstract class BaseDetonatorItem extends BlockItem implements Wave{
     }
 
     @Override
-    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        // 生成火花粒子
+    public void onUseTick(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration) {
         if (maxIgniteTime != -1) {
-            Hand hand = user.getActiveHand();
-            spawnSparkParticlesFromHand(world, user, stack, remainingUseTicks, hand);
+            InteractionHand hand = living.getUsedItemHand();
+            spawnSparkParticlesFromHand(level, living, stack, remainingUseDuration, hand);
         }
 
-        // 检查是否超时，触发手中爆炸
-        if (world.isClient || maxIgniteTime == -1) return;
+        if (level.isClientSide() || maxIgniteTime == -1) return;
 
-        int usedTicks = this.getMaxUseTime(stack) - remainingUseTicks;
+        int usedTicks = this.getUseDuration(stack) - remainingUseDuration;
         if (usedTicks >= maxIgniteTime) {
-            if (user instanceof PlayerEntity player) {
-                explodeInHand(world, player, stack);
-                user.clearActiveItem();
+            if (living instanceof Player player) {
+                explodeInHand(level, player, stack);
+                player.releaseUsingItem();
             }
         }
     }
 
-    /**
-     * 从玩家手部位置生成火花粒子（客户端）
-     *
-     * @param world              世界
-     * @param user               玩家
-     * @param stack              物品栈
-     * @param remainingUseTicks  剩余使用 tick 数
-     * @param hand               使用的手（主手或副手）
-     */
-    private void spawnSparkParticlesFromHand(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, Hand hand) {
-        int usedTicks = this.getMaxUseTime(stack) - remainingUseTicks;
-        int remainingTicks = maxIgniteTime - usedTicks;  // 剩余引信时间
+    private void spawnSparkParticlesFromHand(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration, InteractionHand hand) {
+        int usedTicks = this.getUseDuration(stack) - remainingUseDuration;
+        int remainingTicks = maxIgniteTime - usedTicks;
 
-        // 剩余时间越少，粒子越多（最少1个，最多5个）
         int count = Math.max(1, 5 - (remainingTicks / 20));
         count = Math.min(5, count);
 
-        // 计算手部位置
-        Vec3d forward = user.getRotationVec(1.0F);               // 玩家面向方向
-        Vec3d right = forward.rotateY((float) Math.PI / 2);      // 玩家右侧方向
-        double forwardDist = 0.4;   // 前伸距离
-        double rightDist = (hand == Hand.MAIN_HAND) ? -0.5 : 0.5; // 主手右偏正，副手左偏负
-        double upDist = 1.2;        // 手部高度
+        Vec3 forward = living.getLookAngle();
+        Vec3 right = forward.yRot((float) Math.PI / 2);
+        double forwardDist = 0.4;
+        double rightDist = (hand == InteractionHand.MAIN_HAND) ? -0.5 : 0.5;
+        double upDist = 1.2;
 
-        Vec3d handPos = user.getPos()
-                .add(forward.multiply(forwardDist))
-                .add(right.multiply(rightDist))
+        Vec3 handPos = living.position()
+                .add(forward.scale(forwardDist))
+                .add(right.scale(rightDist))
                 .add(0, upDist, 0);
 
         for (int i = 0; i < count; i++) {
-            // 在基础位置周围添加随机散布
             double spread = 0.1;
-            double x = handPos.x + (user.getRandom().nextDouble() - 0.5) * spread;
-            double y = handPos.y + (user.getRandom().nextDouble() - 0.5) * spread;
-            double z = handPos.z + (user.getRandom().nextDouble() - 0.5) * spread;
+            double x = handPos.x + (living.getRandom().nextDouble() - 0.5) * spread;
+            double y = handPos.y + (living.getRandom().nextDouble() - 0.5) * spread;
+            double z = handPos.z + (living.getRandom().nextDouble() - 0.5) * spread;
 
-            double vx = (user.getRandom().nextDouble() - 0.5) * 0.1;
-            double vy = user.getRandom().nextDouble() * 0.2;
-            double vz = (user.getRandom().nextDouble() - 0.5) * 0.1;
+            double vx = (living.getRandom().nextDouble() - 0.5) * 0.1;
+            double vy = living.getRandom().nextDouble() * 0.2;
+            double vz = (living.getRandom().nextDouble() - 0.5) * 0.1;
 
-            world.addParticle(ParticleTypes.FLAME, x, y, z, vx, vy, vz);
-            if (user.getRandom().nextInt(3) == 0) {
-                world.addParticle(ParticleTypes.SMOKE, x, y, z, vx * 0.5, vy * 0.5, vz * 0.5);
+            level.addParticle(ParticleTypes.FLAME, x, y, z, vx, vy, vz);
+            if (living.getRandom().nextInt(3) == 0) {
+                level.addParticle(ParticleTypes.SMOKE, x, y, z, vx * 0.5, vy * 0.5, vz * 0.5);
             }
         }
     }
 
-    /**
-     * 在手中直接爆炸雷管。
-     * 用于温雷时间过长导致雷管已经燃烧完毕的情况。
-     *
-     * @param player 使用雷管的玩家
-     * @param stack 原雷管堆栈
-     */
-    private void explodeInHand(World world, PlayerEntity player, ItemStack stack) {
-        Explosion explosion = world.createExplosion(player, player.getX(), player.getY(), player.getZ(), 8.0F, World.ExplosionSourceType.MOB);
-        player.damage(world.getDamageSources().explosion(explosion), 10.0F);
-        if (!player.getAbilities().creativeMode) {
-            stack.decrement(1);
+    private void explodeInHand(Level level, Player player, ItemStack stack) {
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.explode(player, player.getX(), player.getY(), player.getZ(), 8.0F, Level.ExplosionInteraction.MOB);
+            player.hurt(serverLevel.damageSources().explosion(null), 10.0F);
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
         }
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getUseDuration(ItemStack stack) {
         return 10000;
     }
 }

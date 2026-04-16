@@ -1,10 +1,10 @@
 package org.oredredging.mixin;
 
-import net.minecraft.inventory.RecipeInputInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import org.oredredging.item.MinerBundleItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,17 +18,17 @@ import java.util.List;
 public abstract class ShapedRecipeMixin {
 
     @Shadow
-    public abstract ItemStack getOutput(DynamicRegistryManager registryManager);
+    public abstract ItemStack getResultItem(RegistryAccess registryManager);
 
-    @Inject(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At("RETURN"), cancellable = true)
-    private void craftMinerBundle(RecipeInputInventory recipeInputInventory, DynamicRegistryManager dynamicRegistryManager, CallbackInfoReturnable<ItemStack> cir) {
-        List<ItemStack> stacks = recipeInputInventory.getInputStacks();
+    @Inject(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;", at = @At("RETURN"), cancellable = true)
+    private void craftMinerBundle(CraftingContainer recipeInputInventory, RegistryAccess dynamicRegistryManager, CallbackInfoReturnable<ItemStack> cir) {
+        List<ItemStack> stacks = recipeInputInventory.getItems();
 
         for (ItemStack stack : stacks) {
             if (stack.getItem() instanceof MinerBundleItem) {
-                NbtCompound nbt = stack.getNbt();
-                ItemStack result = getOutput(dynamicRegistryManager).copy();
-                result.setNbt(nbt);
+                CompoundTag nbt = stack.getTag();
+                ItemStack result = getResultItem(dynamicRegistryManager).copy();
+                result.setTag(nbt);
 
                 cir.setReturnValue(result);
             }

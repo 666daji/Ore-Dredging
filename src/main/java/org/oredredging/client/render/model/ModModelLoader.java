@@ -1,39 +1,44 @@
 package org.oredredging.client.render.model;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.OreDredging;
 import org.oredredging.registry.ModItems;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ModModelLoader implements ModelLoadingPlugin {
-    public static final Set<Identifier> MODELS_TO_LOAD = new HashSet<>();
+public class ModModelLoader{
+    public static final Set<ResourceLocation> MODELS_TO_LOAD = new HashSet<>();
 
-    public static final Set<Item> ALL_MINER_BUNDLE = Set.of(ModItems.LEATHER_MINER_BUNDLE, ModItems.CHAIN_MINER_BUNDLE, ModItems.PHANTOM_MINER_BUNDLE);
+    public static final Set<Item> ALL_MINER_BUNDLE = Set.of(ModItems.LEATHER_MINER_BUNDLE.get(), ModItems.CHAIN_MINER_BUNDLE.get(), ModItems.PHANTOM_MINER_BUNDLE.get());
 
-    @Override
-    public void onInitializeModelLoader(Context pluginContext) {
+    public static void initModels(ModelEvent.RegisterAdditional event) {
         registerAllMinerBundleModels();
 
-        pluginContext.addModels(MODELS_TO_LOAD);
+        for (ResourceLocation modelId : MODELS_TO_LOAD) {
+            event.register(modelId);
+        }
     }
 
-    private void registerAllMinerBundleModels() {
+    private static void registerAllMinerBundleModels() {
         for (Item minerBundle : ALL_MINER_BUNDLE) {
-            Identifier itemId = Registries.ITEM.getId(minerBundle);
+            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(minerBundle);
+
+            if (itemId == null) {
+                return;
+            }
 
             String minerBundleModelName = itemId.getPath() + "_close";
-            ModelIdentifier modelId = createItemModel(minerBundleModelName);
+            ModelResourceLocation modelId = createItemModel(minerBundleModelName);
             MODELS_TO_LOAD.add(modelId);
         }
     }
 
-    public static ModelIdentifier createItemModel(String itemPath) {
-        return new ModelIdentifier(new Identifier(OreDredging.MOD_ID, itemPath), "inventory");
+    public static ModelResourceLocation createItemModel(String itemPath) {
+        return new ModelResourceLocation(OreDredging.createResourceLocation(OreDredging.MOD_ID, itemPath), "inventory");
     }
 }

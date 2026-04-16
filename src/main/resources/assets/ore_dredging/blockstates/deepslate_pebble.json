@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "shape=1,facing=east": {"model": "ore_dredging:block/deepslate_pebble_1"},
+    "shape=1,facing=west": {"model": "ore_dredging:block/deepslate_pebble_1", "y": 180},
+    "shape=1,facing=south": {"model": "ore_dredging:block/deepslate_pebble_1", "y": 90},
+    "shape=1,facing=north": {"model": "ore_dredging:block/deepslate_pebble_1", "y": 270},
+
+    "shape=2,facing=east": {"model": "ore_dredging:block/deepslate_pebble_2"},
+    "shape=2,facing=west": {"model": "ore_dredging:block/deepslate_pebble_2", "y": 180},
+    "shape=2,facing=south": {"model": "ore_dredging:block/deepslate_pebble_2", "y": 90},
+    "shape=2,facing=north": {"model": "ore_dredging:block/deepslate_pebble_2", "y": 270},
+
+    "shape=3,facing=east": {"model": "ore_dredging:block/deepslate_pebble_3"},
+    "shape=3,facing=west": {"model": "ore_dredging:block/deepslate_pebble_3", "y": 180},
+    "shape=3,facing=south": {"model": "ore_dredging:block/deepslate_pebble_3", "y": 90},
+    "shape=3,facing=north": {"model": "ore_dredging:block/deepslate_pebble_3", "y": 270},
+
+    "shape=4,facing=east": {"model": "ore_dredging:block/deepslate_pebble_4"},
+    "shape=4,facing=west": {"model": "ore_dredging:block/deepslate_pebble_4", "y": 180},
+    "shape=4,facing=south": {"model": "ore_dredging:block/deepslate_pebble_4", "y": 90},
+    "shape=4,facing=north": {"model": "ore_dredging:block/deepslate_pebble_4", "y": 270}
+  }
+}

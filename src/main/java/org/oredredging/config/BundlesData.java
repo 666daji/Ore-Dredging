@@ -3,9 +3,9 @@ package org.oredredging.config;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.OreDredging;
 import org.oredredging.config.framework.ConfigMigrator;
 import org.oredredging.item.MinerBundleItem;
@@ -29,7 +29,7 @@ public record BundlesData(
     /**
      * Codec：处理 Map<Item, List<String>> 的序列化，并通过 xmap 转换为 BundlesData。
      */
-    public static final Codec<BundlesData> CODEC = Codec.unboundedMap(Registries.ITEM.getCodec(), Codec.STRING.listOf())
+    public static final Codec<BundlesData> CODEC = Codec.unboundedMap(ForgeRegistries.ITEMS.getCodec(), Codec.STRING.listOf())
             .xmap(BundlesData::fromRaw, BundlesData::toRaw);
 
     public static final List<String> BASE_ALLOWED_ITEMS = List.of(
@@ -65,9 +65,9 @@ public record BundlesData(
     );
 
     public static final BundlesData DEFAULT = fromRaw(
-            Map.of(ModItems.LEATHER_MINER_BUNDLE, BASE_ALLOWED_ITEMS,
-                    ModItems.CHAIN_MINER_BUNDLE, List.of("base"),
-                    ModItems.PHANTOM_MINER_BUNDLE, List.of("base")));
+            Map.of(ModItems.LEATHER_MINER_BUNDLE.get(), BASE_ALLOWED_ITEMS,
+                    ModItems.CHAIN_MINER_BUNDLE.get(), List.of("base"),
+                    ModItems.PHANTOM_MINER_BUNDLE.get(), List.of("base")));
 
     /**
      * 从原始规则映射构建 BundlesData，同时解析谓词。

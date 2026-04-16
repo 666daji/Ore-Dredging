@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "ore_dredging:block/diorite_brick_slab" },
+    "type=top": { "model": "ore_dredging:block/diorite_brick_slab_top" },
+    "type=double": { "model": "ore_dredging:block/diorite_bricks" }
+  }
+}

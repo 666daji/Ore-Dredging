@@ -1,0 +1,6 @@
+{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "ore_dredging:block/andesite_bricks"
+  }
+}

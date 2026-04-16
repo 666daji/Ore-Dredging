@@ -1,19 +1,22 @@
 package org.oredredging.registry;
 
-import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.loot.CrushedDropCountFunction;
 
 public class ModLootFunctionTypes {
-    public static final LootFunctionType CRUSHED_DROP_COUNT = register("crushed_drop", new LootFunctionType(new CrushedDropCountFunction.Serializer()));
+    public static final DeferredRegister<LootItemFunctionType> LOOT_FUNCTIONS =
+            DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, OreDredging.MOD_ID);
 
-    public static LootFunctionType register(String id, LootFunctionType type) {
-        return Registry.register(Registries.LOOT_FUNCTION_TYPE,
-                new Identifier(OreDredging.MOD_ID, id), type);
+    public static final RegistryObject<LootItemFunctionType> CRUSHED_DROP_COUNT =
+            LOOT_FUNCTIONS.register("crushed_drop",
+                    () -> new LootItemFunctionType(new CrushedDropCountFunction.Serializer()));
+
+    public static void registerAll(IEventBus modEventBus) {
+        LOOT_FUNCTIONS.register(modEventBus);
     }
-
-    public static void registerAll() {}
 }

@@ -1,11 +1,11 @@
 package org.oredredging.util;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.OreDredging;
 import org.oredredging.config.BundlesData;
 import org.oredredging.config.ModConfigs;
@@ -39,8 +39,8 @@ public final class PredicateParser {
                 return stack -> false;
             }
             String itemId = args.get(0);
-            Item item = Registries.ITEM.get(Identifier.tryParse(itemId));
-            return stack -> stack.isOf(item);
+            Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(itemId));
+            return stack -> stack.is(item);
         });
 
         // 标签类型：tag|标签ID
@@ -50,13 +50,13 @@ public final class PredicateParser {
                 return stack -> false;
             }
             String tagId = args.get(0);
-            Identifier id = Identifier.tryParse(tagId);
+            ResourceLocation id = ResourceLocation.tryParse(tagId);
             if (id == null) {
                 LOGGER.warn("Invalid tag ID: {}", tagId);
                 return stack -> false;
             }
-            TagKey<Item> tag = TagKey.of(RegistryKeys.ITEM, id);
-            return stack -> stack.isIn(tag);
+            TagKey<Item> tag = TagKey.create(Registries.ITEM, id);
+            return stack -> stack.is(tag);
         });
 
         // 复制类型：copy|袋子ID
@@ -67,13 +67,13 @@ public final class PredicateParser {
             }
 
             String bundleIdStr = args.get(0);
-            Identifier bundleId = Identifier.tryParse(bundleIdStr);
+            ResourceLocation bundleId = ResourceLocation.tryParse(bundleIdStr);
             if (bundleId == null) {
                 LOGGER.warn("Invalid bundle ID: {}", bundleIdStr);
                 return stack -> false;
             }
 
-            Item item = Registries.ITEM.get(bundleId);
+            Item item = ForgeRegistries.ITEMS.getValue(bundleId);
             if (!(item instanceof MinerBundleItem minerBundle)) {
                 LOGGER.warn("Invalid bundle ID: {}", bundleIdStr);
                 return stack -> false;

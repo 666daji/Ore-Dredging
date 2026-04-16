@@ -1,23 +1,26 @@
 package org.oredredging.entity;
 
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.particle.ItemStackParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.oredredging.config.CanPebbleBreakData;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
@@ -26,120 +29,100 @@ import org.oredredging.registry.ModDamageTypes;
 import org.oredredging.registry.ModEntities;
 import org.oredredging.registry.ModItems;
 
-public class PebbleEntity extends ThrownItemEntity {
-    public PebbleEntity(EntityType<? extends PebbleEntity> entityType, World world) {
-        super(entityType, world);
+public class PebbleEntity extends ThrowableItemProjectile {
+    public PebbleEntity(EntityType<? extends PebbleEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public PebbleEntity(World world, LivingEntity owner) {
-        super(ModEntities.PEBBLE, owner, world);
+    public PebbleEntity(Level level, LivingEntity owner) {
+        super(ModEntities.PEBBLE.get(), owner, level);
     }
 
-    public PebbleEntity(World world, double x, double y, double z) {
-        super(ModEntities.PEBBLE, x, y, z, world);
+    public PebbleEntity(Level level, double x, double y, double z) {
+        super(ModEntities.PEBBLE.get(), x, y, z, level);
     }
 
     @Override
-    public void handleStatus(byte status) {
-        if (status == EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES) {
+    public void handleEntityEvent(byte status) {
+        if (status == 3) { // EntityEvent.PROJECTILE_HIT
             for (int i = 0; i < 8; i++) {
-                this.getWorld()
-                        .addParticle(
-                                new ItemStackParticleEffect(ParticleTypes.ITEM, this.getStack()),
-                                this.getX(),
-                                this.getY(),
-                                this.getZ(),
-                                (this.random.nextFloat() - 0.5) * 0.08,
-                                (this.random.nextFloat() - 0.5) * 0.08,
-                                (this.random.nextFloat() - 0.5) * 0.08
-                        );
+                this.level().addParticle(
+                        new ItemParticleOption(ParticleTypes.ITEM, this.getItem()),
+                        this.getX(), this.getY(), this.getZ(),
+                        (this.random.nextFloat() - 0.5) * 0.08,
+                        (this.random.nextFloat() - 0.5) * 0.08,
+                        (this.random.nextFloat() - 0.5) * 0.08
+                );
             }
         }
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        // 基础伤害
+    protected void onHitEntity(EntityHitResult hitResult) {
         float damage = getItemPerformance().hurt();
 
-        // 如果发射者拥有力量效果，每级增加 1 伤害
         if (this.getOwner() instanceof LivingEntity owner) {
-            StatusEffectInstance strength = owner.getStatusEffect(StatusEffects.STRENGTH);
+            MobEffectInstance strength = owner.getEffect(MobEffects.DAMAGE_BOOST);
             if (strength != null) {
                 int amplifier = strength.getAmplifier();
                 damage += (amplifier + 1) * 1F;
             }
         }
 
-        entityHitResult.getEntity().damage(this.getDamageSources().create(ModDamageTypes.PEBBLE_HIT, this, this.getOwner()), damage);
+        Registry<DamageType> damageTypes = level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
+        hitResult.getEntity().hurt(new DamageSource(damageTypes.getHolderOrThrow(ModDamageTypes.PEBBLE_HIT), this, this.getOwner()), damage);
     }
 
     @Override
-    protected void onCollision(HitResult hitResult) {
-        // 实体碰撞处理
+    protected void onHit(HitResult hitResult) {
         if (hitResult.getType() == HitResult.Type.ENTITY) {
-            onEntityHit((EntityHitResult) hitResult);
-            playBreakEffects(hitResult.getPos());
-            if (!this.getWorld().isClient) {
+            onHitEntity((EntityHitResult) hitResult);
+            playBreakEffects(hitResult.getLocation());
+            if (!this.level().isClientSide) {
                 this.discard();
             }
             return;
         }
 
-        // 方块碰撞处理
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHit = (BlockHitResult) hitResult;
-            BlockPos pos = blockHit.getBlockPos();
-            World world = this.getWorld();
-            Vec3d hitPos = hitResult.getPos();
+            var pos = blockHit.getBlockPos();
+            Level level = this.level();
+            Vec3 hitPos = hitResult.getLocation();
 
-            // 检查是否可破坏
-            if (canBreakBlock(world, pos)) {
-                // 破坏方块
-                world.breakBlock(pos, true, this.getOwner());
-                world.playSound(this, pos, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.BLOCKS, 1.0F, 10.2F);
+            if (canBreakBlock(level, pos)) {
+                level.destroyBlock(pos, true, this.getOwner());
+                level.playSound(null, pos, SoundEvents.DEEPSLATE_BREAK, SoundSource.BLOCKS, 1.0F, 10.2F);
             } else {
-                // 不可破坏
                 playBreakEffects(hitPos);
-                if (!world.isClient) {
+                if (!level.isClientSide) {
                     this.discard();
                 }
             }
         }
     }
 
-    /**
-     * 播放碰撞时的音效和粒子（原逻辑提取）
-     */
-    private void playBreakEffects(Vec3d pos) {
-        this.getWorld().playSound(
-                null,
-                new BlockPos((int) pos.x, (int) pos.y, (int) pos.z),
-                SoundEvents.BLOCK_DEEPSLATE_BREAK,
-                SoundCategory.BLOCKS,
-                1.0F, 10.0F
-        );
+    private void playBreakEffects(Vec3 pos) {
+        this.level().playSound(null, pos.x, pos.y, pos.z,
+                SoundEvents.DEEPSLATE_BREAK, SoundSource.BLOCKS, 1.0F, 10.0F);
 
-        if (!this.getWorld().isClient) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
         }
     }
 
-    /**
-     * 检查指定位置的方块是否可被石子破坏（依据配置）
-     */
-    private boolean canBreakBlock(World world, BlockPos pos) {
+    private boolean canBreakBlock(Level level, BlockPos pos) {
         CanPebbleBreakData data = ConfigManager.get(ModConfigs.CAN_PEBBLE_BREAK);
         if (data == null) return false;
-        if (!(world instanceof StructureWorldAccess structureWorld)) {
+        if (!(level instanceof WorldGenLevel structureManager)) {
             return false;
         }
 
-        return data.blocks().stream().anyMatch(predicate -> predicate.test(structureWorld, pos));
+        return data.blocks().stream().anyMatch(predicate -> predicate.test(structureManager, pos));
     }
 
     public PebbleItem.Performance getItemPerformance() {
-        if (getItem().getItem() instanceof PebbleItem pebbleItem) {
+        if (this.getItem().getItem() instanceof PebbleItem pebbleItem) {
             return pebbleItem.getPerformance();
         }
         return PebbleItem.Performance.STONE;
@@ -147,7 +130,7 @@ public class PebbleEntity extends ThrownItemEntity {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.STONE_PEBBLE;
+        return ModItems.STONE_PEBBLE.get();
     }
 
     @Override

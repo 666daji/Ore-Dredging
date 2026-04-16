@@ -1,15 +1,15 @@
 package org.oredredging.item;
 
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -22,41 +22,34 @@ public class CimeliaItem extends Item {
     protected String introductionKey;
     protected final int lineCount;
 
-    public CimeliaItem(Settings settings, Category category, int lineCount) {
-        super(settings.rarity(Rarity.UNCOMMON).fireproof());
+    public CimeliaItem(Properties properties, Category category, int lineCount) {
+        super(properties.rarity(Rarity.UNCOMMON).fireResistant());
         this.category = category;
         this.lineCount = lineCount;
     }
 
     /**
      * 获取显示名称后缀，包含类别样式。
-     *
-     * @return 带样式的类别文本
      */
-    protected Text getCategoryDisplay() {
-        return Text.translatable("ore_dredging.cimelia." + this.category.asString())
-                .setStyle(category.getDisplayStyle());
+    protected Component getCategoryDisplay() {
+        return Component.translatable("ore_dredging.cimelia." + this.category.getSerializedName())
+                .withStyle(category.getDisplayStyle());
     }
 
     /**
      * 获取指定行数的简介文本。
-     *
-     * @param line 行号（从1开始）
-     * @return 带样式的简介文本
      */
-    public Text getIntroduction(int line) {
+    public Component getIntroduction(int line) {
         if (introductionKey == null) {
-            // 懒加载简介的翻译键前缀，基于物品ID的路径
-            String path = Registries.ITEM.getId(this).getPath();
+            String path = ForgeRegistries.ITEMS.getKey(this).getPath();
             introductionKey = INTRODUCTION_PREFIX + path;
         }
-
-        return Text.translatable(introductionKey + "_" + line).setStyle(INTRODUCTION_STYLE);
+        return Component.translatable(introductionKey + "_" + line).withStyle(INTRODUCTION_STYLE);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(getCategoryDisplay());
         for (int i = 1; i <= lineCount; i++) {
             tooltip.add(getIntroduction(i));
@@ -64,23 +57,22 @@ public class CimeliaItem extends Item {
     }
 
     /**
-     * 表示珍宝的类别，包含其特有的样式。
+     * 珍宝类别
      */
-    public enum Category implements StringIdentifiable {
-        NATURE("nature", Style.EMPTY.withColor(Formatting.GREEN).withItalic(true)),
-        ANCIENT("ancient", Style.EMPTY.withColor(Formatting.GOLD).withItalic(true));
+    public enum Category {
+        NATURE("nature", Style.EMPTY.withColor(ChatFormatting.GREEN).withItalic(true)),
+        ANCIENT("ancient", Style.EMPTY.withColor(ChatFormatting.GOLD).withItalic(true));
 
-        private final String id;
+        private final String name;
         private final Style displayStyle;
 
-        Category(String id, Style displayStyle) {
-            this.id = id;
+        Category(String name, Style displayStyle) {
+            this.name = name;
             this.displayStyle = displayStyle;
         }
 
-        @Override
-        public String asString() {
-            return id;
+        public String getSerializedName() {
+            return name;
         }
 
         public Style getDisplayStyle() {
@@ -89,6 +81,6 @@ public class CimeliaItem extends Item {
     }
 
     static {
-        INTRODUCTION_STYLE = Style.EMPTY.withColor(0x9A3C78).withItalic(true);
+        INTRODUCTION_STYLE = Style.EMPTY.withColor(TextColor.fromRgb(0x9A3C78)).withItalic(true);
     }
 }

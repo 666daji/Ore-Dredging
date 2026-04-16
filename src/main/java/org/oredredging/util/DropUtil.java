@@ -1,8 +1,16 @@
 package org.oredredging.util;
 
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.oredredging.config.CrushedDropsData;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
@@ -43,7 +51,7 @@ public final class DropUtil {
      * @param type    破碎类型
      * @return 是否触发
      */
-    public static boolean shouldTrigger(BlockState state, LootContextParameterSet.Builder builder, CrushType type) {
+    public static boolean shouldTrigger(BlockState state, LootParams.Builder builder, CrushType type) {
         if (!type.getBlockList().contains(state.getBlock()) || isSilkTouch(builder)) {
             return false;
         }
@@ -57,11 +65,11 @@ public final class DropUtil {
         return trigger;
     }
 
-    private static float getCrushedProbability(BlockState state, LootContextParameterSet.Builder builder) {
+    private static float getCrushedProbability(BlockState state, LootParams.Builder builder) {
         try {
-            ItemStack tool = builder.get(LootContextParameters.TOOL);
-            if (tool.isOf(ModItems.GEOLOGICAL_HAMMER) || tool.isOf(ModItems.COLLAPSE_STONE_HAMMER)) {
-                return 1F;
+            ItemStack tool = builder.getParameter(LootContextParams.TOOL);
+            if (tool.is(ModItems.GEOLOGICAL_HAMMER.get()) || tool.is(ModItems.COLLAPSE_STONE_HAMMER.get())) {
+                return 1.0F;
             }
         } catch (NoSuchElementException ignored) {}
 
@@ -75,11 +83,11 @@ public final class DropUtil {
      * @param world 服务端世界
      * @param pos   方块位置
      */
-    public static void applyCrushedEffect(BlockState state, ServerWorld world, BlockPos pos) {
+    public static void applyCrushedEffect(BlockState state, ServerLevel world, BlockPos pos) {
         if (isAnyCrushTriggeredForBlock(state.getBlock())) {
             for (int i = 0; i < 30; i++) {
-                world.spawnParticles(
-                        new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
+                world.sendParticles(
+                        new BlockParticleOption(ParticleTypes.BLOCK, state),
                         pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                         10, 0, 0, 0, 3.2
                 );
@@ -91,11 +99,11 @@ public final class DropUtil {
     /**
      * 检查工具是否带有精准采集。
      */
-    private static boolean isSilkTouch(LootContextParameterSet.Builder builder) {
+    private static boolean isSilkTouch(LootParams.Builder builder) {
         try {
-            ItemStack tool = builder.get(LootContextParameters.TOOL);
-            if (tool != null && !tool.isEmpty()) {
-                return EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, tool) != 0;
+            ItemStack tool = builder.getParameter(LootContextParams.TOOL);
+            if (!tool.isEmpty()) {
+                return EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, tool) != 0;
             }
         } catch (NoSuchElementException ignored) {
             // 上下文中没有工具，视为无精准采集

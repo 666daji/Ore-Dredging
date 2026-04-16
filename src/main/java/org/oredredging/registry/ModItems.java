@@ -1,105 +1,132 @@
 package org.oredredging.registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.item.*;
 
+import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class ModItems {
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, OreDredging.MOD_ID);
+
     // 矿粒
-    public static final Item RAW_COPPER_NUGGET = register("raw_copper_nugget");
-    public static final Item RAW_IRON_NUGGET = register("raw_iron_nugget");
-    public static final Item RAW_GOLD_NUGGET = register("raw_gold_nugget");
-    public static final Item NETHERITE_NUGGET = register("netherite_nugget");
+    public static final RegistryObject<Item> RAW_COPPER_NUGGET = register("raw_copper_nugget");
+    public static final RegistryObject<Item> RAW_IRON_NUGGET = register("raw_iron_nugget");
+    public static final RegistryObject<Item> RAW_GOLD_NUGGET = register("raw_gold_nugget");
+    public static final RegistryObject<Item> NETHERITE_NUGGET = register("netherite_nugget");
 
     // 花岗岩砖
-    public static final Item GRANITE_BRICKS = register(ModBlocks.GRANITE_BRICKS);
-    public static final Item GRANITE_BRICK_STAIRS = register(ModBlocks.GRANITE_BRICK_STAIRS);
-    public static final Item GRANITE_BRICK_SLAB = register(ModBlocks.GRANITE_BRICK_SLAB);
-    public static final Item GRANITE_BRICK_WALL = register(ModBlocks.GRANITE_BRICK_WALL);
+    public static final RegistryObject<Item> GRANITE_BRICKS = fromBlock(ModBlocks.GRANITE_BRICKS);
+    public static final RegistryObject<Item> GRANITE_BRICK_STAIRS = fromBlock(ModBlocks.GRANITE_BRICK_STAIRS);
+    public static final RegistryObject<Item> GRANITE_BRICK_SLAB = fromBlock(ModBlocks.GRANITE_BRICK_SLAB);
+    public static final RegistryObject<Item> GRANITE_BRICK_WALL = fromBlock(ModBlocks.GRANITE_BRICK_WALL);
 
     // 闪长岩砖
-    public static final Item DIORITE_BRICKS = register(ModBlocks.DIORITE_BRICKS);
-    public static final Item DIORITE_BRICK_STAIRS = register(ModBlocks.DIORITE_BRICK_STAIRS);
-    public static final Item DIORITE_BRICK_SLAB = register(ModBlocks.DIORITE_BRICK_SLAB);
-    public static final Item DIORITE_BRICK_WALL = register(ModBlocks.DIORITE_BRICK_WALL);
+    public static final RegistryObject<Item> DIORITE_BRICKS = fromBlock(ModBlocks.DIORITE_BRICKS);
+    public static final RegistryObject<Item> DIORITE_BRICK_STAIRS = fromBlock(ModBlocks.DIORITE_BRICK_STAIRS);
+    public static final RegistryObject<Item> DIORITE_BRICK_SLAB = fromBlock(ModBlocks.DIORITE_BRICK_SLAB);
+    public static final RegistryObject<Item> DIORITE_BRICK_WALL = fromBlock(ModBlocks.DIORITE_BRICK_WALL);
 
     // 安山岩砖
-    public static final Item ANDESITE_BRICKS = register(ModBlocks.ANDESITE_BRICKS);
-    public static final Item ANDESITE_BRICK_STAIRS = register(ModBlocks.ANDESITE_BRICK_STAIRS);
-    public static final Item ANDESITE_BRICK_SLAB = register(ModBlocks.ANDESITE_BRICK_SLAB);
-    public static final Item ANDESITE_BRICK_WALL = register(ModBlocks.ANDESITE_BRICK_WALL);
+    public static final RegistryObject<Item> ANDESITE_BRICKS = fromBlock(ModBlocks.ANDESITE_BRICKS);
+    public static final RegistryObject<Item> ANDESITE_BRICK_STAIRS = fromBlock(ModBlocks.ANDESITE_BRICK_STAIRS);
+    public static final RegistryObject<Item> ANDESITE_BRICK_SLAB = fromBlock(ModBlocks.ANDESITE_BRICK_SLAB);
+    public static final RegistryObject<Item> ANDESITE_BRICK_WALL = fromBlock(ModBlocks.ANDESITE_BRICK_WALL);
 
     // 碎石堆
-    public static final Item STONE_GRAVEL_PILES = register(ModBlocks.STONE_GRAVEL_PILES);
-    public static final Item DIORITE_GRAVEL_PILES = register(ModBlocks.DIORITE_GRAVEL_PILES);
-    public static final Item ANDESITE_GRAVEL_PILES = register(ModBlocks.ANDESITE_GRAVEL_PILES);
-    public static final Item GRANITE_GRAVEL_PILES = register(ModBlocks.GRANITE_GRAVEL_PILES);
-    public static final Item SANDSTONE_GRAVEL_PILES = register(ModBlocks.SANDSTONE_GRAVEL_PILES);
-    public static final Item DEEPSLATE_GRAVEL_PILES = register(ModBlocks.DEEPSLATE_GRAVEL_PILES);
-    public static final Item TUFF_GRAVEL_PILES = register(ModBlocks.TUFF_GRAVEL_PILES);
-    public static final Item NETHERRACK_GRAVEL_PILES = register(ModBlocks.NETHERRACK_GRAVEL_PILES);
-    public static final Item BASALT_GRAVEL_PILES = register(ModBlocks.BASALT_GRAVEL_PILES);
+    public static final RegistryObject<Item> STONE_GRAVEL_PILES = fromBlock(ModBlocks.STONE_GRAVEL_PILES);
+    public static final RegistryObject<Item> DIORITE_GRAVEL_PILES = fromBlock(ModBlocks.DIORITE_GRAVEL_PILES);
+    public static final RegistryObject<Item> ANDESITE_GRAVEL_PILES = fromBlock(ModBlocks.ANDESITE_GRAVEL_PILES);
+    public static final RegistryObject<Item> GRANITE_GRAVEL_PILES = fromBlock(ModBlocks.GRANITE_GRAVEL_PILES);
+    public static final RegistryObject<Item> SANDSTONE_GRAVEL_PILES = fromBlock(ModBlocks.SANDSTONE_GRAVEL_PILES);
+    public static final RegistryObject<Item> DEEPSLATE_GRAVEL_PILES = fromBlock(ModBlocks.DEEPSLATE_GRAVEL_PILES);
+    public static final RegistryObject<Item> TUFF_GRAVEL_PILES = fromBlock(ModBlocks.TUFF_GRAVEL_PILES);
+    public static final RegistryObject<Item> NETHERRACK_GRAVEL_PILES = fromBlock(ModBlocks.NETHERRACK_GRAVEL_PILES);
+    public static final RegistryObject<Item> BASALT_GRAVEL_PILES = fromBlock(ModBlocks.BASALT_GRAVEL_PILES);
 
-    // 小石子
-    public static final Item STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);
-    public static final Item DIORITE_PEBBLE = register(ModBlocks.DIORITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.DIORITE)));
-    public static final Item ANDESITE_PEBBLE = register(ModBlocks.ANDESITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.ANDESITE)));
-    public static final Item GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.GRANITE)));
-    public static final Item DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.DEEPSLATE)));
+    // 小石子（带自定义行为）
+    public static final RegistryObject<Item> STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);
+    public static final RegistryObject<Item> DIORITE_PEBBLE = register(ModBlocks.DIORITE_PEBBLE,
+            (block, props) -> new PebbleItem(block, props, PebbleItem.Performance.DIORITE));
+    public static final RegistryObject<Item> ANDESITE_PEBBLE = register(ModBlocks.ANDESITE_PEBBLE,
+            (block, props) -> new PebbleItem(block, props, PebbleItem.Performance.ANDESITE));
+    public static final RegistryObject<Item> GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE,
+            (block, props) -> new PebbleItem(block, props, PebbleItem.Performance.GRANITE));
+    public static final RegistryObject<Item> DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE,
+            (block, props) -> new PebbleItem(block, props, PebbleItem.Performance.DEEPSLATE));
 
     // 矿工袋
-    public static final Item LEATHER_MINER_BUNDLE = register("leather_miner_bundle", new MinerBundleItem(new Item.Settings(), 4));
-    public static final Item CHAIN_MINER_BUNDLE = register("chain_miner_bundle", new MinerBundleItem(new Item.Settings(), 8));
-    public static final Item PHANTOM_MINER_BUNDLE = register("phantom_miner_bundle", new MinerBundleItem(new Item.Settings(), 12));
+    public static final RegistryObject<Item> LEATHER_MINER_BUNDLE = register("leather_miner_bundle",
+            () -> new MinerBundleItem(new Item.Properties(), 4));
+    public static final RegistryObject<Item> CHAIN_MINER_BUNDLE = register("chain_miner_bundle",
+            () -> new MinerBundleItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> PHANTOM_MINER_BUNDLE = register("phantom_miner_bundle",
+            () -> new MinerBundleItem(new Item.Properties(), 12));
 
     // 宝物
-    public static final Item GOLDEN_BALL = register("golden_ball", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
-    public static final Item NEPHRITE = register("nephrite", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
-    public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.ANCIENT, 2));
-    public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 3));
+    public static final RegistryObject<Item> GOLDEN_BALL = register("golden_ball",
+            () -> new CimeliaItem(new Item.Properties(), CimeliaItem.Category.NATURE, 2));
+    public static final RegistryObject<Item> NEPHRITE = register("nephrite",
+            () -> new CimeliaItem(new Item.Properties(), CimeliaItem.Category.NATURE, 2));
+    public static final RegistryObject<Item> ARMOR_FRAGMENTS = register("armor_fragments",
+            () -> new CimeliaItem(new Item.Properties(), CimeliaItem.Category.ANCIENT, 2));
+    public static final RegistryObject<Item> ENERGETIC_CRYSTAL = register("energetic_crystal",
+            () -> new CimeliaItem(new Item.Properties(), CimeliaItem.Category.NATURE, 3));
 
-    public static final Item GRAY_QUARTZ = register("gray_quartz");
-    public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
-    public static final Item ASHES = register("ashes");
+    public static final RegistryObject<Item> GRAY_QUARTZ = register("gray_quartz");
+    public static final RegistryObject<Item> SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
+    public static final RegistryObject<Item> ASHES = register("ashes");
 
-    // 矿石
-    public static final Item SWAMP_IRON_ORE = register(ModBlocks.SWAMP_IRON_ORE);
-    public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);
-    public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
+    // 矿石类方块物品
+    public static final RegistryObject<Item> SWAMP_IRON_ORE = fromBlock(ModBlocks.SWAMP_IRON_ORE);
+    public static final RegistryObject<Item> QUARTZ_GLASS = fromBlock(ModBlocks.QUARTZ_GLASS);
+    public static final RegistryObject<Item> QUARTZ_GLASS_PANES = fromBlock(ModBlocks.QUARTZ_GLASS_PANES);
 
     // 工具
-    public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new GeologicalHammerItem(ModToolMaterials.GEOLOGICAL_HAMMER, 0, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
-    public static final Item COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer", new CollapseStoneHammerItem(ModToolMaterials.COLLAPSE_STONE_HAMMER, 7, -3.3F, new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final RegistryObject<Item> GEOLOGICAL_HAMMER = register("geological_hammer",
+            () -> new GeologicalHammerItem(ModToolMaterials.GEOLOGICAL_HAMMER, 0, -2.4F, new Item.Properties().durability(230)));
+    public static final RegistryObject<Item> COLLAPSE_STONE_HAMMER = register("collapse_stone_hammer",
+            () -> new CollapseStoneHammerItem(ModToolMaterials.COLLAPSE_STONE_HAMMER, 7, -3.3F, new Item.Properties().durability(230)));
 
     // 装备
-    public static final Item MINER_HELMET = register("miner_helmet", new MinerHelmetItem(MinerHelmetItem.ArmorMaterials.MINER_HELMET, new Item.Settings().maxCount(1).maxDamage(230)));
+    public static final RegistryObject<Item> MINER_HELMET = register("miner_helmet",
+            () -> new MinerHelmetItem(MinerHelmetItem.ArmorMaterials.MINER_HELMET, new Item.Properties().durability(230)));
 
     // 雷管
-    public static final Item DETONATOR = register(ModBlocks.DETONATOR, ((block, settings) -> new DetonatorItem(block, settings, 100)));
-    public static final Item SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR, ((block, settings) -> new SlimyDetonatorItem(block, settings, 100)));
-    public static final Item IMPACT_DETONATOR = register("impact_detonator", new ImpactDetonatorItem(new Item.Settings()));
+    public static final RegistryObject<Item> DETONATOR = register(ModBlocks.DETONATOR,
+            (block, props) -> new DetonatorItem(block, props, 100));
+    public static final RegistryObject<Item> SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR,
+            (block, props) -> new SlimyDetonatorItem(block, props, 100));
+    public static final RegistryObject<Item> IMPACT_DETONATOR = register("impact_detonator",
+            () -> new ImpactDetonatorItem(new Item.Properties()));
 
-    private static Item register(String id) {
-        return register(id, new Item(new Item.Settings()));
+    // ========== 辅助注册方法 ==========
+    private static RegistryObject<Item> register(String id) {
+        return register(id, () -> new Item(new Item.Properties()));
     }
 
-    private static Item register(Block block) {
-        return register(block, BlockItem::new);
+    private static RegistryObject<Item> register(String id, Supplier<Item> supplier) {
+        return ITEMS.register(id, supplier);
     }
 
-    private static Item register(Block block, BiFunction<Block, Item.Settings, BlockItem> create) {
-        return register(Registries.BLOCK.getId(block).getPath(), create.apply(block, new Item.Settings()));
+    private static RegistryObject<Item> fromBlock(RegistryObject<? extends Block> block) {
+        return register(Objects.requireNonNull(block.getId()).getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static Item register(String id, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(OreDredging.MOD_ID, id), item);
+    private static RegistryObject<Item> register(RegistryObject<? extends Block> block,
+                                                 BiFunction<Block, Item.Properties, Item> itemFactory) {
+        return register(Objects.requireNonNull(block.getId()).getPath(), () -> itemFactory.apply(block.get(), new Item.Properties()));
     }
 
-    public static void registerAll() {}
+    public static void registerAll(IEventBus modEventBus) {
+        ITEMS.register(modEventBus);
+    }
 }

@@ -1,44 +1,42 @@
 package org.oredredging.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.level.Level;
 
-public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
-    private static final TrackedData<Integer> IGNITE_TIME = DataTracker.registerData(AbstractDetonatorEntity.class, TrackedDataHandlerRegistry.INTEGER);
+public abstract class AbstractDetonatorEntity extends ThrowableItemProjectile {
+    private static final EntityDataAccessor<Integer> IGNITE_TIME = SynchedEntityData.defineId(AbstractDetonatorEntity.class, EntityDataSerializers.INT);
 
-    public AbstractDetonatorEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
-        super(entityType, world);
-        this.intersectionChecked = true;
+    public AbstractDetonatorEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public AbstractDetonatorEntity(EntityType<? extends ThrownItemEntity> entityType, World world, LivingEntity owner) {
-        super(entityType, owner, world);
-        this.intersectionChecked = true;
+    public AbstractDetonatorEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity owner, Level level) {
+        super(entityType, owner, level);
     }
 
-    public AbstractDetonatorEntity(EntityType<? extends ThrownItemEntity> entityType, World world, double x, double y, double z) {
-        super(entityType, x, y, z, world);
-        this.intersectionChecked = true;
+    public AbstractDetonatorEntity(EntityType<? extends ThrowableItemProjectile> entityType, double x, double y, double z, Level level) {
+        super(entityType, x, y, z, level);
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(IGNITE_TIME, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IGNITE_TIME, 0);
     }
 
     public void setIgniteTime(int ticks) {
-        this.dataTracker.set(IGNITE_TIME, ticks);
+        this.entityData.set(IGNITE_TIME, ticks);
     }
 
     public int getIgniteTime() {
-        return this.dataTracker.get(IGNITE_TIME);
+        return this.entityData.get(IGNITE_TIME);
     }
 
     @Override
@@ -50,36 +48,24 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
             return;
         }
 
-        // 递减引信时间，并在倒计时结束时触发爆炸
-        if (!this.getWorld().isClient()) {
+        if (!this.level().isClientSide) {
             if (igniteTime > 0) {
                 setIgniteTime(igniteTime - 1);
             }
             if (igniteTime <= 0) {
                 explode();
             }
-        }
-
-        // 从引线口喷出火花粒子
-        else if (igniteTime > 0) {
+        } else if (igniteTime > 0) {
             spawnPrimeParticle(igniteTime);
         }
     }
 
-    /**
-     * 生成引燃时的粒子。
-     * <p>剩余时间越少，粒子越多。</p>
-     *
-     * @param igniteTime 剩余爆炸时间
-     */
-    protected  void spawnPrimeParticle(int igniteTime) {
-        // 局部偏移量
-        final double LOCAL_X = -0.3;   // 右侧偏移
-        final double LOCAL_Y = 0.2;   // 向上偏移
-        final double LOCAL_Z = 0.0;   // 向前偏移
+    protected void spawnPrimeParticle(int igniteTime) {
+        final double LOCAL_X = -0.3;
+        final double LOCAL_Y = 0.2;
+        final double LOCAL_Z = 0.0;
 
-        // 根据实体水平朝向（yaw）旋转局部偏移到世界坐标
-        float yaw = this.getYaw();
+        float yaw = this.getYRot();
         double rad = Math.toRadians(yaw);
         double cos = Math.cos(rad);
         double sin = Math.sin(rad);
@@ -92,49 +78,40 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
         double py = getY() + worldDy;
         double pz = getZ() + worldDz;
 
-        // 粒子数量随剩余时间减少而增加
         int particleCount = Math.min(10, (int)(20.0 / (igniteTime + 1)) + 1);
         for (int i = 0; i < particleCount; i++) {
-            // 在引线口位置添加少量随机散布，避免过于死板
             double spread = 0.05;
             double rx = px + (random.nextDouble() - 0.5) * spread;
             double ry = py + (random.nextDouble() - 0.5) * spread;
             double rz = pz + (random.nextDouble() - 0.5) * spread;
 
-            // 向上飘的速度
             double vx = (random.nextDouble() - 0.5) * 0.08;
             double vy = random.nextDouble() * 0.2 + 0.1;
             double vz = (random.nextDouble() - 0.5) * 0.08;
 
-            this.getWorld().addParticle(ParticleTypes.FLAME, rx, ry, rz, vx, vy, vz);
+            this.level().addParticle(ParticleTypes.FLAME, rx, ry, rz, vx, vy, vz);
 
-            // 随机添加烟雾粒子
             if (random.nextInt(3) == 0) {
-                this.getWorld().addParticle(ParticleTypes.SMOKE, rx, ry, rz, vx * 0.5, vy * 0.5, vz * 0.5);
+                this.level().addParticle(ParticleTypes.SMOKE, rx, ry, rz, vx * 0.5, vy * 0.5, vz * 0.5);
             }
         }
     }
 
-    /**
-     * 使雷管爆炸。
-     */
     protected void explode() {
-        if (getWorld().isClient()) {
-            return;
-        }
+        if (this.level().isClientSide) return;
 
-        this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),
-                8.0F, World.ExplosionSourceType.MOB);
-        this.getWorld().sendEntityStatus(this, (byte) 3);
+        this.level().explode(this, this.getX(), this.getY(), this.getZ(),
+                8.0F, Level.ExplosionInteraction.MOB);
+        this.level().broadcastEntityEvent(this, (byte) 3);
         this.discard();
     }
 
     @Override
-    public void handleStatus(byte status) {
+    public void handleEntityEvent(byte status) {
         if (status == 3) {
             for (int i = 0; i < 8; i++) {
-                this.getWorld().addParticle(
-                        new net.minecraft.particle.ItemStackParticleEffect(net.minecraft.particle.ParticleTypes.ITEM, this.getStack()),
+                this.level().addParticle(
+                        new ItemParticleOption(ParticleTypes.ITEM, this.getItem()),
                         this.getX(), this.getY(), this.getZ(),
                         (this.random.nextFloat() - 0.5) * 0.08,
                         (this.random.nextFloat() - 0.5) * 0.08,

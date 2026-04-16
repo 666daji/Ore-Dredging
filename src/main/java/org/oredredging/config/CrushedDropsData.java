@@ -6,9 +6,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.OreDredging;
 import org.oredredging.config.framework.ConfigMigrator;
 import org.oredredging.mixin.AbstractBlockMixin;
@@ -32,7 +32,7 @@ public record CrushedDropsData(
         List<Block> canCrushed,
         List<Block> haveExtraDrop
 ) {
-    private static final Codec<Block> BLOCK_CODEC = Registries.BLOCK.getCodec();
+    private static final Codec<Block> BLOCK_CODEC = ForgeRegistries.BLOCKS.getCodec();
 
     public static final Codec<CrushedDropsData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(

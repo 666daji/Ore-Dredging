@@ -1,55 +1,47 @@
 package org.oredredging.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 每个小石子有四种形状，在放置碎石堆时会在四种形状中随机选择一种展示。
- */
 public class PebbleBlock extends GravelPilesBlock {
-    public static final IntProperty SHAPE = IntProperty.of("shape", 1, 4);
-    public static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 3, 16);
+    public static final IntegerProperty SHAPE = IntegerProperty.create("shape", 1, 4);
+    public static final VoxelShape VOXEL_SHAPE = Block.box(0, 0, 0, 16, 3, 16);
 
-    public PebbleBlock(Settings settings) {
-        super(settings);
+    public PebbleBlock(Properties properties) {
+        super(properties);
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(SHAPE, 1));
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return VOXEL_SHAPE;
     }
 
     @Override
-    public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         int shape = getShapeFromContext(ctx);
-        return getDefaultState()
-                .with(FACING, ctx.getHorizontalPlayerFacing())
-                .with(SHAPE, shape);
+        return defaultBlockState()
+                .setValue(FACING, ctx.getHorizontalDirection().getOpposite())
+                .setValue(SHAPE, shape);
     }
 
-    /**
-     * 获取一个随机的碎石子形状。
-     *
-     * @param ctx 放置上下文
-     * @return 随机的形状数字
-     */
-    private int getShapeFromContext(ItemPlacementContext ctx) {
-        BlockPos pos = ctx.getBlockPos();
-        Direction facing = ctx.getHorizontalPlayerFacing();
-
-        // 位置和朝向计算种子，确保客户端和服务端相同
+    private int getShapeFromContext(BlockPlaceContext ctx) {
+        BlockPos pos = ctx.getClickedPos();
+        Direction facing = ctx.getHorizontalDirection().getOpposite();
         long seed = pos.hashCode() ^ facing.hashCode();
-        Random random = Random.create(seed);
+        RandomSource random = RandomSource.create(seed);
         return random.nextInt(4) + 1;
     }
 
@@ -59,12 +51,12 @@ public class PebbleBlock extends GravelPilesBlock {
     }
 
     @Override
-    public IntProperty getShape() {
+    public IntegerProperty getShapeProperty() {
         return SHAPE;
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(SHAPE, FACING);
     }
 }

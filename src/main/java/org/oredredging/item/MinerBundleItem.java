@@ -1,27 +1,27 @@
 package org.oredredging.item;
 
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.StackReference;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.oredredging.config.BundlesData;
 import org.oredredging.config.ModConfigs;
@@ -36,8 +36,8 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
     public static final String ITEMS_KEY = "Items";
     private final int baseStorage;
 
-    public MinerBundleItem(Settings settings, int baseStorage) {
-        super(settings.maxCount(1));
+    public MinerBundleItem(Properties properties, int baseStorage) {
+        super(properties.stacksTo(1));
         this.baseStorage = baseStorage * 64;
     }
 
@@ -65,7 +65,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
             return 0;
         }
         int base = bundleItem.baseStorage;
-        int level = EnchantmentHelper.getLevel(ModEnchantments.EXPANSION, bundle);
+        int level = EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.EXPANSION.get(), bundle);
         if (level == 0) {
             return base;
         }
@@ -79,7 +79,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      */
     public static boolean hasAutoPicking(ItemStack bundle) {
         return bundle.getItem() instanceof MinerBundleItem &&
-                EnchantmentHelper.getLevel(ModEnchantments.AUTO_PICKING, bundle) != 0;
+                EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.AUTO_PICKING.get(), bundle) != 0;
     }
 
     /**
@@ -88,15 +88,15 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      * @return 袋子中所有的物品堆栈
      */
     public static List<ItemStack> getItems(ItemStack bundle) {
-        NbtCompound nbt = bundle.getNbt();
-        if (nbt == null || !nbt.contains(ITEMS_KEY, NbtElement.LIST_TYPE)) {
+        CompoundTag nbt = bundle.getTag();
+        if (nbt == null || !nbt.contains(ITEMS_KEY, Tag.TAG_LIST)) {
             return new ArrayList<>();
         }
-        NbtList list = nbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+        ListTag list = nbt.getList(ITEMS_KEY, Tag.TAG_COMPOUND);
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            NbtCompound compound = list.getCompound(i);
-            ItemStack itemStack = ItemStack.fromNbt(compound);
+            CompoundTag compound = list.getCompound(i);
+            ItemStack itemStack = ItemStack.of(compound);
             if (!itemStack.isEmpty()) {
                 items.add(itemStack);
             }
@@ -110,12 +110,12 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      * @param items 新的物品堆栈列表
      */
     public static void setItems(ItemStack bundle, List<ItemStack> items) {
-        NbtCompound nbt = bundle.getOrCreateNbt();
-        NbtList list = new NbtList();
+        CompoundTag nbt = bundle.getOrCreateTag();
+        ListTag list = new ListTag();
         for (ItemStack item : items) {
             if (!item.isEmpty()) {
-                NbtCompound compound = new NbtCompound();
-                item.writeNbt(compound);
+                CompoundTag compound = new CompoundTag();
+                item.save(compound);
                 list.add(compound);
             }
         }
@@ -148,14 +148,14 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      */
     public static Map<ItemKey, Integer> buildContentMap(ItemStack bundle) {
         Map<ItemKey, Integer> map = new HashMap<>();
-        NbtCompound nbt = bundle.getNbt();
-        if (nbt == null || !nbt.contains(ITEMS_KEY, NbtElement.LIST_TYPE)) {
+        CompoundTag nbt = bundle.getTag();
+        if (nbt == null || !nbt.contains(ITEMS_KEY, Tag.TAG_LIST)) {
             return map;
         }
-        NbtList list = nbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+        ListTag list = nbt.getList(ITEMS_KEY, Tag.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
-            NbtCompound compound = list.getCompound(i);
-            ItemStack stack = ItemStack.fromNbt(compound);
+            CompoundTag compound = list.getCompound(i);
+            ItemStack stack = ItemStack.of(compound);
             if (!stack.isEmpty()) {
                 ItemKey key = new ItemKey(stack);
                 map.merge(key, stack.getCount(), Integer::sum);
@@ -166,7 +166,6 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
 
     /**
      * 将计数映射写回袋子的 NBT（转换为 List<ItemStack> 格式）。
-     *
      */
     public static void writeContentToBag(ItemStack bundle, Map<ItemKey, Integer> content) {
         List<ItemStack> itemStacks = new ArrayList<>();
@@ -174,7 +173,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
             ItemKey key = entry.getKey();
             int count = entry.getValue();
             // 按最大堆叠数拆分
-            int maxStack = key.item.getMaxCount();
+            int maxStack = key.item.getMaxStackSize();
             while (count > 0) {
                 int size = Math.min(count, maxStack);
                 ItemStack stack = key.toStack(size);
@@ -210,7 +209,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      * @param player 玩家（用于音效和世界访问）
      * @return 实际添加的数量
      */
-    public int addStack(ItemStack bundle, ItemStack toAdd, PlayerEntity player) {
+    public int addStack(ItemStack bundle, ItemStack toAdd, Player player) {
         if (!getAllowedItems().test(toAdd)) return 0;
 
         List<ItemStack> contents = getItems(bundle);
@@ -227,12 +226,12 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
         // 1. 优先合并到现有堆叠
         for (ItemStack existing : contents) {
             if (toAddRemaining == 0) break;
-            if (ItemStack.canCombine(existing, toAdd)) {
-                int maxStack = existing.getMaxCount();
+            if (ItemStack.isSameItemSameTags(existing, toAdd)) {
+                int maxStack = existing.getMaxStackSize();
                 int space = maxStack - existing.getCount();
                 if (space > 0) {
                     int merge = Math.min(space, toAddRemaining);
-                    existing.increment(merge);
+                    existing.grow(merge);
                     toAddRemaining -= merge;
                 }
             }
@@ -240,7 +239,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
 
         // 2. 剩余部分创建新堆叠
         while (toAddRemaining > 0) {
-            int stackSize = Math.min(toAddRemaining, toAdd.getMaxCount());
+            int stackSize = Math.min(toAddRemaining, toAdd.getMaxStackSize());
             ItemStack newStack = toAdd.copyWithCount(stackSize);
             contents.add(newStack);
             toAddRemaining -= stackSize;
@@ -275,23 +274,53 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
         for (ItemStack stack : contents) {
             copy.add(stack.copy());
         }
-        bundle.removeSubNbt(ITEMS_KEY);
+        bundle.removeTagKey(ITEMS_KEY);
         return copy;
     }
 
-    // ============================== 物品交互 ==============================
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack otherStack, Slot slot, ClickAction action, Player player, SlotAccess cursorSlotAccess) {
+        if (action != ClickAction.SECONDARY) return false;
+
+        // 情况1：光标上有物品（otherStack 非空）且允许放入袋子
+        if (!otherStack.isEmpty() && getAllowedItems().test(otherStack)) {
+            int maxAdd = getMaxAddable(stack, otherStack);
+            if (maxAdd > 0) {
+                int toAddCount = Math.min(maxAdd, otherStack.getCount());
+                ItemStack toAdd = otherStack.copyWithCount(toAddCount);
+                int added = addStack(stack, toAdd, player);
+                if (added > 0) {
+                    otherStack.shrink(added);
+                    playInsertSound(player);
+                }
+                return true;
+            }
+        }
+
+        // 情况2：光标为空，尝试从袋子取出一个堆叠
+        if (otherStack.isEmpty()) {
+            Optional<ItemStack> removed = removeStack(stack);
+            if (removed.isPresent()) {
+                cursorSlotAccess.set(removed.get());
+                playRemoveOneSound(player);
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
-    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        if (clickType != ClickType.RIGHT) return false;
+    public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+        if (action != ClickAction.SECONDARY) return false;
 
-        ItemStack slotStack = slot.getStack();
+        ItemStack slotStack = slot.getItem();
         if (slotStack.isEmpty()) {
-            // 右键空槽 -> 尝试从袋子取出一个堆叠放入槽位
+            // 目标槽位为空：尝试从袋子中取出一个堆叠放入目标槽位
             Optional<ItemStack> removed = removeStack(stack);
             if (removed.isPresent()) {
                 ItemStack toInsert = removed.get();
-                ItemStack remaining = slot.insertStack(toInsert);
+                ItemStack remaining = slot.safeInsert(toInsert);
                 if (!remaining.isEmpty()) {
                     // 槽位放不下，剩余部分放回袋子
                     addStack(stack, remaining, player);
@@ -300,17 +329,17 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
                 return true;
             }
         } else if (getAllowedItems().test(slotStack)) {
-            // 右键可接受的物品 -> 尝试将槽位中尽可能多的物品放入袋子
+            // 目标槽位有可接受的物品：尝试将槽位中的物品移入袋子
             int maxAdd = getMaxAddable(stack, slotStack);
             if (maxAdd > 0) {
-                ItemStack taken = slot.takeStackRange(maxAdd, maxAdd, player);
+                ItemStack taken = slot.remove(maxAdd);
                 if (!taken.isEmpty()) {
                     int added = addStack(stack, taken, player);
                     if (added > 0) {
                         playInsertSound(player);
                     } else {
                         // 理论上不会失败，但若失败则放回槽位
-                        slot.insertStack(taken);
+                        slot.set(taken);
                     }
                     return true;
                 }
@@ -320,53 +349,21 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
     }
 
     @Override
-    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        if (clickType != ClickType.RIGHT) return false;
-
-        // 手持袋子，右键点击其他物品（光标上有物品）
-        if (!otherStack.isEmpty() && getAllowedItems().test(otherStack)) {
-            int maxAdd = getMaxAddable(stack, otherStack);
-            if (maxAdd > 0) {
-                // 尝试将光标上的物品放入袋子，最多 maxAdd 个
-                int toAddCount = Math.min(maxAdd, otherStack.getCount()); // 通常 maxAdd <= otherStack.getCount()
-                ItemStack toAdd = otherStack.copyWithCount(toAddCount);
-                int added = addStack(stack, toAdd, player);
-                if (added > 0) {
-                    // 实际添加了 added 个，从光标中减去
-                    otherStack.decrement(added);
-                    playInsertSound(player);
-                }
-                // 如果 added == 0，光标不变，且无音效
-                return true;
-            }
-        }
-
-        // 空堆栈时尝试取出
-        if (otherStack.isEmpty()) {
-            Optional<ItemStack> removed = removeStack(stack);
-            removed.ifPresent(cursorStackReference::set);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
         if (!isEmpty(stack)) {
             // 右键空气时，丢弃所有内容
             List<ItemStack> contents = removeAll(stack);
-            if (!world.isClient) {
+            if (!level.isClientSide) {
                 for (ItemStack item : contents) {
-                    user.dropItem(item, true);
+                    player.drop(item, true);
                 }
             }
-            playDropContentsSound(user);
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            return TypedActionResult.success(stack, world.isClient());
+            playDropContentsSound(player);
+            player.awardStat(Stats.ITEM_USED.get(this));
+            return InteractionResultHolder.success(stack);
         }
-        return TypedActionResult.pass(stack);
+        return InteractionResultHolder.pass(stack);
     }
 
     @Override
@@ -375,84 +372,79 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return 2;
     }
 
     // ============================== 工具提示与显示 ==============================
 
     @Override
-    public Optional<TooltipData> getTooltipData(ItemStack stack) {
-        Map<ItemKey, Integer> contents = buildContentMap(stack);
-        int current = getTotalCount(stack);
-        return Optional.of(new MinerBundleTooltipData(contents, current, getStorage(stack)));
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        int count = getTotalCount(stack);
+        tooltip.add(Component.translatable("item.minerbundle.fullness", count, getStorage(stack)).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public boolean isItemBarVisible(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return getTotalCount(stack) > 0;
     }
 
     @Override
-    public int getItemBarStep(ItemStack stack) {
+    public int getBarWidth(ItemStack stack) {
         int count = getTotalCount(stack);
-        return Math.min(1 + 12 * count / getStorage(stack), 13);
+        int max = getStorage(stack);
+        return Math.min(1 + 12 * count / max, 13);
     }
 
     @Override
-    public int getItemBarColor(ItemStack stack) {
-        return MathHelper.packRgb(0.2F, 0.8F, 0.8F);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        int count = getTotalCount(stack);
-        tooltip.add(Text.translatable("item.minerbundle.fullness", count, getStorage(stack)).formatted(Formatting.GRAY));
+    public int getBarColor(ItemStack stack) {
+        return 0xA0A0FF;  // 浅蓝色
     }
 
     // ============================== 物品实体销毁 ==============================
 
     @Override
-    public void onItemEntityDestroyed(ItemEntity entity) {
-        ItemStack stack = entity.getStack();
+    public void onDestroyed(ItemEntity itemEntity) {
+        ItemStack stack = itemEntity.getItem();
         List<ItemStack> contents = getItems(stack);
         if (!contents.isEmpty()) {
-            stack.removeSubNbt(ITEMS_KEY);
-            ItemUsage.spawnItemContents(entity, contents.stream());
+            stack.removeTagKey(ITEMS_KEY);
+            // 生成内容物实体
+            for (ItemStack content : contents) {
+                itemEntity.level().addFreshEntity(new ItemEntity(itemEntity.level(), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), content));
+            }
         }
     }
 
     // ============================== 音效辅助 ==============================
 
     public void playRemoveOneSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F,
-                0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.level().playSound(null, entity.blockPosition(), SoundEvents.BUNDLE_REMOVE_ONE, SoundSource.PLAYERS, 0.8F,
+                0.8F + entity.level().random.nextFloat() * 0.4F);
     }
 
     public void playInsertSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F,
-                0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.level().playSound(null, entity.blockPosition(), SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.8F,
+                0.8F + entity.level().random.nextFloat() * 0.4F);
     }
 
     public void playDropContentsSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.8F,
-                0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.level().playSound(null, entity.blockPosition(), SoundEvents.BUNDLE_DROP_CONTENTS, SoundSource.PLAYERS, 0.8F,
+                0.8F + entity.level().random.nextFloat() * 0.4F);
     }
 
     @Override
-    public List<EnchantmentLevelEntry> modifyList(List<EnchantmentLevelEntry> original, int power, ItemStack stack, boolean treasureAllowed) {
-        List<EnchantmentLevelEntry> result = new ArrayList<>(original);
+    public List<EnchantmentInstance> modifyList(List<EnchantmentInstance> original, int power, ItemStack stack, boolean treasureAllowed) {
+        List<EnchantmentInstance> result = new ArrayList<>(original);
         List<Enchantment> customEnchantments = List.of(
-                ModEnchantments.CONVERGENCE,
-                ModEnchantments.AUTO_PICKING,
-                ModEnchantments.EXPANSION
+                ModEnchantments.CONVERGENCE.get(),
+                ModEnchantments.AUTO_PICKING.get(),
+                ModEnchantments.EXPANSION.get()
         );
 
         for (Enchantment enchantment : customEnchantments) {
-            EnchantmentLevelEntry entry = PossibleEnchantment.getBestLevelEntry(enchantment, power);
-            if (entry == null) {
-                continue;
-            }
+            EnchantmentInstance entry = PossibleEnchantment.getBestLevelEntry(enchantment, power);
+            if (entry == null) continue;
             result.add(entry);
         }
 
@@ -466,18 +458,18 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
      * @param currentCount 当前数量
      * @param maxCapacity 最大容量
      */
-    public record MinerBundleTooltipData(Map<ItemKey, Integer> contents, int currentCount, int maxCapacity) implements TooltipData {}
+    public record MinerBundleTooltipData(Map<ItemKey, Integer> contents, int currentCount, int maxCapacity) implements TooltipComponent {}
 
     /**
      * 物品唯一标识（基于物品和 NBT）
      */
     public static class ItemKey {
         public final Item item;
-        public final NbtCompound nbt; // 可能为 null
+        public final CompoundTag nbt; // 可能为 null
 
         public ItemKey(ItemStack stack) {
             this.item = stack.getItem();
-            this.nbt = stack.getNbt() != null ? stack.getNbt().copy() : null;
+            this.nbt = stack.getTag() != null ? stack.getTag().copy() : null;
         }
 
         @Override
@@ -496,7 +488,7 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
         public ItemStack toStack(int count) {
             ItemStack stack = new ItemStack(item, count);
             if (nbt != null) {
-                stack.setNbt(nbt.copy());
+                stack.setTag(nbt.copy());
             }
             return stack;
         }

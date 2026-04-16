@@ -1,22 +1,18 @@
 package org.oredredging.loot;
 
 import com.google.gson.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.entry.LeafEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
-import net.minecraft.loot.entry.LootPoolEntryType;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.registry.ModLootPoolEntryTypes;
 
 import java.util.ArrayList;
@@ -29,11 +25,11 @@ import java.util.stream.Collectors;
  * 战利品表条目：从指定物品标签中均匀随机选取一个物品生成。
  * 支持可选的排除列表，排除标签中的某些物品。
  */
-public class TagEntry extends LeafEntry {
+public class TagEntry extends LootPoolSingletonContainer {
     private final TagKey<Item> tag;
-    private final List<Item> exclusions; // 排除的物品列表
+    private final List<Item> exclusions;
 
-    public TagEntry(TagKey<Item> tag, List<Item> exclusions, int weight, int quality, LootCondition[] conditions, LootFunction[] functions) {
+    protected TagEntry(TagKey<Item> tag, List<Item> exclusions, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions) {
         super(weight, quality, conditions, functions);
         this.tag = tag;
         this.exclusions = exclusions != null ? exclusions : List.of();
@@ -41,28 +37,27 @@ public class TagEntry extends LeafEntry {
 
     @Override
     public LootPoolEntryType getType() {
-        return ModLootPoolEntryTypes.TAG_ITEM;
+        return ModLootPoolEntryTypes.TAG_ITEM.get();
     }
 
     @Override
-    public void generateLoot(Consumer<ItemStack> lootConsumer, LootContext context) {
+    protected void createItemStack(Consumer<ItemStack> consumer, LootContext context) {
         // 获取标签中的所有物品
-        Optional<RegistryEntryList.Named<Item>> optional = Registries.ITEM.getEntryList(tag);
+        Optional<net.minecraft.core.HolderSet.Named<Item>> optional = context.getLevel().registryAccess()
+                .registryOrThrow(Registries.ITEM).getTag(tag);
         if (optional.isEmpty()) return;
 
         List<Item> items = optional.get().stream()
-                .map(RegistryEntry::value)
+                .map(holder -> holder.value())
                 .collect(Collectors.toList());
 
         // 移除排除的物品
         items.removeAll(exclusions);
 
-        // 如果结果为空，不生成任何物品
         if (items.isEmpty()) return;
 
-        // 随机选择一个物品
         int index = context.getRandom().nextInt(items.size());
-        lootConsumer.accept(new ItemStack(items.get(index)));
+        consumer.accept(new ItemStack(items.get(index)));
     }
 
     /**
@@ -73,9 +68,9 @@ public class TagEntry extends LeafEntry {
     }
 
     /**
-     * 构建器类，支持设置排除列表
+     * 构建器类
      */
-    public static class Builder<T extends Builder<T>> extends LeafEntry.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends LootPoolSingletonContainer.Builder<T> {
         private final TagKey<Item> tag;
         private final List<Item> exclusions = new ArrayList<>();
 
@@ -84,18 +79,18 @@ public class TagEntry extends LeafEntry {
         }
 
         @Override
-        protected T getThisBuilder() {
+        protected T getThis() {
             return (T) this;
         }
 
         /**
          * 添加要排除的物品（可变参数）
          */
-        public T exclude(ItemConvertible... items) {
-            for (ItemConvertible item : items) {
-                exclusions.add(item.asItem());
+        public T exclude(Item... items) {
+            for (Item item : items) {
+                exclusions.add(item);
             }
-            return (T) this;
+            return getThis();
         }
 
         /**
@@ -104,32 +99,27 @@ public class TagEntry extends LeafEntry {
         public T exclude(List<Item> items) {
             this.exclusions.clear();
             this.exclusions.addAll(items);
-            return (T) this;
+            return getThis();
         }
 
         @Override
-        public LootPoolEntry build() {
+        public LootPoolSingletonContainer build() {
             return new TagEntry(tag, exclusions, weight, quality, getConditions(), getFunctions());
-        }
-
-        @Override
-        public T getThisFunctionConsumingBuilder() {
-            return getThisBuilder();
         }
     }
 
     /**
-     * 序列化器，用于 JSON 与 Java 对象的转换
+     * 序列化器
      */
-    public static class Serializer extends LeafEntry.Serializer<TagEntry> {
+    public static class Serializer extends LootPoolSingletonContainer.Serializer<TagEntry> {
         @Override
-        public void addEntryFields(JsonObject json, TagEntry entry, JsonSerializationContext context) {
-            super.addEntryFields(json, entry, context);
-            json.addProperty("tag", entry.tag.id().toString());
+        public void serializeCustom(JsonObject json, TagEntry entry, JsonSerializationContext context) {
+            super.serializeCustom(json, entry, context);
+            json.addProperty("tag", entry.tag.location().toString());
             if (!entry.exclusions.isEmpty()) {
                 JsonArray excludeArray = new JsonArray();
                 for (Item item : entry.exclusions) {
-                    Identifier id = Registries.ITEM.getId(item);
+                    ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
                     excludeArray.add(id.toString());
                 }
                 json.add("exclude", excludeArray);
@@ -137,22 +127,23 @@ public class TagEntry extends LeafEntry {
         }
 
         @Override
-        protected TagEntry fromJson(JsonObject json, JsonDeserializationContext context, int weight, int quality, LootCondition[] conditions, LootFunction[] functions) {
-            // 解析标签
-            Identifier tagId = new Identifier(JsonHelper.getString(json, "tag"));
-            TagKey<Item> tag = TagKey.of(RegistryKeys.ITEM, tagId);
+        protected TagEntry deserialize(JsonObject json, JsonDeserializationContext context, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions) {
+            ResourceLocation tagId = ResourceLocation.tryParse(GsonHelper.getAsString(json, "tag"));
+            TagKey<Item> tag = TagKey.create(Registries.ITEM, tagId);
 
-            // 解析排除列表（可选）
             List<Item> exclusions = new ArrayList<>();
             if (json.has("exclude") && json.get("exclude").isJsonArray()) {
-                JsonArray excludeArray = JsonHelper.getArray(json, "exclude");
+                JsonArray excludeArray = GsonHelper.getAsJsonArray(json, "exclude");
                 for (int i = 0; i < excludeArray.size(); i++) {
                     String itemIdStr = excludeArray.get(i).getAsString();
-                    Identifier itemId = Identifier.tryParse(itemIdStr);
+                    ResourceLocation itemId = ResourceLocation.tryParse(itemIdStr);
                     if (itemId == null) {
                         throw new JsonSyntaxException("Invalid item ID: " + itemIdStr);
                     }
-                    Item item = Registries.ITEM.get(itemId);
+                    Item item = ForgeRegistries.ITEMS.getValue(itemId);
+                    if (item == null) {
+                        throw new JsonSyntaxException("Unknown item: " + itemId);
+                    }
                     exclusions.add(item);
                 }
             }

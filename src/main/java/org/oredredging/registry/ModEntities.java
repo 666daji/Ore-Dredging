@@ -1,43 +1,52 @@
 package org.oredredging.registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.entity.*;
 
+import java.util.function.Supplier;
+
 public class ModEntities {
-    public static final EntityType<PebbleEntity> PEBBLE = register("pebble", FabricEntityTypeBuilder.<PebbleEntity>create(SpawnGroup.MISC, (PebbleEntity::new))
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .trackRangeBlocks(100)
-            .trackedUpdateRate(40)
-            .build());
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OreDredging.MOD_ID);
 
-    // 雷管
-    public static final EntityType<DetonatorEntity> DETONATOR = register("detonator", FabricEntityTypeBuilder.<DetonatorEntity>create(SpawnGroup.MISC, DetonatorEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .trackRangeBlocks(100)
-            .trackedUpdateRate(40)
-            .build());
-    public static final EntityType<SlimyDetonatorEntity> SLIMY_DETONATOR = register("slimy_detonator", FabricEntityTypeBuilder.<SlimyDetonatorEntity>create(SpawnGroup.MISC, SlimyDetonatorEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .trackRangeBlocks(100)
-            .trackedUpdateRate(40)
-            .build());
-    public static final EntityType<ImpactDetonatorEntity> IMPACT_DETONATOR = register("impact_detonator", FabricEntityTypeBuilder.<ImpactDetonatorEntity>create(SpawnGroup.MISC, ImpactDetonatorEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .trackRangeBlocks(100)
-            .trackedUpdateRate(40)
-            .build());
+    public static final RegistryObject<EntityType<PebbleEntity>> PEBBLE = register("pebble",
+            () -> EntityType.Builder.<PebbleEntity>of(PebbleEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .setTrackingRange(100)
+                    .setUpdateInterval(40)
+                    .build("pebble"));
 
-    private static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, new Identifier(OreDredging.MOD_ID, id), type);
+    public static final RegistryObject<EntityType<DetonatorEntity>> DETONATOR = register("detonator",
+            () -> EntityType.Builder.<DetonatorEntity>of(DetonatorEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .setTrackingRange(100)
+                    .setUpdateInterval(40)
+                    .build("detonator"));
+
+    public static final RegistryObject<EntityType<SlimyDetonatorEntity>> SLIMY_DETONATOR = register("slimy_detonator",
+            () -> EntityType.Builder.<SlimyDetonatorEntity>of(SlimyDetonatorEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .setTrackingRange(100)
+                    .setUpdateInterval(40)
+                    .build("slimy_detonator"));
+
+    public static final RegistryObject<EntityType<ImpactDetonatorEntity>> IMPACT_DETONATOR = register("impact_detonator",
+            () -> EntityType.Builder.<ImpactDetonatorEntity>of(ImpactDetonatorEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .setTrackingRange(100)
+                    .setUpdateInterval(40)
+                    .build("impact_detonator"));
+
+    private static <T extends EntityType<?>> RegistryObject<T> register(String id, Supplier<T> supplier) {
+        return ENTITY_TYPES.register(id, supplier);
     }
 
-    public static void registerAll() {}
+    public static void registerAll(IEventBus modEventBus) {
+        ENTITY_TYPES.register(modEventBus);
+    }
 }

@@ -1,20 +1,27 @@
 package org.oredredging.registry;
 
-import net.minecraft.loot.entry.LootPoolEntryType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.loot.ProbabilityItemEntry;
 import org.oredredging.loot.TagEntry;
 
 public class ModLootPoolEntryTypes {
-    public static final LootPoolEntryType PROBABILITY_ITEM = register("probability_item", new LootPoolEntryType(new ProbabilityItemEntry.Serializer())) ;
-    public static final LootPoolEntryType TAG_ITEM = register("tag_item", new LootPoolEntryType(new TagEntry.Serializer()));
+    public static final DeferredRegister<LootPoolEntryType> LOOT_ENTRIES =
+            DeferredRegister.create(Registries.LOOT_POOL_ENTRY_TYPE, OreDredging.MOD_ID);
 
-    private static LootPoolEntryType register(String id, LootPoolEntryType entryType) {
-        return Registry.register(Registries.LOOT_POOL_ENTRY_TYPE, new Identifier(OreDredging.MOD_ID, id), entryType);
+    public static final RegistryObject<LootPoolEntryType> PROBABILITY_ITEM =
+            LOOT_ENTRIES.register("probability_item",
+                    () -> new LootPoolEntryType(new ProbabilityItemEntry.Serializer()));
+
+    public static final RegistryObject<LootPoolEntryType> TAG_ITEM =
+            LOOT_ENTRIES.register("tag_item",
+                    () -> new LootPoolEntryType(new TagEntry.Serializer()));
+
+    public static void registerAll(IEventBus modEventBus) {
+        LOOT_ENTRIES.register(modEventBus);
     }
-
-    public static void registerAll() {}
 }

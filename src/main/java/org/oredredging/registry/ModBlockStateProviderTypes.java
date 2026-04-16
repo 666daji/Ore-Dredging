@@ -1,21 +1,22 @@
 package org.oredredging.registry;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
-import net.minecraft.world.gen.stateprovider.BlockStateProviderType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.oredredging.OreDredging;
 import org.oredredging.feature.RandomGravelPilesStateProvider;
 
 public class ModBlockStateProviderTypes {
-    public static final BlockStateProviderType<RandomGravelPilesStateProvider> RANDOM_GRAVEL_PILES =
-            register("random_gravel_piles", RandomGravelPilesStateProvider.CODEC);
+    public static final DeferredRegister<BlockStateProviderType<?>> PROVIDER_TYPES =
+            DeferredRegister.create(Registries.BLOCK_STATE_PROVIDER_TYPE, OreDredging.MOD_ID);
 
-    private static <P extends BlockStateProvider> BlockStateProviderType<P> register(String id, Codec<P> codec) {
-        return Registry.register(Registries.BLOCK_STATE_PROVIDER_TYPE, new Identifier(OreDredging.MOD_ID, id), new BlockStateProviderType<>(codec));
+    public static final RegistryObject<BlockStateProviderType<RandomGravelPilesStateProvider>> RANDOM_GRAVEL_PILES =
+            PROVIDER_TYPES.register("random_gravel_piles",
+                    () -> new BlockStateProviderType<>(RandomGravelPilesStateProvider.CODEC));
+
+    public static void registerAll(IEventBus modEventBus) {
+        PROVIDER_TYPES.register(modEventBus);
     }
-
-    public static void registerAll() {}
 }

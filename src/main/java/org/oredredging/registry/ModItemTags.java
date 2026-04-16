@@ -1,17 +1,16 @@
 package org.oredredging.registry;
 
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.OreDredging;
 
 public class ModItemTags {
-    public static TagKey<Item> PEBBLE = of("pebble");
-    public static TagKey<Item> GRAVEL_PILES = of("gravel_piles");
-    public static TagKey<Item> CIMELIA = of("cimelia");
+    public static final TagKey<Item> PEBBLE = tag("pebble");
+    public static final TagKey<Item> GRAVEL_PILES = tag("gravel_piles");
+    public static final TagKey<Item> CIMELIA = tag("cimelia");
 
-    private static TagKey<Item> of(String id) {
-        return TagKey.of(RegistryKeys.ITEM, new Identifier(OreDredging.MOD_ID, id));
+    private static TagKey<Item> tag(String id) {
+        return TagKey.create(ForgeRegistries.ITEMS.getRegistryKey(), OreDredging.createResourceLocation(OreDredging.MOD_ID, id));
     }
 }

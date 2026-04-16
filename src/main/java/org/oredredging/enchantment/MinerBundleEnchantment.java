@@ -1,13 +1,13 @@
 package org.oredredging.enchantment;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.level.Level;
 import org.oredredging.config.ConvergenceRecipesData;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
@@ -18,11 +18,11 @@ import java.util.*;
 
 public class MinerBundleEnchantment extends Enchantment {
     public MinerBundleEnchantment(Rarity weight) {
-        super(weight, EnchantmentTarget.WEAPON, EquipmentSlot.values());
+        super(weight, EnchantmentCategory.WEAPON, EquipmentSlot.values());
     }
 
     @Override
-    public boolean isAcceptableItem(ItemStack stack) {
+    public boolean canEnchant(ItemStack stack) {
         return stack.getItem() instanceof MinerBundleItem;
     }
 
@@ -31,11 +31,11 @@ public class MinerBundleEnchantment extends Enchantment {
      * @param bag    袋子物品栈
      * @param player 玩家
      */
-    public static void triggerConverge(ItemStack bag, PlayerEntity player) {
+    public static void triggerConverge(ItemStack bag, Player player) {
         if (!(bag.getItem() instanceof MinerBundleItem)) return;
-        if (EnchantmentHelper.getLevel(ModEnchantments.CONVERGENCE, bag) == 0) return;
+        if (bag.getEnchantmentLevel(ModEnchantments.CONVERGENCE.get()) == 0) return;
 
-        World world = player != null ? player.getWorld() : null;
+        Level world = player != null ? player.level() : null;
         if (world == null) return;
 
         // 获取配方信息（缓存）
@@ -95,8 +95,8 @@ public class MinerBundleEnchantment extends Enchantment {
             // 将修改后的计数映射写回袋子
             MinerBundleItem.writeContentToBag(bag, content);
             // 播放音效
-            player.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F,
-                    0.8F + player.getWorld().getRandom().nextFloat() * 0.4F);
+            player.playSound(SoundEvents.BUNDLE_INSERT, 0.8F,
+                    0.8F + player.level().getRandom().nextFloat() * 0.4F);
         }
     }
 
@@ -109,7 +109,7 @@ public class MinerBundleEnchantment extends Enchantment {
      * @param player    相关玩家，用于播放音效
      * @return true 表示至少收纳了一个物品
      */
-    public static boolean tryAutoPickup(ItemStack bundle, ItemStack toAdd, PlayerEntity player) {
+    public static boolean tryAutoPickup(ItemStack bundle, ItemStack toAdd, Player player) {
         if (!(bundle.getItem() instanceof MinerBundleItem bundleItem)) return false;
         if (!MinerBundleItem.hasAutoPicking(bundle)) return false;
         if (!bundleItem.getAllowedItems().test(toAdd)) return false;
@@ -117,7 +117,7 @@ public class MinerBundleEnchantment extends Enchantment {
         int added = bundleItem.addStack(bundle, toAdd, player);
         if (added > 0) {
             // 减少待收纳物品的数量
-            toAdd.decrement(added);
+            toAdd.shrink(added);
             bundleItem.playInsertSound(player);
             return true;
         }

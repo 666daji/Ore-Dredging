@@ -13,10 +13,11 @@
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin",
     "ShapedRecipeMixin"
   ],
   "client": [
+    "client.ItemRendererMixin",
+    "client.HeldItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
