@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.oredredging.entity.ImpactDetonatorEntity;
 
-public class ImpactDetonatorItem extends Item {
+public class ImpactDetonatorItem extends Item implements Wave{
     public ImpactDetonatorItem(Properties properties) {
         super(properties);
     }

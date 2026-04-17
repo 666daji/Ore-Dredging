@@ -451,6 +451,11 @@ public class MinerBundleItem extends Item implements PossibleEnchantment {
         return result;
     }
 
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        return Optional.of(new MinerBundleTooltipData(buildContentMap(stack), getTotalCount(stack), getStorage(stack)));
+    }
+
     /**
      * 物品组件数据。
      *

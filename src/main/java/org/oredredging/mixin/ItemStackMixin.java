@@ -56,9 +56,7 @@ public abstract class ItemStackMixin {
             for (int i = 0; i < enchantments.size(); i++) {
                 CompoundTag compoundtag = enchantments.getCompound(i);
                 Optional<Enchantment> enchantment = Optional.ofNullable(ForgeRegistries.ENCHANTMENTS.getValue(EnchantmentHelper.getEnchantmentId(compoundtag)));
-                enchantment.ifPresent((p_41708_) -> {
-                    tooltip.add(p_41708_.getFullname(EnchantmentHelper.getEnchantmentLevel(compoundtag)));
-                });
+                enchantment.ifPresent((enchantment1) -> tooltip.add(Component.translatable(enchantment1.getDescriptionId()).withStyle(ChatFormatting.GRAY)));
             }
         } else {
             original.call(tooltip, enchantments);

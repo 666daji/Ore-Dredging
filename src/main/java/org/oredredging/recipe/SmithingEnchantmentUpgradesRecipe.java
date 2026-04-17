@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.oredredging.registry.ModRecipeSerializers;
@@ -70,8 +72,8 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
         }
 
         ItemStack result = base.copy();
-        Map<net.minecraft.world.item.enchantment.Enchantment, Integer> enchantments =
-                net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(result);
+        Map<Enchantment, Integer> enchantments =
+                EnchantmentHelper.getEnchantments(result);
         if (enchantments.isEmpty()) return result;
 
         CompoundTag tag = result.getOrCreateTag();
@@ -81,12 +83,12 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
             enhanced.add(enhancedList.getString(i));
         }
 
-        Map<net.minecraft.world.item.enchantment.Enchantment, Integer> newEnchantments = new HashMap<>(enchantments);
+        Map<Enchantment, Integer> newEnchantments = new HashMap<>(enchantments);
         List<String> newEnhanced = new ArrayList<>(enhanced);
         boolean changed = false;
 
-        for (Map.Entry<net.minecraft.world.item.enchantment.Enchantment, Integer> entry : newEnchantments.entrySet()) {
-            net.minecraft.world.item.enchantment.Enchantment enchantment = entry.getKey();
+        for (Map.Entry<Enchantment, Integer> entry : newEnchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
             ResourceLocation enchantmentId = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
             if (enchantmentId == null) continue;
 
@@ -102,7 +104,7 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
 
         if (changed) {
             // 清除原有附魔并设置新附魔
-            net.minecraft.world.item.enchantment.EnchantmentHelper.setEnchantments(newEnchantments, result);
+            EnchantmentHelper.setEnchantments(newEnchantments, result);
             ListTag newList = new ListTag();
             for (String s : newEnhanced) {
                 newList.add(StringTag.valueOf(s));
@@ -143,8 +145,8 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
      * 检查物品上是否存在未强化过的附魔
      */
     public static boolean hasUngradedEnchantments(ItemStack stack) {
-        Map<net.minecraft.world.item.enchantment.Enchantment, Integer> enchantments =
-                net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack);
+        Map<Enchantment, Integer> enchantments =
+                EnchantmentHelper.getEnchantments(stack);
         if (enchantments.isEmpty()) return false;
 
         CompoundTag tag = stack.getTag();
@@ -156,7 +158,7 @@ public class SmithingEnchantmentUpgradesRecipe implements SmithingRecipe {
             enhanced.add(enhancedList.getString(i));
         }
 
-        for (net.minecraft.world.item.enchantment.Enchantment enchantment : enchantments.keySet()) {
+        for (Enchantment enchantment : enchantments.keySet()) {
             ResourceLocation id = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
             if (id != null && !enhanced.contains(id.toString())) {
                 return true;

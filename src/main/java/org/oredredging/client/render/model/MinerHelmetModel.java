@@ -21,10 +21,22 @@ public class MinerHelmetModel extends Model {
     private static MinerHelmetModel CACHE;
 
     private final ModelPart bone;
+    private float headXRot, headYRot, headZRot;
 
     public MinerHelmetModel(ModelPart root) {
         super(RenderType::entityCutoutNoCull);
         this.bone = root.getChild("bone");
+    }
+
+    /**
+     *  设置头部旋转角度
+     */
+    public static void setHeadAngles(float xRot, float yRot, float zRot) {
+        MinerHelmetModel model = getCache();
+
+        model.headXRot = xRot;
+        model.headYRot = yRot;
+        model.headZRot = zRot;
     }
 
     /**
@@ -119,8 +131,13 @@ public class MinerHelmetModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int light, int overlay, float r, float g, float b, float a) {
+    public void renderToBuffer(PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int light, int overlay, float r, float g, float b, float a) {
         poseStack.pushPose();
+
+        poseStack.rotateAround(Axis.XP.rotation(headXRot), 0F, 0F, 0F);
+        poseStack.rotateAround(Axis.YP.rotation(headYRot), 0F, 0F, 0F);
+        poseStack.rotateAround(Axis.ZP.rotation(headZRot), 0F, 0F, 0F);
+
         poseStack.translate(0.10 / 16.0, -23.0 / 16.0, 0.10 / 16.0);
         poseStack.mulPose(Axis.YP.rotationDegrees(-90));
 

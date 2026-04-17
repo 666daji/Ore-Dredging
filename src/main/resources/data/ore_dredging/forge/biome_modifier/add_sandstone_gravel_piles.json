@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_features",
+  "biomes": {
+    "type": "forge:or",
+    "values": [
+      "#minecraft:is_beach",
+      "minecraft:desert"
+    ]
+  },
+  "features": "ore_dredging:sandstone_gravel_piles",
+  "step": "vegetal_decoration"
+}

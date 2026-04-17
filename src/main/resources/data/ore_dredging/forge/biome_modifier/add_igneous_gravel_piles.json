@@ -1,0 +1,26 @@
+{
+  "type": "forge:add_features",
+  "biomes": {
+    "type": "forge:and",
+    "values": [
+      "#minecraft:is_overworld",
+      {
+        "type": "forge:not",
+        "value": "#minecraft:is_beach"
+      },
+      {
+        "type": "forge:not",
+        "value": "minecraft:desert"
+      }
+    ]
+  },
+  "features": [
+    "ore_dredging:andesite_gravel_piles",
+    "ore_dredging:diorite_gravel_piles",
+    "ore_dredging:granite_gravel_piles",
+    "ore_dredging:andesite_pebble",
+    "ore_dredging:diorite_pebble",
+    "ore_dredging:granite_pebble"
+  ],
+  "step": "vegetal_decoration"
+}

@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import java.util.Objects;
+
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
 
@@ -30,7 +32,7 @@ public class ItemRendererMixin {
             BakedModel originalModel,
             ItemStack stack) {
         if (stack.getItem() instanceof MinerBundleItem minerBundle && !MinerBundleItem.isEmpty(stack)) {
-            ResourceLocation replaceModel = ModModelLoader.createItemModel(ForgeRegistries.ITEMS.getKey(minerBundle).getPath() + "_close");
+            ResourceLocation replaceModel = ModModelLoader.createItemModel(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(minerBundle)).getPath() + "_close");
             return this.itemModelShaper.getModelManager().getModel(replaceModel);
         }
 

@@ -1,7 +1,5 @@
 package org.oredredging;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,11 +10,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.oredredging.client.render.entity.DetonatorEntityRenderer;
-import org.oredredging.client.render.model.MinerHelmetModel;
 import org.oredredging.client.render.model.ModModelLayers;
 import org.oredredging.client.render.model.ModModelLoader;
 import org.oredredging.client.render.tooltip.MinerBundleTooltipComponent;

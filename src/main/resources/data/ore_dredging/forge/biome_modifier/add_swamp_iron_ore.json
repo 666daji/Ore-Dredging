@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "ore_dredging:swamp_iron_ore",
+  "step": "vegetal_decoration"
+}

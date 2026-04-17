@@ -6,6 +6,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.oredredging.client.render.model.MinerHelmetItemRenderer;
 import org.oredredging.client.render.model.MinerHelmetModel;
 
@@ -23,30 +25,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MinerHelmetItem extends ArmorItem {
+    final MinerHelmetItemRenderer itemRenderer = new MinerHelmetItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+
     public MinerHelmetItem(ArmorMaterial material, Properties properties) {
         super(material, Type.HELMET, properties);
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return new MinerHelmetItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-            }
-
-            @Override
-            public @NotNull Model getGenericArmorModel(LivingEntity livingEntity, ItemStack itemStack,
-                                                          EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                // 只在头盔槽位生效
-                if (equipmentSlot != EquipmentSlot.HEAD) {
-                    return original;
-                }
-
-                return MinerHelmetModel.getCache();
-            }
-        });
     }
 
     public enum ArmorMaterials implements ArmorMaterial {
@@ -116,5 +98,34 @@ public class MinerHelmetItem extends ArmorItem {
         public float getKnockbackResistance() {
             return this.knockbackResistance;
         }
+    }
+
+    // =================== Render ===================
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return itemRenderer;
+            }
+
+            @Override
+            public @NotNull Model getGenericArmorModel(LivingEntity livingEntity, ItemStack itemStack,
+                                                       EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                // 只在头盔槽位生效
+                if (equipmentSlot != EquipmentSlot.HEAD) {
+                    return original;
+                }
+
+                MinerHelmetModel.setHeadAngles(original.head.xRot, original.head.yRot, original.head.zRot);
+                return MinerHelmetModel.getCache();
+            }
+        });
+    }
+
+    @Override
+    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        return MinerHelmetModel.TEXTURE.toString();
     }
 }

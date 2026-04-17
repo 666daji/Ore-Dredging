@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseDetonatorItem extends BlockItem {
+public abstract class BaseDetonatorItem extends BlockItem implements Wave{
     public final int maxIgniteTime;
 
     public BaseDetonatorItem(Block block, Properties properties, int maxIgniteTime) {

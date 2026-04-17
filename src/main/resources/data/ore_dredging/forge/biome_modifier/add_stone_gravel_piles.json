@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "ore_dredging:stone_gravel_piles",
+    "ore_dredging:stone_pebble"
+  ],
+  "step": "vegetal_decoration"
+}
