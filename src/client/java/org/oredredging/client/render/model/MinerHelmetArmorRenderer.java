@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.oredredging.OreDredging;
-import org.oredredging.client.render.ModFabricEvents;
+import org.oredredging.client.registry.ModModelLayers;
 
 public class MinerHelmetArmorRenderer implements ArmorRenderer {
     private static final Identifier TEXTURE = new Identifier(OreDredging.MOD_ID, "textures/armor/miner_helmet.png");
@@ -111,7 +111,7 @@ public class MinerHelmetArmorRenderer implements ArmorRenderer {
     protected ModelPart getBone() {
         if (this.bone == null) {
             this.bone = MinecraftClient.getInstance().getEntityModelLoader()
-                    .getModelPart(ModFabricEvents.MINER_HELMET_LAYER);
+                    .getModelPart(ModModelLayers.MINER_HELMET_LAYER);
         }
 
         return bone;

@@ -22,6 +22,7 @@ public class ModItemGroups {
                             entries.add(ModItems.NEPHRITE);
                             entries.add(ModItems.ARMOR_FRAGMENTS);
                             entries.add(ModItems.ENERGETIC_CRYSTAL);
+                            entries.add(ModItems.MIMETIC_LEY_LINE);
 
                             entries.add(ModItems.GRAY_QUARTZ);
                             entries.add(ModItems.SOFT_ARMOR_TEMPLATE);

@@ -59,10 +59,11 @@ public class ModItems {
     public static final Item PHANTOM_MINER_BUNDLE = register("phantom_miner_bundle", new MinerBundleItem(new Item.Settings(), 12));
 
     // 宝物
-    public static final Item GOLDEN_BALL = register("golden_ball", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
-    public static final Item NEPHRITE = register("nephrite", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 2));
-    public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.ANCIENT, 2));
-    public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new CimeliaItem(new Item.Settings(), CimeliaItem.Category.NATURE, 3));
+    public static final Item GOLDEN_BALL = register("golden_ball", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 2));
+    public static final Item NEPHRITE = register("nephrite", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 2));
+    public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.ANCIENT, 2));
+    public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
+    public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new MimeticLeyLineItem(block, settings, Cimelia.Category.ANCIENT, 3));
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
     public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");

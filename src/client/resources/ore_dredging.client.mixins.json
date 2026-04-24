@@ -4,8 +4,9 @@
   "package": "org.oredredging.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "ItemRendererMixin",
-    "HeldItemRendererMixin"
+    "BlockEntityRendererFactoriesMixin",
+    "HeldItemRendererMixin",
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

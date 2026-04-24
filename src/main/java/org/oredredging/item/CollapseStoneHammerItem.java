@@ -356,7 +356,7 @@ public class CollapseStoneHammerItem extends SwordItem implements CrushedDropGai
             BlockState state = world.getBlockState(pos);
             breakBlock(world, player, pos, state, hammer);
 
-            // 连锁特效（额外加一点小粒子，让连锁更明显）
+            // 连锁特效
             world.addParticle(
                     new BlockStateParticleEffect(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,

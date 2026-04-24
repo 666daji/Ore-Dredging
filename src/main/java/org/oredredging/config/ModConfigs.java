@@ -32,11 +32,19 @@ public final class ModConfigs {
             null
     );
 
+    public static final ConfigType<LootPoolConfig> LOOT_POOL_CONFIG = ConfigType.of(
+            "LootPool",
+            LootPoolConfig.CODEC,
+            LootPoolConfig.DEFAULT,
+            null
+    );
+
     public static void registerAll() {
         ConfigManager.register(CRUSHED_DROPS);
         ConfigManager.register(BUNDLES);
         ConfigManager.register(CONVERGENCE_RECIPES);
         ConfigManager.register(CAN_PEBBLE_BREAK);
+        ConfigManager.register(LOOT_POOL_CONFIG);
 
         ConfigManager.loadAll();
     }

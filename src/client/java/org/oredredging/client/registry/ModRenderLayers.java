@@ -1,4 +1,4 @@
-package org.oredredging.client.render.model;
+package org.oredredging.client.registry;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;

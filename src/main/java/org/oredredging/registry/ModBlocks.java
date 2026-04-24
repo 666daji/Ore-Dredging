@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.block.DetonatorBlock;
 import org.oredredging.block.GravelPilesBlock;
+import org.oredredging.block.MimeticLeyLineBlock;
 import org.oredredging.block.PebbleBlock;
 
 public class ModBlocks {
@@ -74,6 +75,10 @@ public class ModBlocks {
             new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DIRT_BROWN)));
     public static final Block DEEPSLATE_PEBBLE = register("deepslate_pebble",
             new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DEEPSLATE_GRAY)));
+
+    // 宝物
+    public static final Block MIMETIC_LEY_LINE = register("mimetic_ley_line",
+            new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY)));
 
     // 矿石
     public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",
