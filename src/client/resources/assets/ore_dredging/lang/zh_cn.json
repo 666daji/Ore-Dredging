@@ -98,6 +98,11 @@
 
   "subtitles.ore_dredging.piles_fall": "石子碎裂",
   "subtitle.ore_dredging.hammer_hit": "崩石锤:砸",
+  "subtitle.ore_dredging.mll_amass": "拟态核心:跳动",
+  "subtitle.ore_dredging.budding_ra": "拟态核心:碎落",
+  "subtitle.ore_dredging.budding_shock": "拟态核心:震动",
+  "subtitle.ore_dredging.erupt": "拟态核心:喷涌",
+  "subtitle.ore_dredging.erupt_smoke": "拟态核心:烟雾",
 
   "death.attack.pebble_hit": "%s被%s使用小石子击败",
 

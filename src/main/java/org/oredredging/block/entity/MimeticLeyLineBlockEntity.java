@@ -10,6 +10,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -20,6 +21,7 @@ import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
 import org.oredredging.registry.ModBlockEntities;
 import org.oredredging.registry.ModParticleTypes;
+import org.oredredging.registry.ModSoundEvent;
 import org.oredredging.util.EnhancedAnimationState;
 import org.oredredging.util.RandomUtil;
 
@@ -63,6 +65,7 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
      */
     public static void tick(World world, BlockPos pos, BlockState state, MimeticLeyLineBlockEntity entity) {
         randomParticle(world, pos, entity);
+        playSound(world, entity, pos);
 
         if (world.isClient()) {
             entity.processAnimation();
@@ -93,6 +96,53 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         entity.processProgress();
     }
 
+    /**
+     * 注入进度（仅服务端有效）
+     *
+     * @param amount 增加的进度（tick 数），必须 ≥ 0
+     */
+    public void addProgress(long amount) {
+        if (world == null || world.isClient) return;
+        if (amount <= 0) return;
+
+        progress += amount;
+        processProgress();
+    }
+
+    // ======================== 声音和粒子 ========================
+
+    private static void playSound(World world, MimeticLeyLineBlockEntity entity, BlockPos pos) {
+        if (world.isClient()) return;
+
+        LootPoolConfig.PoolEntry entry = entity.currentEntry;
+        if (entry == null) return;
+
+        long cost = entry.cost();
+        long progress = entity.progress;
+        State state = entity.getState();
+
+        // 萌发阶段
+        if (state == State.BUDDING) {
+            long buddingStart = entity.getBuddingPosition();  // 萌发阶段起始进度
+            long elapsedInBudding = progress - buddingStart;
+            // 每 160 ticks 触发一次
+            if (elapsedInBudding >= 0 && elapsedInBudding % 160 == 0) {
+                world.playSound(null, pos, ModSoundEvent.MLL_BUDDING_SHOCK, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
+        }
+        // 喷涌阶段
+        else if (state == State.ERUPT) {
+            if (progress == cost) {
+                // 喷涌开始瞬间
+                world.playSound(null, pos, ModSoundEvent.MLL_ERUPT_SMOKE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, ModSoundEvent.MLL_ERUPT, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            } else if (progress == cost + 120) {
+                // 喷涌一半
+                world.playSound(null, pos, ModSoundEvent.MLL_ERUPT, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
+        }
+    }
+
     private static void randomParticle(World world, BlockPos pos, MimeticLeyLineBlockEntity entity) {
         Random random = world.random;
 
@@ -121,19 +171,6 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         return 0.45F + (random.nextFloat() / 5);
     }
 
-    /**
-     * 注入进度（仅服务端有效）
-     *
-     * @param amount 增加的进度（tick 数），必须 ≥ 0
-     */
-    public void addProgress(long amount) {
-        if (world == null || world.isClient) return;
-        if (amount <= 0) return;
-
-        progress += amount;
-        processProgress();
-    }
-
     // ======================== 动画处理 ========================
 
     protected void processAnimation() {
@@ -141,12 +178,12 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
         switch (currentState) {
             case AMASS -> {
-                amassAnimationState.startIfNotRunning((int) progress);
+                amassAnimationState.startIfNotRunning(0);
                 buddingAnimationState.reset();
                 eruptAnimationState.reset();
             }
             case BUDDING -> {
-                buddingAnimationState.startIfNotRunning((int) progress);
+                buddingAnimationState.startIfNotRunning(getBuddingPosition());
                 amassAnimationState.reset();
                 eruptAnimationState.reset();
             }
@@ -375,6 +412,13 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         long cost = currentEntry.cost();
         if (progress < cost) return (float) progress / cost;
         else return 1.0f;
+    }
+
+    public int getBuddingPosition() {
+        if (currentEntry == null) return 0;
+        long cost = currentEntry.cost();
+
+        return Math.toIntExact((cost * 2) / 3);
     }
 
     /**

@@ -11,5 +11,42 @@
       "ore_dredging:hammer_hit"
     ],
     "subtitle": "subtitle.ore_dredging.hammer_hit"
+  },
+  "mll_amass": {
+    "sounds": [
+      "ore_dredging:mimetic_ley_line/amass_1",
+      "ore_dredging:mimetic_ley_line/amass_2",
+      "ore_dredging:mimetic_ley_line/amass_3",
+      "ore_dredging:mimetic_ley_line/amass_4",
+      "ore_dredging:mimetic_ley_line/amass_5"
+    ],
+    "subtitle": "subtitle.ore_dredging.mll_amass"
+  },
+  "mll_budding_ra": {
+    "sounds": [
+      "ore_dredging:mimetic_ley_line/budding_ra_1",
+      "ore_dredging:mimetic_ley_line/budding_ra_2"
+    ],
+    "subtitle": "subtitle.ore_dredging.budding_ra"
+  },
+  "mll_budding_shock": {
+    "sounds": [
+      "ore_dredging:mimetic_ley_line/budding_shock_1",
+      "ore_dredging:mimetic_ley_line/budding_shock_2",
+      "ore_dredging:mimetic_ley_line/budding_shock_3"
+    ],
+    "subtitle": "subtitle.ore_dredging.budding_shock"
+  },
+  "mll_erupt": {
+    "sounds": [
+      "ore_dredging:mimetic_ley_line/erupt"
+    ],
+    "subtitle": "subtitle.ore_dredging.erupt"
+  },
+  "mll_erupt_smoke": {
+    "sounds": [
+      "ore_dredging:mimetic_ley_line/erupt_smoke"
+    ],
+    "subtitle": "subtitle.ore_dredging.erupt_smoke"
   }
 }
