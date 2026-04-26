@@ -45,6 +45,8 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
     private LootPoolConfig.PoolEntry currentEntry;
     /** 本次喷涌是否已生成物品（防止重复生成） */
     private boolean hasErupted;
+    /** 萌发阶段粒子特效的剩余持续时间 **/
+    protected int buddingParticleTime;
     /** 当前运行状态（供渲染使用） */
     private State state = State.AMASS;
 
@@ -147,10 +149,15 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         Random random = world.random;
 
         switch (entity.getState()) {
-            case BUDDING -> buddingParticle(random, world, pos, 0.90F);
+            case BUDDING -> {
+                if (entity.buddingParticleTime > 0) {
+                    buddingParticle(random, world, pos, 0.90F);
+                    entity.buddingParticleTime --;
+                }
+            }
             case ERUPT -> {
                 buddingParticle(random, world, pos, 0.85F);
-                if (random.nextFloat() > 0.9) {
+                if (random.nextFloat() > 0.8) {
                     world.addParticle(ParticleTypes.LAVA,
                             pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                             world.random.nextDouble(), 1.0, world.random.nextDouble());
@@ -401,6 +408,10 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     public long getProgress() {
         return progress;
+    }
+
+    public void setBuddingParticleTime(int buddingParticleTime) {
+        this.buddingParticleTime = buddingParticleTime;
     }
 
     /**

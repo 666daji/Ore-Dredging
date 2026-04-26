@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,7 +18,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oredredging.OreDredging;
 import org.oredredging.block.entity.MimeticLeyLineBlockEntity;
 import org.oredredging.registry.ModBlockEntities;
 import org.oredredging.registry.ModSoundEvent;
@@ -61,11 +59,15 @@ public class MimeticLeyLineBlock extends BlockWithEntity {
 
         if (world.getBlockEntity(pos) instanceof MimeticLeyLineBlockEntity blockEntity && random.nextDouble() < 0.1) {
             switch (blockEntity.getState()) {
-                case AMASS -> world.playSound(d, e, f, ModSoundEvent.MLL_AMASS, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                case AMASS -> {
+                    if (random.nextDouble() < 0.5) {
+                        world.playSound(d, e, f, ModSoundEvent.MLL_AMASS, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                    }
+                }
                 case BUDDING -> {
                     if (random.nextDouble() < 0.4) {
                         world.playSound(d, e, f, ModSoundEvent.MLL_BUDDING_RA, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-
+                        blockEntity.setBuddingParticleTime(4 * 20);
                     }
                 }
             }
