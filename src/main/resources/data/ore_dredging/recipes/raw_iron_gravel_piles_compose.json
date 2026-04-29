@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:raw_iron"
+    },
+    {
+      "item": "ore_dredging:raw_iron_nugget"
+    },
+    {
+      "item": "ore_dredging:raw_iron_nugget"
+    }
+  ],
+  "result": {
+    "item": "ore_dredging:raw_iron_gravel_piles"
+  }
+}

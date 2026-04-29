@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ore_dredging:raw_copper_gravel_piles"
+    }
+  ],
+  "result": {
+    "item": "ore_dredging:raw_copper_nugget",
+    "count": 11
+  }
+}

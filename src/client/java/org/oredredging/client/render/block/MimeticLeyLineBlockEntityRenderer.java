@@ -131,6 +131,7 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
 
     private void renderStaticModel(MatrixStack matrices, VertexConsumerProvider vertexConsumers,
                                    int light, int overlay) {
+        resetAllModelParts();
         matrices.push();
         matrices.translate(0.5, -0.5, 0.5);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180.0f), 0, 1.1f, 0);
