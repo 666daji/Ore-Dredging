@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/raw_copper_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/raw_copper_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/raw_copper_slab_top"
+    }
+  }
+}

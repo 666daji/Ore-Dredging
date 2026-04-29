@@ -80,6 +80,34 @@ public class ModBlocks {
     public static final Block DEEPSLATE_PEBBLE = register("deepslate_pebble",
             new PebbleBlock(AbstractBlock.Settings.copy(STONE_PEBBLE).mapColor(MapColor.DEEPSLATE_GRAY)));
 
+    // 粗金属块半砖
+    public static final Block RAW_IRON_SLAB = register("raw_iron_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.RAW_IRON_BLOCK)));
+    public static final Block RAW_COPPER_SLAB = register("raw_copper_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.RAW_COPPER_BLOCK)));
+    public static final Block RAW_GOLD_SLAB = register("raw_gold_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.RAW_GOLD_BLOCK)));
+
+    // 金属块半砖
+    public static final Block IRON_SLAB = register("iron_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
+    public static final Block GOLD_SLAB = register("gold_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+    public static final Block COPPER_SLAB = register("copper_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+    public static final Block NETHERITE_SLAB = register("netherite_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.NETHERITE_BLOCK)));
+    public static final Block DIAMOND_SLAB = register("diamond_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.DIAMOND_BLOCK)));
+    public static final Block EMERALD_SLAB = register("emerald_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.EMERALD_BLOCK)));
+    public static final Block LAPIS_SLAB = register("lapis_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.LAPIS_BLOCK)));
+    public static final Block REDSTONE_SLAB = register("redstone_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_BLOCK)));
+    public static final Block COAL_SLAB = register("coal_slab",
+            new SlabBlock(AbstractBlock.Settings.copy(Blocks.COAL_BLOCK)));
+
     // 宝物
     public static final Block MIMETIC_LEY_LINE = register("mimetic_ley_line",
             new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY).luminance(state -> state.get(MimeticLeyLineBlock.STATE) == MimeticLeyLineBlockEntity.State.ERUPT? 15 : 0)));

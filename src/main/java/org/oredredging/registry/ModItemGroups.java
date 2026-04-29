@@ -74,12 +74,28 @@ public class ModItemGroups {
                             entries.add(ModItems.ASTRALIUM_STEEL);
                             entries.add(ModItems.ASTRALIUM_STEEL_NUGGET);
 
-                            // 碎石堆
+                            // 小石子
                             entries.add(ModItems.STONE_PEBBLE);
                             entries.add(ModItems.DIORITE_PEBBLE);
                             entries.add(ModItems.ANDESITE_PEBBLE);
                             entries.add(ModItems.GRANITE_PEBBLE);
                             entries.add(ModItems.DEEPSLATE_PEBBLE);
+
+                            // 粗金属块半砖
+                            entries.add(ModItems.RAW_IRON_SLAB);
+                            entries.add(ModItems.RAW_COPPER_SLAB);
+                            entries.add(ModItems.RAW_GOLD_SLAB);
+
+                            // 金属块半砖
+                            entries.add(ModItems.IRON_SLAB);
+                            entries.add(ModItems.GOLD_SLAB);
+                            entries.add(ModItems.COPPER_SLAB);
+                            entries.add(ModItems.NETHERITE_SLAB);
+                            entries.add(ModItems.DIAMOND_SLAB);
+                            entries.add(ModItems.EMERALD_SLAB);
+                            entries.add(ModItems.LAPIS_SLAB);
+                            entries.add(ModItems.REDSTONE_SLAB);
+                            entries.add(ModItems.COAL_SLAB);
 
                             // 储矿袋
                             entries.add(ModItems.LEATHER_MINER_BUNDLE);

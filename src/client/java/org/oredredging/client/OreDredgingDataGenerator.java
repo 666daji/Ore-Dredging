@@ -3,6 +3,7 @@ package org.oredredging.client;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import org.oredredging.client.datagen.ModBlockLootTableGenerator;
+import org.oredredging.client.datagen.ModBlockStateModelGenerator;
 import org.oredredging.client.datagen.ModRecipeGenerator;
 
 public class OreDredgingDataGenerator implements DataGeneratorEntrypoint {
@@ -13,5 +14,6 @@ public class OreDredgingDataGenerator implements DataGeneratorEntrypoint {
 
         pack.addProvider(ModBlockLootTableGenerator::new);
         pack.addProvider((FabricDataGenerator.Pack.Factory<ModRecipeGenerator>) ModRecipeGenerator::new);
+        pack.addProvider(ModBlockStateModelGenerator::new);
     }
 }

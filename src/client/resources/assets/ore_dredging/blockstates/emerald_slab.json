@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/emerald_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/emerald_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/emerald_slab_top"
+    }
+  }
+}

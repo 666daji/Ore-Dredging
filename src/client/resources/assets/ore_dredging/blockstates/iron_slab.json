@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/iron_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/iron_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/iron_slab_top"
+    }
+  }
+}

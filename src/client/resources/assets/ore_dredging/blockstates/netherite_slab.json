@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/netherite_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/netherite_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/netherite_slab_top"
+    }
+  }
+}

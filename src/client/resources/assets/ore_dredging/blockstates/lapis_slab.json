@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/lapis_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/lapis_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/lapis_slab_top"
+    }
+  }
+}

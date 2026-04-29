@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ore_dredging:block/raw_gold_slab_bottom"
+    },
+    "type=double": {
+      "model": "minecraft:block/raw_gold_block"
+    },
+    "type=top": {
+      "model": "ore_dredging:block/raw_gold_slab_top"
+    }
+  }
+}

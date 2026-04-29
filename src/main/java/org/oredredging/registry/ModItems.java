@@ -56,6 +56,22 @@ public class ModItems {
     public static final Item GRANITE_PEBBLE = register(ModBlocks.GRANITE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.GRANITE)));
     public static final Item DEEPSLATE_PEBBLE = register(ModBlocks.DEEPSLATE_PEBBLE, ((block, settings) -> new PebbleItem(block, settings, PebbleItem.Performance.DEEPSLATE)));
 
+    // 粗金属块半砖
+    public static final Item RAW_IRON_SLAB = register(ModBlocks.RAW_IRON_SLAB);
+    public static final Item RAW_COPPER_SLAB = register(ModBlocks.RAW_COPPER_SLAB);
+    public static final Item RAW_GOLD_SLAB = register(ModBlocks.RAW_GOLD_SLAB);
+
+    // 金属块半砖
+    public static final Item IRON_SLAB = register(ModBlocks.IRON_SLAB);
+    public static final Item GOLD_SLAB = register(ModBlocks.GOLD_SLAB);
+    public static final Item COPPER_SLAB = register(ModBlocks.COPPER_SLAB);
+    public static final Item NETHERITE_SLAB = register(ModBlocks.NETHERITE_SLAB);
+    public static final Item DIAMOND_SLAB = register(ModBlocks.DIAMOND_SLAB);
+    public static final Item EMERALD_SLAB = register(ModBlocks.EMERALD_SLAB);
+    public static final Item LAPIS_SLAB = register(ModBlocks.LAPIS_SLAB);
+    public static final Item REDSTONE_SLAB = register(ModBlocks.REDSTONE_SLAB);
+    public static final Item COAL_SLAB = register(ModBlocks.COAL_SLAB);
+
     // 矿工袋
     public static final Item LEATHER_MINER_BUNDLE = register("leather_miner_bundle", new MinerBundleItem(new Item.Settings(), 4));
     public static final Item CHAIN_MINER_BUNDLE = register("chain_miner_bundle", new MinerBundleItem(new Item.Settings(), 8));
