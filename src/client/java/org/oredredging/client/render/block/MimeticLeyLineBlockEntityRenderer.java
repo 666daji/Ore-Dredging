@@ -74,7 +74,10 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
     public void render(MimeticLeyLineBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
         World world = entity.getWorld();
-        if (world == null) return;
+        if (world == null) {
+            renderStaticModel(matrices, vertexConsumers, light, overlay);
+            return;
+        }
 
         manageAnimationState(entity, tickDelta);
 
@@ -124,5 +127,16 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
     @Override
     public boolean rendersOutsideBoundingBox(MimeticLeyLineBlockEntity entity) {
         return true;
+    }
+
+    private void renderStaticModel(MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+                                   int light, int overlay) {
+        matrices.push();
+        matrices.translate(0.5, -0.5, 0.5);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180.0f), 0, 1.1f, 0);
+
+        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(TEXTURE));
+        this.all.render(matrices, vertexConsumer, light, overlay);
+        matrices.pop();
     }
 }

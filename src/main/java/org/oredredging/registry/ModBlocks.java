@@ -8,10 +8,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
-import org.oredredging.block.DetonatorBlock;
-import org.oredredging.block.GravelPilesBlock;
-import org.oredredging.block.MimeticLeyLineBlock;
-import org.oredredging.block.PebbleBlock;
+import org.oredredging.block.*;
+import org.oredredging.block.entity.MimeticLeyLineBlockEntity;
 
 public class ModBlocks {
     // 花岗岩系列
@@ -63,6 +61,12 @@ public class ModBlocks {
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.RED)));
     public static final Block BASALT_GRAVEL_PILES = register("basalt_gravel_piles",
             new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.BLACK)));
+    public static final Block RAW_COPPER_GRAVEL_PILES = register("raw_copper_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.BLACK)));
+    public static final Block RAW_IRON_PILES = register("raw_iron_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.BLACK)));
+    public static final Block RAW_GOLD_PILES = register("raw_gold_gravel_piles",
+            new GravelPilesBlock(AbstractBlock.Settings.copy(STONE_GRAVEL_PILES).mapColor(MapColor.BLACK)));
 
     // 小石子
     public static final Block STONE_PEBBLE = register("stone_pebble",
@@ -78,11 +82,15 @@ public class ModBlocks {
 
     // 宝物
     public static final Block MIMETIC_LEY_LINE = register("mimetic_ley_line",
-            new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY)));
+            new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY).luminance(state -> state.get(MimeticLeyLineBlock.STATE) == MimeticLeyLineBlockEntity.State.ERUPT? 15 : 0)));
 
     // 矿石
     public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",
             new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).strength(1.0F, 1.0F)));
+    public static final Block ASTRALIUM_ORE = register("astralium_ore",
+            new ExperienceDroppingBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).strength(3.0F, 6.0F)));
+
+    // 其他
     public static final Block QUARTZ_GLASS = register("quartz_glass",
             new GlassBlock(AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.WHITE).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0F, 1200.0F).sounds(BlockSoundGroup.GLASS)));
     public static final Block QUARTZ_GLASS_PANES = register("quartz_glass_panes",
@@ -91,6 +99,9 @@ public class ModBlocks {
     // 雷管
     public static final Block DETONATOR = register("detonator", new DetonatorBlock(AbstractBlock.Settings.create().nonOpaque(), ModEntities.DETONATOR));
     public static final Block SLIMY_DETONATOR = register("slimy_detonator", new DetonatorBlock(AbstractBlock.Settings.create().nonOpaque(), ModEntities.SLIMY_DETONATOR));
+
+    // 工作方块
+    public static final Block THUNDER_SMELTER_PIPE = register("thunder_smelter_pipe", new ThunderSmelterPipeBlock(AbstractBlock.Settings.create()));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);

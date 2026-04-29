@@ -45,6 +45,9 @@ public class ModItems {
     public static final Item TUFF_GRAVEL_PILES = register(ModBlocks.TUFF_GRAVEL_PILES);
     public static final Item NETHERRACK_GRAVEL_PILES = register(ModBlocks.NETHERRACK_GRAVEL_PILES);
     public static final Item BASALT_GRAVEL_PILES = register(ModBlocks.BASALT_GRAVEL_PILES);
+    public static final Item RAW_COPPER_GRAVEL_PILES = register(ModBlocks.RAW_COPPER_GRAVEL_PILES);
+    public static final Item RAW_IRON_PILES = register(ModBlocks.RAW_IRON_PILES);
+    public static final Item RAW_GOLD_PILES = register(ModBlocks.RAW_GOLD_PILES);
 
     // 小石子
     public static final Item STONE_PEBBLE = register(ModBlocks.STONE_PEBBLE, PebbleItem::new);
@@ -64,6 +67,7 @@ public class ModItems {
     public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.ANCIENT, 2));
     public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
     public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new MimeticLeyLineItem(block, settings, Cimelia.Category.ANCIENT, 3));
+    public static final Item ASTRALIUM = register("astralium", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
     public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
@@ -71,8 +75,11 @@ public class ModItems {
 
     // 矿石
     public static final Item SWAMP_IRON_ORE = register(ModBlocks.SWAMP_IRON_ORE);
-    public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);
-    public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
+    public static final Item ASTRALIUM_ORE = register(ModBlocks.ASTRALIUM_ORE);
+
+    // 矿产
+    public static final Item ASTRALIUM_STEEL = register("astralium_steel");
+    public static final Item ASTRALIUM_STEEL_NUGGET = register("astralium_steel_nugget");
 
     // 工具
     public static final Item GEOLOGICAL_HAMMER = register("geological_hammer", new GeologicalHammerItem(ModToolMaterials.GEOLOGICAL_HAMMER, 0, -2.4F, new Item.Settings().maxCount(1).maxDamage(230)));
@@ -85,6 +92,10 @@ public class ModItems {
     public static final Item DETONATOR = register(ModBlocks.DETONATOR, ((block, settings) -> new DetonatorItem(block, settings, 100)));
     public static final Item SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR, ((block, settings) -> new SlimyDetonatorItem(block, settings, 100)));
     public static final Item IMPACT_DETONATOR = register("impact_detonator", new ImpactDetonatorItem(new Item.Settings()));
+
+    // 其他
+    public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);
+    public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
 
     private static Item register(String id) {
         return register(id, new Item(new Item.Settings()));

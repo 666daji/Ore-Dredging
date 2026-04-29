@@ -17,14 +17,14 @@ public record LootPoolConfig(List<PoolEntry> entries) {
     );
 
     public static final LootPoolConfig DEFAULT = new LootPoolConfig(List.of(
-            new PoolEntry(new ItemStack(ModItems.GOLDEN_BALL), 0.01F, minToTick(6)),
-            new PoolEntry(new ItemStack(ModItems.NEPHRITE), 0.02F, minToTick(5)),
-            new PoolEntry(new ItemStack(Items.DIAMOND), 0.04F, minToTick(2)),
-            new PoolEntry(new ItemStack(Items.EMERALD), 0.033F, minToTick(1)),
-            new PoolEntry(new ItemStack(Items.AMETHYST_SHARD), 0.023F, minToTick(1)),
-            new PoolEntry(new ItemStack(Items.RAW_COPPER), 0.1F, minToTick(1)),
-            new PoolEntry(new ItemStack(Items.RAW_IRON), 0.125F, minToTick(1)),
-            new PoolEntry(new ItemStack(Items.RAW_GOLD), 0.05F, minToTick(1))
+            new PoolEntry(new ItemStack(ModItems.GOLDEN_BALL), 0.01F, 30),
+            new PoolEntry(new ItemStack(ModItems.NEPHRITE), 0.02F, 30),
+            new PoolEntry(new ItemStack(Items.DIAMOND), 0.04F, 30),
+            new PoolEntry(new ItemStack(Items.EMERALD), 0.033F, 30),
+            new PoolEntry(new ItemStack(Items.AMETHYST_SHARD), 0.023F, 30),
+            new PoolEntry(new ItemStack(Items.RAW_COPPER), 0.1F, 30),
+            new PoolEntry(new ItemStack(Items.RAW_IRON), 0.125F, 30),
+            new PoolEntry(new ItemStack(Items.RAW_GOLD), 0.05F, 30)
     ));
 
     public LootPoolConfig(List<PoolEntry> entries) {

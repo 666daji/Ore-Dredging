@@ -23,6 +23,7 @@ public class ModItemGroups {
                             entries.add(ModItems.ARMOR_FRAGMENTS);
                             entries.add(ModItems.ENERGETIC_CRYSTAL);
                             entries.add(ModItems.MIMETIC_LEY_LINE);
+                            entries.add(ModItems.ASTRALIUM);
 
                             entries.add(ModItems.GRAY_QUARTZ);
                             entries.add(ModItems.SOFT_ARMOR_TEMPLATE);
@@ -61,11 +62,17 @@ public class ModItemGroups {
                             entries.add(ModItems.TUFF_GRAVEL_PILES);
                             entries.add(ModItems.NETHERRACK_GRAVEL_PILES);
                             entries.add(ModItems.BASALT_GRAVEL_PILES);
+                            entries.add(ModItems.RAW_COPPER_GRAVEL_PILES);
+                            entries.add(ModItems.RAW_IRON_PILES);
+                            entries.add(ModItems.RAW_GOLD_PILES);
 
                             // 矿石
                             entries.add(ModItems.SWAMP_IRON_ORE);
-                            entries.add(ModItems.QUARTZ_GLASS);
-                            entries.add(ModItems.QUARTZ_GLASS_PANES);
+                            entries.add(ModItems.ASTRALIUM_ORE);
+
+                            // 矿石
+                            entries.add(ModItems.ASTRALIUM_STEEL);
+                            entries.add(ModItems.ASTRALIUM_STEEL_NUGGET);
 
                             // 碎石堆
                             entries.add(ModItems.STONE_PEBBLE);
@@ -90,6 +97,10 @@ public class ModItemGroups {
                             entries.add(ModItems.DETONATOR);
                             entries.add(ModItems.SLIMY_DETONATOR);
                             entries.add(ModItems.IMPACT_DETONATOR);
+
+                            // 其他
+                            entries.add(ModItems.QUARTZ_GLASS);
+                            entries.add(ModItems.QUARTZ_GLASS_PANES);
                         }))
                         .build()
         );

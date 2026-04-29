@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -23,6 +25,7 @@ import org.oredredging.registry.ModBlockEntities;
 import org.oredredging.registry.ModSoundEvent;
 
 public class MimeticLeyLineBlock extends BlockWithEntity {
+    public static final EnumProperty<MimeticLeyLineBlockEntity.State> STATE = EnumProperty.of("state", MimeticLeyLineBlockEntity.State.class);
     public static final VoxelShape SHAPE = Block.createCuboidShape(6, 6, 6, 10, 10 ,10);
 
     public MimeticLeyLineBlock(Settings settings) {
@@ -77,6 +80,11 @@ public class MimeticLeyLineBlock extends BlockWithEntity {
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(STATE);
     }
 
     @Override

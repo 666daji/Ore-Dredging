@@ -11,11 +11,13 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.oredredging.OreDredging;
+import org.oredredging.block.MimeticLeyLineBlock;
 import org.oredredging.config.LootPoolConfig;
 import org.oredredging.config.ModConfigs;
 import org.oredredging.config.framework.ConfigManager;
@@ -47,7 +49,7 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
     private boolean hasErupted;
     /** 萌发阶段粒子特效的剩余持续时间 **/
     protected int buddingParticleTime;
-    /** 当前运行状态（供渲染使用） */
+    /** 当前运行状态 */
     private State state = State.AMASS;
 
     public final EnhancedAnimationState amassAnimationState = new EnhancedAnimationState();
@@ -237,8 +239,6 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
             }
         }
 
-//        OreDredging.LOGGER.info("状态：{} /n 进度：{} /n 条目：{}", state, progress, currentEntry);
-
         markDirty();
     }
 
@@ -340,6 +340,10 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
             state = State.BUDDING;
         } else {
             state = State.ERUPT;
+        }
+
+        if (world != null) {
+            world.setBlockState(pos, getCachedState().with(MimeticLeyLineBlock.STATE, getState()));
         }
     }
 
@@ -449,9 +453,20 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
      *     <li>{@linkplain #ERUPT 喷涌}：打开并抛出物品，固定 12 秒</li>
      * </ol>
      */
-    public enum State {
-        AMASS,
-        BUDDING,
-        ERUPT
+    public enum State implements StringIdentifiable {
+        AMASS("amass"),
+        BUDDING("budding"),
+        ERUPT("erupt");
+
+        private final String name;
+
+        State(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String asString() {
+            return name;
+        }
     }
 }

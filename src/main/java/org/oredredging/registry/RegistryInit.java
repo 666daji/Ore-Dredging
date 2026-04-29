@@ -11,9 +11,11 @@ public class RegistryInit {
         ModBiomeFeatures.registerAll();
         ModEnchantments.registerAll();
         ModLootPoolEntryTypes.registerAll();
+        ModRecipes.registerAll();
         ModRecipeSerializers.registerAll();
         ModPlacementModifierTypes.registerAll();
         ModSoundEvent.registerAll();
         ModParticleTypes.registerAll();
+        ModFeatures.registerAll();
     }
 }

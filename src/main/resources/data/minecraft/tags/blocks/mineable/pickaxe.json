@@ -18,6 +18,9 @@
     "ore_dredging:andesite_gravel_piles",
     "ore_dredging:granite_gravel_piles",
     "ore_dredging:sandstone_gravel_piles",
-    "ore_dredging:deepslate_gravel_piles"
+    "ore_dredging:deepslate_gravel_piles",
+
+    "ore_dredging:swamp_iron_ore",
+    "ore_dredging:astralium_ore"
   ]
 }

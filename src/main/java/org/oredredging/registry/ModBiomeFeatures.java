@@ -35,6 +35,7 @@ public class ModBiomeFeatures {
 
     // 矿石
     public static final RegistryKey<PlacedFeature> SWAMP_IRON_ORE = of("swamp_iron_ore");
+    public static final RegistryKey<PlacedFeature> WRAP_ASTRALIUM_ORE = of("wrap_astralium_ore");
 
     private static final List<RegistryKey<PlacedFeature>> IGNEOUS_GRAVEL_PILES = Arrays.asList(
             ANDESITE_GRAVEL_PILES,
@@ -98,11 +99,17 @@ public class ModBiomeFeatures {
                 SANDSTONE_GRAVEL_PILES
         );
 
-        // 沼铁矿
+        // 矿石
         BiomeModifications.addFeature(
                 BiomeSelectors.foundInOverworld(),
-                GenerationStep.Feature.VEGETAL_DECORATION,
+                GenerationStep.Feature.UNDERGROUND_ORES,
                 SWAMP_IRON_ORE
+        );
+
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Feature.UNDERGROUND_ORES,
+                WRAP_ASTRALIUM_ORE
         );
     }
 

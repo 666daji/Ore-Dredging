@@ -1,0 +1,24 @@
+{
+  "type": "ore_dredging:wrap_ore",
+  "config": {
+    "core_block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "ore_dredging:astralium_ore"
+      }
+    },
+    "shell_block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:deepslate"
+      }
+    },
+    "core_size": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      }
+    }
+  }
+}

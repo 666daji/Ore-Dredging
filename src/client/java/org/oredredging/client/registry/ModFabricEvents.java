@@ -27,7 +27,7 @@ public class ModFabricEvents {
     public static void init() {
         ModModelLayers.registerAll();
         ModRenderLayers.registryRenderLayer();
-        MinerHelmetItemRenderer.registryAll();
+        ItemRenderers.registryAll();
         ModEntityRenderers.registryAll();
         registryAll();
 
