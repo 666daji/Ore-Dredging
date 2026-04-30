@@ -113,6 +113,9 @@ public class ModItems {
     public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);
     public static final Item QUARTZ_GLASS_PANES = register(ModBlocks.QUARTZ_GLASS_PANES);
 
+    // 工作方块
+    public static final Item THUNDER_SMELTER_PIPE = register(ModBlocks.THUNDER_SMELTER_PIPE);
+
     private static Item register(String id) {
         return register(id, new Item(new Item.Settings()));
     }

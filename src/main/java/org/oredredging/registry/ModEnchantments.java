@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.enchantment.HeavyEnchantment;
 import org.oredredging.enchantment.MinerBundleEnchantment;
+import org.oredredging.enchantment.StarPatternEnchantment;
 import org.oredredging.enchantment.ToughnessEnchantment;
 
 public class ModEnchantments {
@@ -58,6 +59,9 @@ public class ModEnchantments {
 
     // 坚韧
     public static final Enchantment TOUGHNESS = register("toughness", new ToughnessEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentTarget.ARMOR, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
+
+    // 星纹
+    public static final Enchantment STAR_PATTERN = register("star_pattern", new StarPatternEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentTarget.ARMOR, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
 
     // 不屈意志
     public static final Enchantment UNYIELDING = register("unyielding", new Enchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.ARMOR, EquipmentSlot.values()) {

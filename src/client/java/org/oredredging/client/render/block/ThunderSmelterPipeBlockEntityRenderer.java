@@ -39,16 +39,16 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
         // 根据方块朝向旋转
         float angle = switch (facing) {
             case EAST -> 90.0F;
-            case SOUTH -> 180.0F;
+            case SOUTH -> 0.0F;
             case WEST -> 270.0F;
-            default -> 0.0F; // NORTH
+            default -> 180.0F; // NORTH
         };
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(angle));
 
         // --- 渲染输入物品（竖立，居中偏上） ---
         if (!input.isEmpty()) {
             matrices.push();
-            matrices.translate(0.0, 0.15, 0.0);
+            matrices.translate(0.0, -0.25, -0.15);
             matrices.scale(0.5F, 0.5F, 0.5F);
             itemRenderer.renderItem(input, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, entity.getWorld(), 0);
             matrices.pop();
@@ -57,9 +57,9 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
         // --- 渲染主输出物品（平放在左前下方） ---
         if (!output1.isEmpty()) {
             matrices.push();
-            matrices.translate(-0.2, -0.35, 0.15);
+            matrices.translate(-0.13, -0.35, 0.05);
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
-            matrices.scale(0.5F, 0.5F, 0.5F);
+            matrices.scale(0.3F, 0.3F, 0.3F);
             itemRenderer.renderItem(output1, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, entity.getWorld(), 0);
             matrices.pop();
         }
@@ -67,9 +67,9 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
         // --- 渲染额外输出物品（平放在右前下方） ---
         if (!output2.isEmpty()) {
             matrices.push();
-            matrices.translate(0.2, -0.35, 0.15);
+            matrices.translate(0.13, -0.35, 0.05);
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
-            matrices.scale(0.5F, 0.5F, 0.5F);
+            matrices.scale(0.3F, 0.3F, 0.3F);
             itemRenderer.renderItem(output2, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, entity.getWorld(), 0);
             matrices.pop();
         }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "BBB",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "ore_dredging:astralium"
+    },
+    "B": {
+      "item": "minecraft:deepslate"
+    }
+  },
+  "result": {
+    "item": "minecraft:reinforced_deepslate",
+    "count": 5
+  }
+}

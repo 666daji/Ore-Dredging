@@ -117,6 +117,9 @@ public class ModItemGroups {
                             // 其他
                             entries.add(ModItems.QUARTZ_GLASS);
                             entries.add(ModItems.QUARTZ_GLASS_PANES);
+
+                            // 工作方块
+                            entries.add(ModItems.THUNDER_SMELTER_PIPE);
                         }))
                         .build()
         );

@@ -129,7 +129,8 @@ public class ModBlocks {
     public static final Block SLIMY_DETONATOR = register("slimy_detonator", new DetonatorBlock(AbstractBlock.Settings.create().nonOpaque(), ModEntities.SLIMY_DETONATOR));
 
     // 工作方块
-    public static final Block THUNDER_SMELTER_PIPE = register("thunder_smelter_pipe", new ThunderSmelterPipeBlock(AbstractBlock.Settings.create()));
+    public static final Block THUNDER_SMELTER_PIPE = register("thunder_smelter_pipe", new ThunderSmelterPipeBlock(AbstractBlock.Settings.create()
+            .nonOpaque().sounds(BlockSoundGroup.GLASS).mapColor(MapColor.RED).luminance(state -> state.get(ThunderSmelterPipeBlock.CRAFTING)? 15 : 0)));
 
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);
