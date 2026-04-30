@@ -6,6 +6,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -27,24 +28,31 @@ import org.oredredging.registry.ModSoundEvent;
 import org.oredredging.util.EnhancedAnimationState;
 import org.oredredging.util.RandomUtil;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MimeticLeyLineBlockEntity extends BlockEntity {
     /** 喷涌阶段固定时长（ticks），12秒 = 240 ticks */
     private static final int ERUPT_DURATION = 240;
     /** 喷涌开始后多久喷出物品（ticks），5秒 = 100 ticks */
-    private static final int ERUPT_SPAWN_OFFSET = 110;
+    private static final int ERUPT_SPAWN_OFFSET = 100;
     /** 最大单次进度补偿（ticks），防止单次 delta 过大导致性能问题或溢出 */
     private static final long MAX_DELTA = 24000L * 30; // 30天
     /** 抽奖最大尝试次数，防止极端概率下无限循环 */
     private static final int MAX_SELECT_ATTEMPTS = 100;
+    /** 抽取多个条目时的额外尝试次数 */
+    private static final int MAX_MULTI_SELECT_ATTEMPTS = 50;
 
     /** 当前周期已累计的进度（ticks） */
     private long progress;
     /** 上次 tick 时的世界总时间（用于计算 delta） */
     private long lastWorldTime;
-    /** 当前周期选中的抽奖项 */
-    private LootPoolConfig.PoolEntry currentEntry;
+    /** 当前周期的主抽奖项（cost 最大） */
+    private LootPoolConfig.PoolEntry primaryEntry;
+    /** 当前周期的附加抽奖项（其余两个） */
+    private List<LootPoolConfig.PoolEntry> additionalEntries = new ArrayList<>();
     /** 本次喷涌是否已生成物品（防止重复生成） */
     private boolean hasErupted;
     /** 萌发阶段粒子特效的剩余持续时间 **/
@@ -53,9 +61,7 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
     private State state = State.AMASS;
 
     public final EnhancedAnimationState amassAnimationState = new EnhancedAnimationState();
-
     public final EnhancedAnimationState buddingAnimationState = new EnhancedAnimationState();
-
     public final EnhancedAnimationState eruptAnimationState = new EnhancedAnimationState();
 
     public MimeticLeyLineBlockEntity(BlockPos pos, BlockState state) {
@@ -64,9 +70,6 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     // ======================== 核心 tick 逻辑 ========================
 
-    /**
-     * 服务端每 tick 调用，根据真实时间差更新进度。
-     */
     public static void tick(World world, BlockPos pos, BlockState state, MimeticLeyLineBlockEntity entity) {
         randomParticle(world, pos, entity);
         playSound(world, entity, pos);
@@ -76,7 +79,6 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
             return;
         }
 
-        // 初始化世界时间基准
         if (entity.lastWorldTime == 0) {
             entity.lastWorldTime = world.getTime();
             return;
@@ -92,23 +94,14 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
             delta = MAX_DELTA;
         }
 
-        // 增加进度并更新时间基准
         entity.progress += delta;
         entity.lastWorldTime = now;
-
-        // 处理进度增加后的所有副作用（周期完成、状态更新、物品喷出）
         entity.processProgress();
     }
 
-    /**
-     * 注入进度（仅服务端有效）
-     *
-     * @param amount 增加的进度（tick 数），必须 ≥ 0
-     */
     public void addProgress(long amount) {
         if (world == null || world.isClient) return;
         if (amount <= 0) return;
-
         progress += amount;
         processProgress();
     }
@@ -118,30 +111,24 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
     private static void playSound(World world, MimeticLeyLineBlockEntity entity, BlockPos pos) {
         if (world.isClient()) return;
 
-        LootPoolConfig.PoolEntry entry = entity.currentEntry;
+        LootPoolConfig.PoolEntry entry = entity.primaryEntry;
         if (entry == null) return;
 
         long cost = entry.cost();
         long progress = entity.progress;
         State state = entity.getState();
 
-        // 萌发阶段
         if (state == State.BUDDING) {
-            long buddingStart = entity.getBuddingPosition();  // 萌发阶段起始进度
+            long buddingStart = entity.getBuddingPosition();
             long elapsedInBudding = progress - buddingStart;
-            // 每 160 ticks 触发一次
             if (elapsedInBudding >= 0 && elapsedInBudding % 160 == 0) {
                 world.playSound(null, pos, ModSoundEvent.MLL_BUDDING_SHOCK, SoundCategory.BLOCKS, 1.0f, 1.0f);
             }
-        }
-        // 喷涌阶段
-        else if (state == State.ERUPT) {
+        } else if (state == State.ERUPT) {
             if (progress == cost) {
-                // 喷涌开始瞬间
                 world.playSound(null, pos, ModSoundEvent.MLL_ERUPT_SMOKE, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 world.playSound(null, pos, ModSoundEvent.MLL_ERUPT, SoundCategory.BLOCKS, 1.0f, 1.0f);
             } else if (progress == cost + 120) {
-                // 喷涌一半
                 world.playSound(null, pos, ModSoundEvent.MLL_ERUPT, SoundCategory.BLOCKS, 1.0f, 1.0f);
             }
         }
@@ -154,7 +141,7 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
             case BUDDING -> {
                 if (entity.buddingParticleTime > 0) {
                     buddingParticle(random, world, pos, 0.90F);
-                    entity.buddingParticleTime --;
+                    entity.buddingParticleTime--;
                 }
             }
             case ERUPT -> {
@@ -197,8 +184,7 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
                 eruptAnimationState.reset();
             }
             case ERUPT -> {
-                eruptAnimationState.startIfNotRunning(currentEntry.cost());
-                // 倒放逻辑：喷涌过半后反转动画
+                eruptAnimationState.startIfNotRunning(primaryEntry.cost());
                 if (getEruptTicks() > ERUPT_DURATION / 2 && !eruptAnimationState.reversed) {
                     eruptAnimationState.reversed = true;
                 }
@@ -210,31 +196,22 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     // ======================== 内部进度处理逻辑 ========================
 
-    /**
-     * 处理当前进度可能引起的周期完成、状态转换和物品喷出。
-     * <p>
-     * 该方法不依赖世界时间，仅基于当前 progress、currentEntry 等字段进行状态机更新。
-     */
     private void processProgress() {
-        // 处理可能跨越的多个完整周期
-        while (currentEntry != null && progress >= currentEntry.cost() + ERUPT_DURATION) {
+        while (primaryEntry != null && progress >= primaryEntry.cost() + ERUPT_DURATION) {
             completeCurrentCycle();
             startNewCycle();
         }
 
-        // 如果没有激活的周期，开始新周期
-        if (currentEntry == null) {
+        if (primaryEntry == null) {
             startNewCycle();
         }
 
-        // 更新运行状态
         updateState();
 
-        // 喷涌阶段内，检查是否需要喷出物品
-        if (state == State.ERUPT && !hasErupted && currentEntry != null) {
-            long eruptProgress = progress - currentEntry.cost();
+        if (state == State.ERUPT && !hasErupted && primaryEntry != null) {
+            long eruptProgress = progress - primaryEntry.cost();
             if (eruptProgress >= ERUPT_SPAWN_OFFSET) {
-                spawnItem();
+                spawnItems();
                 hasErupted = true;
             }
         }
@@ -244,51 +221,126 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     // ======================== 周期管理 ========================
 
-    /**
-     * 开始一个新的运行周期：抽选一个抽奖项，重置喷出标志，保留当前进度。
-     */
     private void startNewCycle() {
-        if (currentEntry != null) return;
-        currentEntry = selectEntry();
+        if (primaryEntry != null) return;
+
+        List<LootPoolConfig.PoolEntry> selected = selectEntries(3);
+        if (selected.isEmpty()) {
+            OreDredging.LOGGER.warn("MimeticLeyLine at {}: Failed to select any entry, using fallback", pos);
+            primaryEntry = new LootPoolConfig.PoolEntry(new ItemStack(Items.STONE), 1.0f, 200);
+            additionalEntries.clear();
+        } else {
+            // 找出 cost 最大的作为主条目
+            primaryEntry = selected.stream().max((a, b) -> Integer.compare(a.cost(), b.cost())).orElse(selected.get(0));
+            additionalEntries = new ArrayList<>(selected);
+            additionalEntries.remove(primaryEntry);
+        }
+
         hasErupted = false;
         updateState();
     }
 
-    /**
-     * 完成当前周期：强制喷出未喷出的物品，扣除周期总进度，清空当前抽奖项。
-     */
     private void completeCurrentCycle() {
-        if (currentEntry == null) return;
+        if (primaryEntry == null) return;
 
-        // 如果物品还没喷出（例如 delta 过大直接跳过了喷出点），强制喷出
         if (!hasErupted) {
-            spawnItem();
+            spawnItems();
             hasErupted = true;
         }
 
-        long totalCost = currentEntry.cost() + ERUPT_DURATION;
+        long totalCost = primaryEntry.cost() + ERUPT_DURATION;
         progress -= totalCost;
 
-        // 清空当前周期，下一次 processProgress 会开始新周期
-        currentEntry = null;
+        primaryEntry = null;
+        additionalEntries.clear();
         hasErupted = false;
     }
 
-    // ======================== 抽奖机制 ========================
+    // ======================== 抽奖机制（多条目，不重复） ========================
 
     /**
-     * 从配置的抽奖池中按照概率抽取一个项，带保底机制。
+     * 从配置的抽奖池中抽取指定数量的不重复条目，每个条目独立概率判定。
+     * 返回的条目数量可能少于请求数量（如果池子不足或尝试超限时降级）。
      *
-     * @return 选中的抽奖项
+     * @param count 期望抽取的条目数量
+     * @return 抽取到的条目列表（可能为空或不足数量）
      */
-    private LootPoolConfig.PoolEntry selectEntry() {
+    private List<LootPoolConfig.PoolEntry> selectEntries(int count) {
         LootPoolConfig config = ConfigManager.get(ModConfigs.LOOT_POOL_CONFIG);
-
-        List<LootPoolConfig.PoolEntry> entries = (config != null) ? config.entries() : null;
-        if (entries == null || entries.isEmpty()) {
-            OreDredging.LOGGER.warn("MimeticLeyLine at {}: No valid loot pool, using fallback", pos);
-            return new LootPoolConfig.PoolEntry(new ItemStack(Items.STONE), 1.0f, 200);
+        List<LootPoolConfig.PoolEntry> allEntries = (config != null) ? config.entries() : null;
+        if (allEntries == null || allEntries.isEmpty()) {
+            OreDredging.LOGGER.warn("MimeticLeyLine at {}: No valid loot pool", pos);
+            return List.of();
         }
+
+        List<LootPoolConfig.PoolEntry> result = new ArrayList<>();
+        Set<LootPoolConfig.PoolEntry> selectedSet = new HashSet<>();
+
+        for (int attempt = 0; attempt < MAX_MULTI_SELECT_ATTEMPTS && result.size() < count; attempt++) {
+            result.clear();
+            selectedSet.clear();
+            boolean success = true;
+
+            for (int i = 0; i < count; i++) {
+                LootPoolConfig.PoolEntry entry = selectSingleEntryExcluding(allEntries, selectedSet);
+                if (entry == null) {
+                    success = false;
+                    break;
+                }
+                result.add(entry);
+                selectedSet.add(entry);
+            }
+
+            if (success && result.size() == count) {
+                return result;
+            }
+        }
+
+        // 降级：允许重复，用普通抽奖补全不足的数量
+        OreDredging.LOGGER.warn("MimeticLeyLine at {}: Could not select {} distinct entries, falling back to allow duplicates", pos, count);
+        while (result.size() < count) {
+            LootPoolConfig.PoolEntry entry = selectSingleEntry(allEntries);
+            if (entry != null) {
+                result.add(entry);
+            } else {
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 从条目列表中独立抽取一个条目（概率判定），排除指定的已选条目。
+     * 带保底机制：尝试 MAX_SELECT_ATTEMPTS 次后返回第一个未被排除的条目。
+     *
+     * @param entries  候选条目池
+     * @param excluded 已选中的条目集合（不能返回这些条目）
+     * @return 选中的条目，无可用时返回 null
+     */
+    private LootPoolConfig.PoolEntry selectSingleEntryExcluding(List<LootPoolConfig.PoolEntry> entries, Set<LootPoolConfig.PoolEntry> excluded) {
+        if (entries.isEmpty()) return null;
+
+        for (int attempt = 0; attempt < MAX_SELECT_ATTEMPTS; attempt++) {
+            LootPoolConfig.PoolEntry candidate = entries.get(RandomUtil.nextInt(entries.size()));
+            if (!excluded.contains(candidate) && RandomUtil.randomBoolean(candidate.probability())) {
+                return candidate;
+            }
+        }
+
+        // 保底：返回第一个未被排除的条目
+        for (LootPoolConfig.PoolEntry entry : entries) {
+            if (!excluded.contains(entry)) {
+                return entry;
+            }
+        }
+        return null; // 所有条目都被排除（理论上不会发生）
+    }
+
+    /**
+     * 原始的单次抽奖（允许重复，不考虑排除），用于降级处理。
+     */
+    private LootPoolConfig.PoolEntry selectSingleEntry(List<LootPoolConfig.PoolEntry> entries) {
+        if (entries.isEmpty()) return null;
 
         for (int attempt = 0; attempt < MAX_SELECT_ATTEMPTS; attempt++) {
             LootPoolConfig.PoolEntry candidate = entries.get(RandomUtil.nextInt(entries.size()));
@@ -296,22 +348,23 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
                 return candidate;
             }
         }
-
-        OreDredging.LOGGER.warn("MimeticLeyLine at {}: Failed to select entry after {} attempts, using first entry",
-                pos, MAX_SELECT_ATTEMPTS);
         return entries.get(0);
     }
 
     // ======================== 物品生成 ========================
 
-    /**
-     * 将当前抽奖项中的物品从方块中心向上抛出，附带随机水平速度。
-     */
-    private void spawnItem() {
+    private void spawnItems() {
         if (world == null || world.isClient) return;
-        if (currentEntry == null) return;
 
-        ItemStack stack = currentEntry.item().copy();
+        spawnItem(primaryEntry);
+        for (LootPoolConfig.PoolEntry entry : additionalEntries) {
+            spawnItem(entry);
+        }
+    }
+
+    private void spawnItem(LootPoolConfig.PoolEntry entry) {
+        if (entry == null) return;
+        ItemStack stack = entry.item().copy();
         Vec3d center = Vec3d.ofCenter(pos);
 
         Random random = world.random;
@@ -325,26 +378,45 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     // ======================== 状态管理 ========================
 
-    /**
-     * 根据当前进度和抽奖项的 cost 更新运行状态。
-     */
     private void updateState() {
-        if (currentEntry == null) {
+        if (primaryEntry == null) {
             state = State.AMASS;
-            return;
-        }
-        long cost = currentEntry.cost();
-        if (progress < cost * 2 / 3) {
-            state = State.AMASS;
-        } else if (progress < cost) {
-            state = State.BUDDING;
         } else {
-            state = State.ERUPT;
+            long cost = primaryEntry.cost();
+            if (progress < cost * 2 / 3) {
+                state = State.AMASS;
+            } else if (progress < cost) {
+                state = State.BUDDING;
+            } else {
+                state = State.ERUPT;
+            }
         }
 
         if (world != null) {
-            world.setBlockState(pos, getCachedState().with(MimeticLeyLineBlock.STATE, getState()));
+            BlockState newState = getCachedState().with(MimeticLeyLineBlock.STATE, state);
+            if (state == State.ERUPT) {
+                int light = computeEruptBrightness(getEruptTicks());
+                newState = newState.with(MimeticLeyLineBlock.LIGHT, light);
+            } else {
+                newState = newState.with(MimeticLeyLineBlock.LIGHT, 0);
+            }
+            world.setBlockState(pos, newState);
         }
+    }
+
+    private int computeEruptBrightness(int eruptTicks) {
+        if (eruptTicks < 0 || eruptTicks >= ERUPT_DURATION) {
+            return 0;
+        }
+        float brightness;
+        if (eruptTicks <= 100) {               // 0～5秒：线性增加
+            brightness = 4.0f * eruptTicks / 100.0f;
+        } else if (eruptTicks <= 140) {        // 5～7秒：完全打开
+            brightness = 4.0f;
+        } else {                               // 7～12秒：线性减少
+            brightness = 4.0f * (ERUPT_DURATION - eruptTicks) / 100.0f;
+        }
+        return Math.round(brightness);
     }
 
     // ======================== NBT 持久化 ========================
@@ -355,13 +427,23 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         nbt.putLong("Progress", progress);
         nbt.putLong("LastWorldTime", lastWorldTime);
         nbt.putBoolean("HasErupted", hasErupted);
-        if (currentEntry != null) {
-            NbtCompound entryNbt = new NbtCompound();
-            entryNbt.put("Item", currentEntry.item().writeNbt(new NbtCompound()));
-            entryNbt.putFloat("Probability", currentEntry.probability());
-            entryNbt.putInt("Cost", currentEntry.cost());
-            nbt.put("CurrentEntry", entryNbt);
+
+        if (primaryEntry != null) {
+            nbt.put("PrimaryEntry", entryToNbt(primaryEntry));
         }
+        NbtList additionalList = new NbtList();
+        for (LootPoolConfig.PoolEntry entry : additionalEntries) {
+            additionalList.add(entryToNbt(entry));
+        }
+        nbt.put("AdditionalEntries", additionalList);
+    }
+
+    private NbtCompound entryToNbt(LootPoolConfig.PoolEntry entry) {
+        NbtCompound entryNbt = new NbtCompound();
+        entryNbt.put("Item", entry.item().writeNbt(new NbtCompound()));
+        entryNbt.putFloat("Probability", entry.probability());
+        entryNbt.putInt("Cost", entry.cost());
+        return entryNbt;
     }
 
     @Override
@@ -370,16 +452,28 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         progress = nbt.getLong("Progress");
         lastWorldTime = nbt.getLong("LastWorldTime");
         hasErupted = nbt.getBoolean("HasErupted");
-        if (nbt.contains("CurrentEntry")) {
-            NbtCompound entryNbt = nbt.getCompound("CurrentEntry");
-            ItemStack item = ItemStack.fromNbt(entryNbt.getCompound("Item"));
-            float prob = entryNbt.getFloat("Probability");
-            int cost = entryNbt.getInt("Cost");
-            currentEntry = new LootPoolConfig.PoolEntry(item, prob, cost);
+
+        if (nbt.contains("PrimaryEntry")) {
+            primaryEntry = entryFromNbt(nbt.getCompound("PrimaryEntry"));
         } else {
-            currentEntry = null;
+            primaryEntry = null;
         }
+
+        additionalEntries.clear();
+        NbtList additionalList = nbt.getList("AdditionalEntries", 10);
+        for (int i = 0; i < additionalList.size(); i++) {
+            NbtCompound entryNbt = additionalList.getCompound(i);
+            additionalEntries.add(entryFromNbt(entryNbt));
+        }
+
         updateState();
+    }
+
+    private LootPoolConfig.PoolEntry entryFromNbt(NbtCompound nbt) {
+        ItemStack item = ItemStack.fromNbt(nbt.getCompound("Item"));
+        float prob = nbt.getFloat("Probability");
+        int cost = nbt.getInt("Cost");
+        return new LootPoolConfig.PoolEntry(item, prob, cost);
     }
 
     @Override
@@ -402,10 +496,6 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
 
     // ======================== 运行状态 ========================
 
-    /**
-     * 获取当前运行状态。
-     * @see State
-     */
     public State getState() {
         return state;
     }
@@ -418,41 +508,35 @@ public class MimeticLeyLineBlockEntity extends BlockEntity {
         this.buddingParticleTime = buddingParticleTime;
     }
 
-    /**
-     * 获取当前周期的进度百分比（0.0 ~ 1.0），
-     * @apiNote 仅用于 {@linkplain State#AMASS 积蓄} / {@linkplain State#BUDDING 萌发} 阶段。
-     */
     public float getProgressPercent() {
-        if (currentEntry == null) return 0;
-        long cost = currentEntry.cost();
+        if (primaryEntry == null) return 0;
+        long cost = primaryEntry.cost();
         if (progress < cost) return (float) progress / cost;
         else return 1.0f;
     }
 
     public int getBuddingPosition() {
-        if (currentEntry == null) return 0;
-        long cost = currentEntry.cost();
-
+        if (primaryEntry == null) return 0;
+        long cost = primaryEntry.cost();
         return Math.toIntExact((cost * 2) / 3);
     }
 
-    /**
-     * 获取喷涌阶段已进行的 tick 数（0 ~ ERUPT_DURATION）。
-     * @apiNote 仅当状态为 {@linkplain State#ERUPT 喷涌} 时有效。
-     */
     public int getEruptTicks() {
-        if (state != State.ERUPT || currentEntry == null) return 0;
-        return (int) (progress - currentEntry.cost());
+        if (state != State.ERUPT || primaryEntry == null) return 0;
+        return (int) (progress - primaryEntry.cost());
     }
 
-    /**
-     * 拟态地脉的运行阶段。
-     * <ol>
-     *     <li>{@linkplain #AMASS 积蓄}：缓慢旋转，前 2/3 进度</li>
-     *     <li>{@linkplain #BUDDING 萌发}：不规则抽动，后 1/3 进度</li>
-     *     <li>{@linkplain #ERUPT 喷涌}：打开并抛出物品，固定 12 秒</li>
-     * </ol>
-     */
+    public int getOffEruptCenter() {
+        if (state != State.ERUPT || primaryEntry == null) return 0;
+        int center = ERUPT_DURATION / 2;
+        int ticks = getEruptTicks();
+        if (ticks > center) {
+            return ticks - center;
+        } else {
+            return center - ticks;
+        }
+    }
+
     public enum State implements StringIdentifiable {
         AMASS("amass"),
         BUDDING("budding"),

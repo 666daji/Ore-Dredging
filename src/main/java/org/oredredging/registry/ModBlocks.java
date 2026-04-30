@@ -110,7 +110,7 @@ public class ModBlocks {
 
     // 宝物
     public static final Block MIMETIC_LEY_LINE = register("mimetic_ley_line",
-            new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY).luminance(state -> state.get(MimeticLeyLineBlock.STATE) == MimeticLeyLineBlockEntity.State.ERUPT? 15 : 0)));
+            new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(1.0F, 2.0F).nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY).luminance(state -> state.get(MimeticLeyLineBlock.LIGHT) * 2)));
 
     // 矿石
     public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",
