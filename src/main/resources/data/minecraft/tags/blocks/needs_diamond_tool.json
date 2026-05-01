@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "ore_dredging:astralium_ore"
+    "ore_dredging:astralium_ore",
+
+    "ore_dredging:netherite_slab"
   ]
 }

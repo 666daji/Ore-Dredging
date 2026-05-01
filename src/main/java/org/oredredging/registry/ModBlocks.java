@@ -132,6 +132,10 @@ public class ModBlocks {
     public static final Block THUNDER_SMELTER_PIPE = register("thunder_smelter_pipe", new ThunderSmelterPipeBlock(AbstractBlock.Settings.create()
             .nonOpaque().sounds(BlockSoundGroup.GLASS).mapColor(MapColor.RED).luminance(state -> state.get(ThunderSmelterPipeBlock.CRAFTING)? 15 : 0)));
 
+    // 特殊矿
+    public static final Block NATURAL_RAW_COPPER_BLOCK = register("natural_raw_copper_block", new Block(AbstractBlock.Settings.copy(Blocks.RAW_COPPER_BLOCK)));
+    public static final Block NATURAL_RAW_IRON_BLOCK = register("natural_raw_iron_block", new Block(AbstractBlock.Settings.copy(Blocks.RAW_IRON_BLOCK)));
+
     private static Block register(String id, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(OreDredging.MOD_ID, id), block);
     }

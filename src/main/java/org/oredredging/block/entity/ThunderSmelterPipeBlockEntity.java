@@ -22,7 +22,6 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.event.PositionSource;
 import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
-import org.oredredging.OreDredging;
 import org.oredredging.block.ThunderSmelterPipeBlock;
 import org.oredredging.registry.ModBlockEntities;
 import org.oredredging.registry.ModRecipes;
@@ -57,7 +56,7 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     // ========== Inventory 实现 ==========
     @Override
     public int size() {
-        return 3;
+        return inventory.size();
     }
 
     @Override
@@ -241,7 +240,7 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         }
 
         // 条件满足，开始熔炼
-        craftingTicksRemaining = 100;
+        craftingTicksRemaining = 200;
         setCrafting(true);
         markDirty();
     }

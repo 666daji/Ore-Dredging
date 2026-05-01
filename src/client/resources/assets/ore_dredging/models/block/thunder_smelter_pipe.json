@@ -1,7 +1,6 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
 	"textures": {
 		"particle": "ore_dredging:block/thunder_smelter_pipe",
 		"pipe": "ore_dredging:block/thunder_smelter_pipe"
@@ -190,9 +189,9 @@
 			}
 		},
 		{
-			"from": [6, 9, 6],
-			"to": [10, 15, 10],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 12, 7]},
+			"from": [6, 10, 6],
+			"to": [10, 16, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 13, 7]},
 			"faces": {
 				"north": {"uv": [5, 3.25, 6, 4.75], "texture": "#pipe"},
 				"east": {"uv": [5, 4.75, 6, 6.25], "texture": "#pipe"},
@@ -249,18 +248,26 @@
 	},
 	"groups": [
 		{
-			"name": "group",
+			"name": "1",
 			"origin": [8, 8, 8],
 			"scope": 0,
 			"color": 0,
-			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-		},
-		{
-			"name": "group",
-			"origin": [8, 8, 8],
-			"scope": 0,
-			"color": 0,
-			"children": []
+			"children": [
+				{
+					"name": "group",
+					"origin": [8, 8, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+				},
+				{
+					"name": "group",
+					"origin": [8, 8, 8],
+					"scope": 0,
+					"color": 0,
+					"children": []
+				}
+			]
 		}
 	]
 }

@@ -20,16 +20,35 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oredredging.block.entity.ThunderSmelterPipeBlockEntity;
 import org.oredredging.registry.ModBlockEntities;
+import org.oredredging.util.RandomUtil;
 
 public class ThunderSmelterPipeBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty CRAFTING = BooleanProperty.of("crafting");
-    public static final VoxelShape SHAPE = Block.createCuboidShape(2, 0, 2, 14, 14, 14);
+    public static final VoxelShape SHAPE;
+
+    static {
+        VoxelShape shape = VoxelShapes.empty();
+        // 底面 (y = 0 ~ 2)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 14, 2, 14));
+        // 顶面 (y = 12 ~ 14)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 12, 2, 14, 14, 14));
+        // 侧面 -x 方向 (x = 2 ~ 4)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 4, 14, 14));
+        // 侧面 +x 方向 (x = 12 ~ 14)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(12, 0, 2, 14, 14, 14));
+        // 侧面 -z 方向 (z = 2 ~ 4)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 14, 14, 4));
+        // 侧面 +z 方向 (z = 12 ~ 14)
+        shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 12, 14, 14, 14));
+        SHAPE = shape;
+    }
 
     public ThunderSmelterPipeBlock(Settings settings) {
         super(settings);
@@ -72,24 +91,19 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         if (!state.get(CRAFTING)) return;
 
-        // 随机生成烟雾粒子
-        int particleCount = random.nextInt(2) + 1; // 1~2个
+        int particleCount = random.nextInt(10) + 1;
         for (int i = 0; i < particleCount; i++) {
             double x = pos.getX() + 0.3 + random.nextDouble() * 0.4;
-            double y = pos.getY() + 1.0;
+            double y = pos.getY() + 0.1;
             double z = pos.getZ() + 0.3 + random.nextDouble() * 0.4;
-            world.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0, 0.05, 0.0);
+            world.addParticle(RandomUtil.randomBoolean(0.5F)? ParticleTypes.SMOKE : ParticleTypes.POOF, x, y, z, 0.0, 0.05, 0.0);
         }
 
         if (random.nextFloat() < 0.1f) {
-            world.playSound(
-                    null,
-                    pos,
-                    SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE,
-                    SoundCategory.BLOCKS,
-                    0.4f + random.nextFloat() * 0.3f, // 音量随机 0.4~0.7
-                    0.8f + random.nextFloat() * 0.4f  // 音高随机 0.8~1.2
-            );
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(),
+                    SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS,
+                    0.4f + random.nextFloat() * 0.3f,
+                    0.8f + random.nextFloat() * 0.4f, false);
         }
     }
 
@@ -104,7 +118,6 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             return ActionResult.PASS;
         }
 
-        // 潜行交互：一次性取出所有输出物品
         if (player.isSneaking()) {
             boolean changed = false;
             for (int slot : new int[]{1, 2}) {
@@ -123,11 +136,9 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             return ActionResult.CONSUME;
         }
 
-        // 站立交互
         ItemStack held = player.getMainHandStack();
         ItemStack inputStack = pipe.getStack(0);
 
-        // 情况1：手持物品
         if (!held.isEmpty()) {
             if (inputStack.isEmpty() || (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < 21)) {
                 ItemStack oneItem = held.copy();
@@ -142,17 +153,14 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
                 pipe.markDirty();
                 return ActionResult.CONSUME;
             } else {
-                // 无法放入，改为取出1个输入槽物品
-                ItemStack extracted = pipe.removeStack(0, 1); // 取出1个
+                ItemStack extracted = pipe.removeStack(0, 1);
                 if (!player.getInventory().insertStack(extracted)) {
                     player.dropItem(extracted, false);
                 }
                 pipe.markDirty();
                 return ActionResult.CONSUME;
             }
-        }
-        // 情况2：空手，直接尝试取出1个输入槽物品
-        else {
+        } else {
             if (!inputStack.isEmpty()) {
                 ItemStack extracted = pipe.removeStack(0, 1);
                 if (!player.getInventory().insertStack(extracted)) {
@@ -172,7 +180,6 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof ThunderSmelterPipeBlockEntity pipe) {
                 ItemScatterer.spawn(world, pos, pipe);
-                // 更新相邻方块（如比较器）
                 world.updateComparators(pos, this);
             }
         }

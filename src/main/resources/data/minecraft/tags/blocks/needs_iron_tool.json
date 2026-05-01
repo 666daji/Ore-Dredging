@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "ore_dredging:swamp_iron_ore",
+
+    "ore_dredging:diamond_slab",
+    "ore_dredging:emerald_slab"
+  ]
+}

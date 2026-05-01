@@ -13,6 +13,7 @@
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "OreFeatureMixin",
     "PlayerEntityMixin",
     "ShapedRecipeMixin"
   ],

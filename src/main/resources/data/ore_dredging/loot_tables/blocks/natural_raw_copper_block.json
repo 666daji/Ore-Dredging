@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 4
+              }
+            }
+          ],
+          "name": "ore_dredging:raw_copper_gravel_piles"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ore_dredging:blocks/natural_raw_copper_block"
+}

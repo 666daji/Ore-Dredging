@@ -12,6 +12,19 @@
     "ore_dredging:andesite_bricks",
     "ore_dredging:andesite_brick_stairs",
     "ore_dredging:andesite_brick_slab",
-    "ore_dredging:andesite_brick_wall"
+    "ore_dredging:andesite_brick_wall",
+
+    "ore_dredging:raw_iron_slab",
+    "ore_dredging:raw_copper_slab",
+    "ore_dredging:raw_gold_slab",
+    "ore_dredging:iron_slab",
+    "ore_dredging:gold_slab",
+    "ore_dredging:copper_slab",
+    "ore_dredging:lapis_slab",
+    "ore_dredging:redstone_slab",
+    "ore_dredging:coal_slab",
+
+    "ore_dredging:natural_raw_copper_block",
+    "ore_dredging:natural_raw_iron_block"
   ]
 }

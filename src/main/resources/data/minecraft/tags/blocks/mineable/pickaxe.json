@@ -20,7 +20,23 @@
     "ore_dredging:sandstone_gravel_piles",
     "ore_dredging:deepslate_gravel_piles",
 
+    "ore_dredging:raw_iron_slab",
+    "ore_dredging:raw_copper_slab",
+    "ore_dredging:raw_gold_slab",
+    "ore_dredging:iron_slab",
+    "ore_dredging:gold_slab",
+    "ore_dredging:copper_slab",
+    "ore_dredging:lapis_slab",
+    "ore_dredging:redstone_slab",
+    "ore_dredging:coal_slab",
+    "ore_dredging:diamond_slab",
+    "ore_dredging:emerald_slab",
+    "ore_dredging:netherite_slab",
+
     "ore_dredging:swamp_iron_ore",
-    "ore_dredging:astralium_ore"
+    "ore_dredging:astralium_ore",
+
+    "ore_dredging:natural_raw_copper_block",
+    "ore_dredging:natural_raw_iron_block"
   ]
 }
