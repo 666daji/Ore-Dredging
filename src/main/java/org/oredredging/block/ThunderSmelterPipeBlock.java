@@ -35,17 +35,11 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
 
     static {
         VoxelShape shape = VoxelShapes.empty();
-        // 底面 (y = 0 ~ 2)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 14, 2, 14));
-        // 顶面 (y = 12 ~ 14)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 12, 2, 14, 14, 14));
-        // 侧面 -x 方向 (x = 2 ~ 4)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 4, 14, 14));
-        // 侧面 +x 方向 (x = 12 ~ 14)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(12, 0, 2, 14, 14, 14));
-        // 侧面 -z 方向 (z = 2 ~ 4)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 2, 14, 14, 4));
-        // 侧面 +z 方向 (z = 12 ~ 14)
         shape = VoxelShapes.union(shape, Block.createCuboidShape(2, 0, 12, 14, 14, 14));
         SHAPE = shape;
     }
@@ -140,7 +134,8 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
         ItemStack inputStack = pipe.getStack(0);
 
         if (!held.isEmpty()) {
-            if (inputStack.isEmpty() || (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < 21)) {
+            // 输入槽容量改为 3
+            if (inputStack.isEmpty() || (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < 3)) {
                 ItemStack oneItem = held.copy();
                 oneItem.setCount(1);
                 held.decrement(1);
@@ -194,5 +189,21 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
     @Override
     public BlockState mirror(BlockState state, BlockMirror mirror) {
         return state.rotate(mirror.getRotation(state.get(FACING)));
+    }
+
+    @Override
+    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof ThunderSmelterPipeBlockEntity pipe) {
+            float fillFactor = 0.0f;
+            for (int i = 0; i < pipe.size(); i++) {
+                ItemStack stack = pipe.getStack(i);
+                if (!stack.isEmpty()) {
+                    fillFactor += (float) stack.getCount() / pipe.getSlotMaxCount(i);
+                }
+            }
+            return (int) (fillFactor / pipe.size() * 14) + (fillFactor > 0 ? 1 : 0);
+        }
+        return 0;
     }
 }

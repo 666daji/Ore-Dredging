@@ -33,24 +33,44 @@ import java.util.Random;
 /**
  * 雷霆熔炼管道的方块实体。
  * <p>
- * 拥有三个物品槽位：0 = 输入（最大堆叠21），1 = 主输出，2 = 额外输出。
+ * 拥有三个物品槽位：0 = 输入（最大堆叠3），1 = 主输出（最大堆叠3），2 = 额外输出（最大堆叠10）。
  * 接收到 {@link GameEvent#LIGHTNING_STRIKE} 事件时，若存在匹配的雷霆熔炼配方且输出槽有空间，
  * 则开始 5 秒（100 ticks）的熔炼过程。期间外部自动化（漏斗等）无法插入/提取。
  * 熔炼完成后消耗 1 个输入物品，生成主产物和随机额外产物。
  */
 public class ThunderSmelterPipeBlockEntity extends BlockEntity
         implements GameEventListener.Holder<ThunderSmelterPipeBlockEntity.Listener>, Inventory, SidedInventory {
-
-    // ========== 字段 ==========
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private final Listener listener;
-    private int craftingTicksRemaining = 0;          // 剩余熔炼 tick，0 表示空闲
+    private int craftingTicksRemaining = 0;
     private final Random random = new Random();
 
-    // ========== 构造 ==========
     public ThunderSmelterPipeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.THUNDER_SMELTER_PIPE, pos, state);
         this.listener = new Listener(pos);
+    }
+
+    // ========== 槽位最大容量 ==========
+
+    /**
+     * 获取指定槽位的最大堆叠数量。
+     */
+    public int getSlotMaxCount(int slot) {
+        return switch (slot) {
+            case 0, 1 -> 3;   // 输入和主输出
+            case 2 -> 10;     // 额外输出
+            default -> 64;
+        };
+    }
+
+    /**
+     * 告知外部自动化（如漏斗）此容器允许的最大堆叠数。
+     * 这里选择返回 3，因为自动化只会向输入槽插入物品，输入槽上限为 3。
+     * 对于只能内部产出的槽位 1 和 2，不受此限制影响。
+     */
+    @Override
+    public int getMaxCountPerStack() {
+        return 3;
     }
 
     // ========== Inventory 实现 ==========
@@ -82,8 +102,9 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     @Override
     public void setStack(int slot, ItemStack stack) {
         inventory.set(slot, stack);
-        if (stack.getCount() > stack.getMaxCount()) {
-            stack.setCount(stack.getMaxCount());
+        int max = getSlotMaxCount(slot);
+        if (stack.getCount() > max) {
+            stack.setCount(max);
         }
     }
 
@@ -121,16 +142,10 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     }
 
     // ========== 熔炼状态与方块同步 ==========
-    /**
-     * @return 当前是否正在熔炼
-     */
     public boolean isCrafting() {
         return craftingTicksRemaining > 0;
     }
 
-    /**
-     * 设置熔炼状态并同步方块状态（CRAFTING 属性）。
-     */
     public void setCrafting(boolean crafting) {
         if (world != null && !world.isClient) {
             BlockState state = getCachedState();
@@ -147,7 +162,7 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         if (be.craftingTicksRemaining > 0) {
             be.craftingTicksRemaining--;
             if (be.craftingTicksRemaining == 0) {
-                be.finishCrafting();    // 熔炼完成
+                be.finishCrafting();
                 be.setCrafting(false);
             }
             be.markDirty();
@@ -172,30 +187,43 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         // 消耗输入
         inventory.get(0).decrement(1);
 
-        // 产出主产物
+        // 产出主产物 (槽1，最大3)
         ItemStack primary = recipe.getOutput(world.getRegistryManager()).copy();
-        if (inventory.get(1).isEmpty()) {
+        ItemStack outputStack = inventory.get(1);
+        int maxPrimary = getSlotMaxCount(1);
+        if (outputStack.isEmpty()) {
+            if (primary.getCount() > maxPrimary) primary.setCount(maxPrimary);
             inventory.set(1, primary);
         } else {
-            inventory.get(1).increment(primary.getCount());
+            int newCount = outputStack.getCount() + primary.getCount();
+            if (newCount > maxPrimary) {
+                outputStack.setCount(maxPrimary);
+            } else {
+                outputStack.increment(primary.getCount());
+            }
         }
 
-        // 产出随机额外产物
+        // 产出随机额外产物 (槽2，最大10)
         ItemStack extra = recipe.getExtraOutput(random);
         if (!extra.isEmpty()) {
-            if (inventory.get(2).isEmpty()) {
+            ItemStack extraStack = inventory.get(2);
+            int maxExtra = getSlotMaxCount(2);
+            if (extraStack.isEmpty()) {
+                if (extra.getCount() > maxExtra) extra.setCount(maxExtra);
                 inventory.set(2, extra);
             } else {
-                inventory.get(2).increment(extra.getCount());
+                int newCount = extraStack.getCount() + extra.getCount();
+                if (newCount > maxExtra) {
+                    extraStack.setCount(maxExtra);
+                } else {
+                    extraStack.increment(extra.getCount());
+                }
             }
         }
         markDirty();
     }
 
     // ========== 闪电监听与启动熔炼 ==========
-    /**
-     * 由内部监听器调用，尝试启动熔炼（仅在空闲时）。
-     */
     private void onLightningStrike(ServerWorld world, Vec3d emitterPos) {
         if (isCrafting()) {
             return;
@@ -209,7 +237,6 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     private void startCraftingIfPossible(ServerWorld world) {
         if (world == null) return;
 
-        // 查找匹配的雷霆熔炼配方
         Optional<ThunderSmeltRecipe> match = world.getRecipeManager()
                 .listAllOfType(ModRecipes.THUNDER_SMELT)
                 .stream()
@@ -222,19 +249,23 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         ItemStack inputStack = inventory.get(0);
         if (inputStack.isEmpty()) return;
 
-        // 模拟产物，检查主输出槽容量
+        // 模拟主产物，检查主输出槽（1）空间
         ItemStack primaryOutput = recipe.craft(this, world.getRegistryManager());
         ItemStack outputStack = inventory.get(1);
-        if (!outputStack.isEmpty() && (!ItemStack.areItemsEqual(outputStack, primaryOutput) || outputStack.getCount() + primaryOutput.getCount() > outputStack.getMaxCount())) {
+        int maxPrimary = getSlotMaxCount(1);
+        if (!outputStack.isEmpty() && (!ItemStack.areItemsEqual(outputStack, primaryOutput)
+                || outputStack.getCount() + primaryOutput.getCount() > maxPrimary)) {
             return;
         }
 
-        // 检查额外输出槽容量（取最大可能数量）
+        // 检查额外输出槽（2）空间
         ItemStack extraOutput = recipe.getExtraOutput(random);
         int extraCount = extraOutput.getCount();
         if (extraCount > 0) {
             ItemStack extraSlot = inventory.get(2);
-            if (!extraSlot.isEmpty() && (!ItemStack.areItemsEqual(extraSlot, extraOutput) || extraSlot.getCount() + extraCount > extraSlot.getMaxCount())) {
+            int maxExtra = getSlotMaxCount(2);
+            if (!extraSlot.isEmpty() && (!ItemStack.areItemsEqual(extraSlot, extraOutput)
+                    || extraSlot.getCount() + extraCount > maxExtra)) {
                 return;
             }
         }
@@ -245,7 +276,7 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         markDirty();
     }
 
-    // ========== GameEventListener.Holder 实现 ==========
+    // ========== GameEventListener.Holder ==========
     @Override
     public ThunderSmelterPipeBlockEntity.Listener getEventListener() {
         return listener;
@@ -286,9 +317,6 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     }
 
     // ========== 内部监听器 ==========
-    /**
-     * 专门监听闪电事件的游戏事件监听器，范围 2 格。
-     */
     public static class Listener implements GameEventListener {
         private final BlockPos pos;
 
@@ -309,7 +337,6 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         @Override
         public boolean listen(ServerWorld world, GameEvent event, GameEvent.Emitter emitter, Vec3d emitterPos) {
             if (event == GameEvent.LIGHTNING_STRIKE) {
-                // 通过位置源获取关联的方块实体并触发熔炼
                 if (world.getBlockEntity(pos) instanceof ThunderSmelterPipeBlockEntity be) {
                     be.onLightningStrike(world, emitterPos);
                     return true;
