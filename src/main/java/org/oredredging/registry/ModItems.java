@@ -84,6 +84,8 @@ public class ModItems {
     public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
     public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new MimeticLeyLineItem(block, settings, Cimelia.Category.ANCIENT, 3));
     public static final Item ASTRALIUM = register("astralium", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
+    public static final Item FLAME_CRYSTAL = register("flame_crystal", new FlameCrystalItem(new Item.Settings()));
+    public static final Item FLAME_CRYSTAL_CLUSTER = register("flame_crystal_cluster", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
     public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
@@ -108,6 +110,9 @@ public class ModItems {
     public static final Item DETONATOR = register(ModBlocks.DETONATOR, ((block, settings) -> new DetonatorItem(block, settings, 100)));
     public static final Item SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR, ((block, settings) -> new SlimyDetonatorItem(block, settings, 100)));
     public static final Item IMPACT_DETONATOR = register("impact_detonator", new ImpactDetonatorItem(new Item.Settings()));
+
+    // 武器
+    public static final Item FLAME_CRYSTAL_ARROW = register("flame_crystal_arrow", new FlameCrystalArrowItem(new Item.Settings()));
 
     // 其他
     public static final Item QUARTZ_GLASS = register(ModBlocks.QUARTZ_GLASS);

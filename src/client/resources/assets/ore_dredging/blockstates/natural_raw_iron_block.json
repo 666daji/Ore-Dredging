@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ore_dredging:block/natural_raw_iron_block"
+    }
+  }
+}

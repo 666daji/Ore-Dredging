@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -37,6 +38,10 @@ public class PebbleEntity extends ThrownItemEntity {
 
     public PebbleEntity(World world, double x, double y, double z) {
         super(ModEntities.PEBBLE, x, y, z, world);
+    }
+
+    public PebbleEntity(EntityType<? extends ThrownItemEntity> type, World world, PlayerEntity user) {
+        super(type, user, world);
     }
 
     @Override

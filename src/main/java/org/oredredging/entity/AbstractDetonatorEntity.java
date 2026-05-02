@@ -56,7 +56,7 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
                 setIgniteTime(igniteTime - 1);
             }
             if (igniteTime <= 0) {
-                explode();
+                explode(8.0F);
             }
         }
 
@@ -118,13 +118,13 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
     /**
      * 使雷管爆炸。
      */
-    protected void explode() {
+    protected void explode(float power) {
         if (getWorld().isClient()) {
             return;
         }
 
         this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),
-                8.0F, World.ExplosionSourceType.MOB);
+                power, World.ExplosionSourceType.MOB);
         this.getWorld().sendEntityStatus(this, (byte) 3);
         this.discard();
     }

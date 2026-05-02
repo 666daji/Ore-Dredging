@@ -15,7 +15,7 @@ public class ModItemGroups {
                 new Identifier(OreDredging.MOD_ID, "ore_dredging_group"),
                 ItemGroup.create(ItemGroup.Row.TOP, -1)
                         .displayName(Text.translatable("itemGroup.ore_dredging"))
-                        .icon(() -> new ItemStack(ModItems.RAW_COPPER_NUGGET))
+                        .icon(() -> new ItemStack(ModItems.GOLDEN_BALL))
                         .entries(((displayContext, entries) -> {
                             // 宝物
                             entries.add(ModItems.GOLDEN_BALL);
@@ -24,6 +24,8 @@ public class ModItemGroups {
                             entries.add(ModItems.ENERGETIC_CRYSTAL);
                             entries.add(ModItems.MIMETIC_LEY_LINE);
                             entries.add(ModItems.ASTRALIUM);
+                            entries.add(ModItems.FLAME_CRYSTAL);
+                            entries.add(ModItems.FLAME_CRYSTAL_CLUSTER);
 
                             entries.add(ModItems.GRAY_QUARTZ);
                             entries.add(ModItems.SOFT_ARMOR_TEMPLATE);
@@ -105,6 +107,9 @@ public class ModItemGroups {
                             // 工具
                             entries.add(ModItems.GEOLOGICAL_HAMMER);
                             entries.add(ModItems.COLLAPSE_STONE_HAMMER);
+
+                            // 武器
+                            entries.add(ModItems.FLAME_CRYSTAL_ARROW);
 
                             // 装备
                             entries.add(ModItems.MINER_HELMET);

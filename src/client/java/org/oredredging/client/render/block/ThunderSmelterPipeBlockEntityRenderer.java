@@ -15,7 +15,6 @@ import org.oredredging.block.entity.ThunderSmelterPipeBlockEntity;
 public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRenderer<ThunderSmelterPipeBlockEntity> {
     protected final ItemRenderer itemRenderer;
 
-    // ========== 堆叠参数常量 ==========
     // 每一层物品沿主要堆叠方向的位移增量
     private static final double INPUT_STACK_BACK = 0.03;   // 输入槽物品每层向后移动的距离
     private static final double OUTPUT_STACK_UP = 0.03;   // 输出槽物品每层向上移动的距离
@@ -28,7 +27,6 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
     private static final float INPUT_ROT_Y_INCREMENT  = 8.0F;
     private static final float OUTPUT_ROT_Y_INCREMENT = 10.0F;
 
-    // 基础位置 (相对于方块中心，并根据FACING旋转后的空间)
     // 输入物品中心位置
     private static final double INPUT_BASE_X = 0.0;
     private static final double INPUT_BASE_Y = -0.25;

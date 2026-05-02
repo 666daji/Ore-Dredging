@@ -9,6 +9,8 @@ import org.oredredging.registry.ModEntities;
 import org.oredredging.registry.ModItems;
 
 public class ImpactDetonatorEntity extends AbstractDetonatorEntity {
+    private float power = 8.0F;
+
     public ImpactDetonatorEntity(EntityType<? extends AbstractDetonatorEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -21,9 +23,13 @@ public class ImpactDetonatorEntity extends AbstractDetonatorEntity {
         super(ModEntities.IMPACT_DETONATOR, world, x, y, z);
     }
 
+    public void setPower(float power) {
+        this.power = power;
+    }
+
     @Override
     protected void onCollision(HitResult hitResult) {
-        this.explode();
+        this.explode(power);
     }
 
     @Override
