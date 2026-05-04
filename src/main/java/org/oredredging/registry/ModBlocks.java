@@ -9,7 +9,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.oredredging.OreDredging;
 import org.oredredging.block.*;
-import org.oredredging.block.entity.MimeticLeyLineBlockEntity;
 
 public class ModBlocks {
     // 花岗岩系列

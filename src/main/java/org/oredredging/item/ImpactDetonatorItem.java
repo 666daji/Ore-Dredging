@@ -13,8 +13,15 @@ import net.minecraft.world.World;
 import org.oredredging.entity.ImpactDetonatorEntity;
 
 public class ImpactDetonatorItem extends Item implements Wave{
-    public ImpactDetonatorItem(Settings settings) {
+    public final float power;
+
+    public ImpactDetonatorItem(Settings settings, float power) {
         super(settings);
+        this.power = power;
+    }
+
+    public ImpactDetonatorItem(Settings settings) {
+        this(settings, 8.0F);
     }
 
     @Override
@@ -35,6 +42,7 @@ public class ImpactDetonatorItem extends Item implements Wave{
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
 
         ImpactDetonatorEntity entity = new ImpactDetonatorEntity(world, player);
+        entity.setPower(power);
         entity.setItem(stack);
         entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, usedTicks * 0.05F, 1.0F);
         entity.setIgniteTime(-1);

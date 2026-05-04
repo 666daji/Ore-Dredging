@@ -13,5 +13,6 @@ public class ModEntityRenderers {
         EntityRendererRegistry.register(ModEntities.SLIMY_DETONATOR, DetonatorEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.IMPACT_DETONATOR, DetonatorEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.FLAME_CRYSTAL_ARROW, FlameCrystalArrowEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.MIMETIC_LEY_LINE_FALLING, MimeticLeyLineFallingEntityRenderer::new);
     }
 }

@@ -16,7 +16,7 @@ import org.oredredging.client.registry.ModModelLayers;
 import org.oredredging.util.EnhancedAnimationState;
 
 public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityRenderer<MimeticLeyLineBlockEntity> {
-    private static final Identifier TEXTURE = new Identifier(OreDredging.MOD_ID, "textures/block/entity/mimetic_ley_line.png");
+    public static final Identifier TEXTURE = new Identifier(OreDredging.MOD_ID, "textures/block/entity/mimetic_ley_line.png");
 
     private final ModelPart all;
 
@@ -51,21 +51,13 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
         ModelPartData all = modelPartData.addChild("all", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 20.2F, 0.0F));
 
         ModelPartData up1 = all.addChild("up1", ModelPartBuilder.create().uv(8, 0).cuboid(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(-1.0F, -0.2F, 1.0F));
-
         ModelPartData up2 = all.addChild("up2", ModelPartBuilder.create().uv(8, 4).cuboid(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(-1.0F, -0.2F, -1.0F));
-
         ModelPartData up3 = all.addChild("up3", ModelPartBuilder.create().uv(8, 12).cuboid(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(1.0F, -0.2F, -1.0F));
-
         ModelPartData up4 = all.addChild("up4", ModelPartBuilder.create().uv(0, 0).cuboid(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(1.0F, -0.2F, 1.0F));
-
         ModelPartData bellow1 = all.addChild("bellow1", ModelPartBuilder.create().uv(8, 8).cuboid(-2.0F, -0.2F, -2.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-
         ModelPartData bellow2 = all.addChild("bellow2", ModelPartBuilder.create().uv(0, 12).cuboid(0.0F, -0.2F, -2.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-
         ModelPartData bellow3 = all.addChild("bellow3", ModelPartBuilder.create().uv(0, 4).cuboid(-2.0F, -0.2F, 0.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-
         ModelPartData bellow4 = all.addChild("bellow4", ModelPartBuilder.create().uv(0, 8).cuboid(0.0F, -0.2F, 0.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-
         ModelPartData core = all.addChild("core", ModelPartBuilder.create().uv(0, 16).cuboid(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0F)), ModelTransform.pivot(0.0F, -0.2F, 0.0F));
         return TexturedModelData.of(modelData, 32, 32);
     }
@@ -81,9 +73,12 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
 
         manageAnimationState(entity, tickDelta);
 
-        // 渲染
+        // 获取悬浮高度偏移
+        float heightOffset = entity.getRenderHeightOffset();
+
         matrices.push();
-        matrices.translate(0.5, -0.5, 0.5);
+        // 基础位置调整（模型原本的偏移）
+        matrices.translate(0.5, -0.82 + heightOffset, 0.5);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180.0f), 0, 1.1f, 0);
 
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(TEXTURE));
@@ -91,13 +86,13 @@ public class MimeticLeyLineBlockEntityRenderer extends WithAnimationBlockEntityR
         matrices.pop();
     }
 
-    /**
-     * 管理动画状态
-     */
     private void manageAnimationState(MimeticLeyLineBlockEntity entity, float tickDelta) {
         resetAllModelParts();
 
-        // 获取实体年龄和动画进度
+        if (entity.getState() == MimeticLeyLineBlockEntity.State.DORMANT) {
+            return;
+        }
+
         int age = Math.toIntExact(entity.getProgress());
         float animationProgress = getAnimationProgress(age, tickDelta);
 

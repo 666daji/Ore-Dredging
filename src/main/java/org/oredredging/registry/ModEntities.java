@@ -47,6 +47,12 @@ public class ModEntities {
             .trackedUpdateRate(4)
             .build());
 
+    public static final EntityType<MimeticLeyLineFallingEntity> MIMETIC_LEY_LINE_FALLING = register("mimetic_ley_line_falling", FabricEntityTypeBuilder.<MimeticLeyLineFallingEntity>create(SpawnGroup.MISC, MimeticLeyLineFallingEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+            .trackRangeBlocks(2)
+            .trackedUpdateRate(4)
+            .build());
+
     private static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(OreDredging.MOD_ID, id), type);
     }

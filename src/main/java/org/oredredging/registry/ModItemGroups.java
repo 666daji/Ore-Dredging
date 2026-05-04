@@ -118,6 +118,7 @@ public class ModItemGroups {
                             entries.add(ModItems.DETONATOR);
                             entries.add(ModItems.SLIMY_DETONATOR);
                             entries.add(ModItems.IMPACT_DETONATOR);
+                            entries.add(ModItems.HIGH_ENERGY_DETONATOR);
 
                             // 其他
                             entries.add(ModItems.QUARTZ_GLASS);
