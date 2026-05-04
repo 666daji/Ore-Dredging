@@ -26,6 +26,7 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import org.oredredging.block.entity.MimeticLeyLineBlockEntity;
 import org.oredredging.registry.ModBlockEntities;
+import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModSoundEvent;
 
 public class MimeticLeyLineBlock extends BlockWithEntity {
@@ -59,7 +60,11 @@ public class MimeticLeyLineBlock extends BlockWithEntity {
                         pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                         world.random.nextDouble(), 1.0, world.random.nextDouble());
             }
+        } else {
+            player.giveItemStack(new ItemStack(ModItems.MIMETIC_LEY_LINE));
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         }
+
         return ActionResult.SUCCESS;
     }
 
