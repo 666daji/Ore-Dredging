@@ -84,8 +84,8 @@ public class ModItems {
     public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
     public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new MimeticLeyLineItem(block, settings, Cimelia.Category.ANCIENT, 3));
     public static final Item ASTRALIUM = register("astralium", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
-    public static final Item FLAME_CRYSTAL = register("flame_crystal", new FlameCrystalItem(new Item.Settings()));
-    public static final Item FLAME_CRYSTAL_CLUSTER = register("flame_crystal_cluster", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
+    public static final Item FLAME_CRYSTAL = register(ModBlocks.FLAME_CRYSTAL, FlameCrystalItem::new);
+    public static final Item FLAME_CRYSTAL_CLUSTER = register(ModBlocks.FLAME_CRYSTAL_CLUSTER, (block, settings) -> new BlockCimeliaItem(block, settings, Cimelia.Category.NATURE, 3));
 
     public static final Item GRAY_QUARTZ = register("gray_quartz");
     public static final Item SOFT_ARMOR_TEMPLATE = register("soft_armor_template");
@@ -135,6 +135,10 @@ public class ModItems {
     }
 
     private static Item register(String id, Item item) {
+        if (item instanceof BlockItem) {
+            ((BlockItem)item).appendBlocks(Item.BLOCK_ITEMS, item);
+        }
+
         return Registry.register(Registries.ITEM, new Identifier(OreDredging.MOD_ID, id), item);
     }
 

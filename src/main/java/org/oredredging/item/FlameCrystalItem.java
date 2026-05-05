@@ -1,5 +1,6 @@
 package org.oredredging.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -10,9 +11,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.oredredging.entity.FlameCrystalEntity;
 
-public class FlameCrystalItem extends SimpleCimeliaItem{
-    public FlameCrystalItem(Settings settings) {
-        super(settings, Category.NATURE, 3);
+public class FlameCrystalItem extends BlockCimeliaItem {
+    public FlameCrystalItem(Block block, Settings settings) {
+        super(block, settings, Category.NATURE, 3);
     }
 
     @Override

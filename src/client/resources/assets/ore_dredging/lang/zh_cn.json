@@ -11,6 +11,11 @@
   "item.ore_dredging.nephrite": "软玉",
   "item.ore_dredging.armor_fragments": "盔甲残片",
   "item.ore_dredging.energetic_crystal": "盈能水晶",
+  "item.ore_dredging.astralium": "星钛",
+
+  "block.ore_dredging.flame_crystal": "焰晶",
+  "block.ore_dredging.flame_crystal_cluster": "焰晶晶簇",
+  "block.ore_dredging.mimetic_ley_line": "模拟地脉",
 
   "item.ore_dredging.gray_quartz": "灰石英",
   "item.ore_dredging.soft_armor_template": "软甲模板",
@@ -40,6 +45,22 @@
   "block.ore_dredging.tuff_gravel_piles": "凝灰岩碎石堆",
   "block.ore_dredging.netherrack_gravel_piles": "地狱岩碎石堆",
   "block.ore_dredging.basalt_gravel_piles": "玄武岩碎石堆",
+  "block.ore_dredging.raw_copper_gravel_piles": "粗铜碎石堆",
+  "block.ore_dredging.raw_iron_gravel_piles": "粗铁碎石堆",
+  "block.ore_dredging.raw_gold_gravel_piles": "粗金碎石堆",
+
+  "block.ore_dredging.raw_iron_slab": "粗铁台阶",
+  "block.ore_dredging.raw_copper_slab": "粗铜台阶",
+  "block.ore_dredging.raw_gold_slab": "粗金台阶",
+  "block.ore_dredging.iron_slab": "铁台阶",
+  "block.ore_dredging.gold_slab": "金台阶",
+  "block.ore_dredging.copper_slab": "铜台阶",
+  "block.ore_dredging.netherite_slab": "下界合金台阶",
+  "block.ore_dredging.diamond_slab": "钻石台阶",
+  "block.ore_dredging.emerald_slab": "绿宝石台阶",
+  "block.ore_dredging.lapis_slab": "青金石台阶",
+  "block.ore_dredging.redstone_slab": "红石台阶",
+  "block.ore_dredging.coal_slab": "煤炭台阶",
 
   "block.ore_dredging.stone_pebble": "石子",
   "block.ore_dredging.diorite_pebble": "闪长岩石子",
@@ -47,6 +68,14 @@
   "block.ore_dredging.granite_pebble": "花岗岩石子",
   "block.ore_dredging.deepslate_pebble": "深板岩石子",
   "block.ore_dredging.tuff_pebble": "凝灰岩石子",
+
+  "item.ore_dredging.astralium_steel_nugget": "星钛钢粒",
+  "item.ore_dredging.astralium_steel": "星钛钢",
+
+  "block.ore_dredging.astralium_ore": "星钛矿",
+  "block.ore_dredging.natural_raw_copper_block": "天然粗铜块",
+  "block.ore_dredging.natural_raw_iron_block": "天然粗铁块",
+  "block.ore_dredging.thunder_smelter_pipe": "雷熔罐",
 
   "item.ore_dredging.leather_miner_bundle": "皮革储矿袋",
   "item.ore_dredging.chain_miner_bundle": "锁链储矿袋",
@@ -61,13 +90,17 @@
 
   "item.ore_dredging.miner_helmet": "矿工帽",
 
+  "item.ore_dredging.flame_crystal_arrow": "焰晶箭",
+
   "block.ore_dredging.detonator": "雷管",
   "block.ore_dredging.slimy_detonator": "粘性雷管",
   "item.ore_dredging.impact_detonator": "触碰式雷管",
+  "item.ore_dredging.high_energy_detonator": "高能雷管",
 
   "entity.ore_dredging.detonator": "雷管",
   "entity.ore_dredging.slimy_detonator": "粘性雷管",
   "entity.ore_dredging.impact_detonator": "触碰式雷管",
+  "entity.ore_dredging.high_energy_detonator": "高能雷管",
 
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚拢",
@@ -91,6 +124,22 @@
   "ore_dredging.cimelia_introduction.energetic_crystal_1": "一支闪闪发光的，颜色深的发暗的紫水晶",
   "ore_dredging.cimelia_introduction.energetic_crystal_2":"仅用肉眼便能看到玄奥而庞大的能量在其中沿着每一寸晶体结构流淌",
   "ore_dredging.cimelia_introduction.energetic_crystal_3":"将其握在手中时，能感受到它在轻轻律动",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "一颗冰冷沉重的原矿，坚硬无比",
+  "ore_dredging.cimelia_introduction.astralium_2": "握在手中仔细端详，能看到表面覆盖有一层层波纹状的浅色纹路",
+  "ore_dredging.cimelia_introduction.astralium_3": "这种矿物似乎不属于这个世界，它太过结实了。",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "看起来像是一小块深板岩石头。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "巨大的重量和令人诡异的坚硬程度暴露了他不是一块普通石头的事实。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "该怎么激活它呢？",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "一簇十分美丽的晶体簇",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "外层包裹有深红色的晶体膜，内层的纹路像是跳动的火焰。",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "摸起来十分滚烫。",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "一支烫手的红色水晶",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "晶体内层的火焰纹路像是在跳动一样，",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "它不停的向外释放着美丽又危险的气息，昭示了它蕴含的巨大能量。",
 
   "item.minerbundle.fullness": "容量:%s/%s",
 

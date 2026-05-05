@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "ore_dredging:block/flame_crystal_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "ore_dredging:block/flame_crystal_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ore_dredging:block/flame_crystal_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "ore_dredging:block/flame_crystal_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "ore_dredging:block/flame_crystal_cluster"
+    },
+    "facing=west": {
+      "model": "ore_dredging:block/flame_crystal_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}
