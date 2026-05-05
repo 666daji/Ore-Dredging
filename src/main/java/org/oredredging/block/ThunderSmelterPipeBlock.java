@@ -90,7 +90,7 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             double x = pos.getX() + 0.3 + random.nextDouble() * 0.4;
             double y = pos.getY() + 0.1;
             double z = pos.getZ() + 0.3 + random.nextDouble() * 0.4;
-            world.addParticle(RandomUtil.randomBoolean(0.5F)? ParticleTypes.SMOKE : ParticleTypes.POOF, x, y, z, 0.0, 0.05, 0.0);
+            world.addParticle(RandomUtil.randomBoolean(0.5F) ? ParticleTypes.SMOKE : ParticleTypes.POOF, x, y, z, 0.0, 0.05, 0.0);
         }
 
         if (random.nextFloat() < 0.1f) {
@@ -112,6 +112,7 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             return ActionResult.PASS;
         }
 
+        // 潜行提取输出
         if (player.isSneaking()) {
             boolean changed = false;
             for (int slot : new int[]{1, 2}) {
@@ -130,11 +131,16 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             return ActionResult.CONSUME;
         }
 
+        // 熔炼过程中禁止对输入槽进行任何操作
+        if (pipe.isCrafting()) {
+            return ActionResult.PASS;
+        }
+
         ItemStack held = player.getMainHandStack();
         ItemStack inputStack = pipe.getStack(0);
 
         if (!held.isEmpty()) {
-            // 输入槽容量改为 3
+            // 尝试放入物品
             if (inputStack.isEmpty() || (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < 3)) {
                 ItemStack oneItem = held.copy();
                 oneItem.setCount(1);
@@ -148,6 +154,7 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
                 pipe.markDirty();
                 return ActionResult.CONSUME;
             } else {
+                // 输入槽已满或物品不同，则取出一个物品
                 ItemStack extracted = pipe.removeStack(0, 1);
                 if (!player.getInventory().insertStack(extracted)) {
                     player.dropItem(extracted, false);
@@ -156,6 +163,7 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
                 return ActionResult.CONSUME;
             }
         } else {
+            // 空手取出
             if (!inputStack.isEmpty()) {
                 ItemStack extracted = pipe.removeStack(0, 1);
                 if (!player.getInventory().insertStack(extracted)) {

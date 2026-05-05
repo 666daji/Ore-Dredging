@@ -30,14 +30,6 @@ import org.oredredging.recipe.ThunderSmeltRecipe;
 import java.util.Optional;
 import java.util.Random;
 
-/**
- * 雷霆熔炼管道的方块实体。
- * <p>
- * 拥有三个物品槽位：0 = 输入（最大堆叠3），1 = 主输出（最大堆叠3），2 = 额外输出（最大堆叠10）。
- * 接收到 {@link GameEvent#LIGHTNING_STRIKE} 事件时，若存在匹配的雷霆熔炼配方且输出槽有空间，
- * 则开始 5 秒（100 ticks）的熔炼过程。期间外部自动化（漏斗等）无法插入/提取。
- * 熔炼完成后消耗 1 个输入物品，生成主产物和随机额外产物。
- */
 public class ThunderSmelterPipeBlockEntity extends BlockEntity
         implements GameEventListener.Holder<ThunderSmelterPipeBlockEntity.Listener>, Inventory, SidedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
@@ -45,16 +37,15 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     private int craftingTicksRemaining = 0;
     private final Random random = new Random();
 
+    private ItemStack pendingPrimaryOutput = ItemStack.EMPTY;
+    private ItemStack pendingExtraOutput = ItemStack.EMPTY;
+
     public ThunderSmelterPipeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.THUNDER_SMELTER_PIPE, pos, state);
         this.listener = new Listener(pos);
     }
 
     // ========== 槽位最大容量 ==========
-
-    /**
-     * 获取指定槽位的最大堆叠数量。
-     */
     public int getSlotMaxCount(int slot) {
         return switch (slot) {
             case 0, 1 -> 3;   // 输入和主输出
@@ -63,11 +54,6 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         };
     }
 
-    /**
-     * 告知外部自动化（如漏斗）此容器允许的最大堆叠数。
-     * 这里选择返回 3，因为自动化只会向输入槽插入物品，输入槽上限为 3。
-     * 对于只能内部产出的槽位 1 和 2，不受此限制影响。
-     */
     @Override
     public int getMaxCountPerStack() {
         return 3;
@@ -121,7 +107,6 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     // ========== SidedInventory 实现 ==========
     @Override
     public int[] getAvailableSlots(Direction side) {
-        // 底面：允许访问输出槽；其他面：仅允许访问输入槽
         if (side == Direction.DOWN) {
             return new int[]{1, 2};
         } else {
@@ -131,13 +116,11 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        // 仅在非熔炼状态、槽位为输入、且方向不是底面时允许插入
         return !isCrafting() && slot == 0 && dir != Direction.DOWN;
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        // 仅在非熔炼状态、方向为底面、且槽位为输出槽时允许提取
         return !isCrafting() && dir == Direction.DOWN && (slot == 1 || slot == 2);
     }
 
@@ -170,56 +153,48 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     }
 
     /**
-     * 熔炼完成：消耗1个输入物品，将主产物和额外产物放入对应槽位。
+     * 熔炼完成：消耗输入槽全部物品，放入预先计算好的产物。
      */
     private void finishCrafting() {
         if (world == null || world.isClient) return;
+        if (pendingPrimaryOutput.isEmpty() && pendingExtraOutput.isEmpty()) return;
 
-        Optional<ThunderSmeltRecipe> match = world.getRecipeManager()
-                .listAllOfType(ModRecipes.THUNDER_SMELT)
-                .stream()
-                .filter(recipe -> recipe.matches(this, world))
-                .findFirst();
+        // 全部消耗输入槽物品
+        inventory.get(0).setCount(0);
 
-        if (match.isEmpty()) return;
-
-        ThunderSmeltRecipe recipe = match.get();
-        // 消耗输入
-        inventory.get(0).decrement(1);
-
-        // 产出主产物 (槽1，最大3)
-        ItemStack primary = recipe.getOutput(world.getRegistryManager()).copy();
-        ItemStack outputStack = inventory.get(1);
-        int maxPrimary = getSlotMaxCount(1);
-        if (outputStack.isEmpty()) {
-            if (primary.getCount() > maxPrimary) primary.setCount(maxPrimary);
-            inventory.set(1, primary);
-        } else {
-            int newCount = outputStack.getCount() + primary.getCount();
-            if (newCount > maxPrimary) {
-                outputStack.setCount(maxPrimary);
-            } else {
-                outputStack.increment(primary.getCount());
+        // 放入主产物
+        if (!pendingPrimaryOutput.isEmpty()) {
+            ItemStack outputStack = inventory.get(1);
+            int maxPrimary = getSlotMaxCount(1);
+            if (outputStack.isEmpty()) {
+                ItemStack toPut = pendingPrimaryOutput.copy();
+                if (toPut.getCount() > maxPrimary) toPut.setCount(maxPrimary);
+                inventory.set(1, toPut);
+            } else if (ItemStack.areItemsEqual(outputStack, pendingPrimaryOutput)) {
+                int newCount = outputStack.getCount() + pendingPrimaryOutput.getCount();
+                if (newCount > maxPrimary) newCount = maxPrimary;
+                outputStack.setCount(newCount);
             }
         }
 
-        // 产出随机额外产物 (槽2，最大10)
-        ItemStack extra = recipe.getExtraOutput(random);
-        if (!extra.isEmpty()) {
+        // 放入额外产物
+        if (!pendingExtraOutput.isEmpty()) {
             ItemStack extraStack = inventory.get(2);
             int maxExtra = getSlotMaxCount(2);
             if (extraStack.isEmpty()) {
-                if (extra.getCount() > maxExtra) extra.setCount(maxExtra);
-                inventory.set(2, extra);
-            } else {
-                int newCount = extraStack.getCount() + extra.getCount();
-                if (newCount > maxExtra) {
-                    extraStack.setCount(maxExtra);
-                } else {
-                    extraStack.increment(extra.getCount());
-                }
+                ItemStack toPut = pendingExtraOutput.copy();
+                if (toPut.getCount() > maxExtra) toPut.setCount(maxExtra);
+                inventory.set(2, toPut);
+            } else if (ItemStack.areItemsEqual(extraStack, pendingExtraOutput)) {
+                int newCount = extraStack.getCount() + pendingExtraOutput.getCount();
+                if (newCount > maxExtra) newCount = maxExtra;
+                extraStack.setCount(newCount);
             }
         }
+
+        // 清空暂存
+        pendingPrimaryOutput = ItemStack.EMPTY;
+        pendingExtraOutput = ItemStack.EMPTY;
         markDirty();
     }
 
@@ -232,7 +207,7 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
     }
 
     /**
-     * 检查配方并验证输出槽空间，满足条件则开始熔炼。
+     * 检查配方，根据输入槽总数量计算总产出，验证输出槽空间，都满足则暂存产物并开始熔炼。
      */
     private void startCraftingIfPossible(ServerWorld world) {
         if (world == null) return;
@@ -249,28 +224,48 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         ItemStack inputStack = inventory.get(0);
         if (inputStack.isEmpty()) return;
 
-        // 模拟主产物，检查主输出槽（1）空间
-        ItemStack primaryOutput = recipe.craft(this, world.getRegistryManager());
-        ItemStack outputStack = inventory.get(1);
-        int maxPrimary = getSlotMaxCount(1);
-        if (!outputStack.isEmpty() && (!ItemStack.areItemsEqual(outputStack, primaryOutput)
-                || outputStack.getCount() + primaryOutput.getCount() > maxPrimary)) {
-            return;
+        int inputCount = inputStack.getCount();
+        ItemStack singlePrimary = recipe.getOutput(world.getRegistryManager()).copy();
+        // 获取额外产物（只调用一次随机）
+        ItemStack singleExtra = recipe.getExtraOutput(random).copy();
+
+        // 计算总产物数量
+        ItemStack totalPrimary = singlePrimary.copy();
+        totalPrimary.setCount(singlePrimary.getCount() * inputCount);
+        ItemStack totalExtra = singleExtra.copy();
+        if (!singleExtra.isEmpty()) {
+            totalExtra.setCount(singleExtra.getCount() * inputCount);
         }
 
-        // 检查额外输出槽（2）空间
-        ItemStack extraOutput = recipe.getExtraOutput(random);
-        int extraCount = extraOutput.getCount();
-        if (extraCount > 0) {
-            ItemStack extraSlot = inventory.get(2);
-            int maxExtra = getSlotMaxCount(2);
-            if (!extraSlot.isEmpty() && (!ItemStack.areItemsEqual(extraSlot, extraOutput)
-                    || extraSlot.getCount() + extraCount > maxExtra)) {
+        // 检查主输出槽空间
+        ItemStack outputStack = inventory.get(1);
+        int maxPrimary = getSlotMaxCount(1);
+        if (!outputStack.isEmpty()) {
+            if (!ItemStack.areItemsEqual(outputStack, totalPrimary)) {
+                return;
+            }
+            if (outputStack.getCount() + totalPrimary.getCount() > maxPrimary) {
                 return;
             }
         }
 
-        // 条件满足，开始熔炼
+        // 检查额外输出槽空间
+        if (!totalExtra.isEmpty()) {
+            ItemStack extraSlot = inventory.get(2);
+            int maxExtra = getSlotMaxCount(2);
+            if (!extraSlot.isEmpty()) {
+                if (!ItemStack.areItemsEqual(extraSlot, totalExtra)) {
+                    return;
+                }
+                if (extraSlot.getCount() + totalExtra.getCount() > maxExtra) {
+                    return;
+                }
+            }
+        }
+
+        // 暂存产物并启动熔炼
+        pendingPrimaryOutput = totalPrimary;
+        pendingExtraOutput = totalExtra;
         craftingTicksRemaining = 200;
         setCrafting(true);
         markDirty();
@@ -289,6 +284,16 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         inventory.clear();
         Inventories.readNbt(nbt, this.inventory);
         craftingTicksRemaining = nbt.getInt("CraftingTicks");
+        if (nbt.contains("PendingPrimary")) {
+            pendingPrimaryOutput = ItemStack.fromNbt(nbt.getCompound("PendingPrimary"));
+        } else {
+            pendingPrimaryOutput = ItemStack.EMPTY;
+        }
+        if (nbt.contains("PendingExtra")) {
+            pendingExtraOutput = ItemStack.fromNbt(nbt.getCompound("PendingExtra"));
+        } else {
+            pendingExtraOutput = ItemStack.EMPTY;
+        }
     }
 
     @Override
@@ -296,6 +301,12 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, this.inventory);
         nbt.putInt("CraftingTicks", craftingTicksRemaining);
+        if (!pendingPrimaryOutput.isEmpty()) {
+            nbt.put("PendingPrimary", pendingPrimaryOutput.writeNbt(new NbtCompound()));
+        }
+        if (!pendingExtraOutput.isEmpty()) {
+            nbt.put("PendingExtra", pendingExtraOutput.writeNbt(new NbtCompound()));
+        }
     }
 
     @Override
