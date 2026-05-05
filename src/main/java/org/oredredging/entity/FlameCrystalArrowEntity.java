@@ -27,12 +27,7 @@ public class FlameCrystalArrowEntity extends PersistentProjectileEntity {
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
         if (!this.getWorld().isClient) {
-            this.getWorld().createExplosion(
-                    this,
-                    this.getX(), this.getY(), this.getZ(),
-                    1.0F,
-                    World.ExplosionSourceType.MOB
-            );
+            hit();
             this.discard();
         }
     }
@@ -40,6 +35,10 @@ public class FlameCrystalArrowEntity extends PersistentProjectileEntity {
     @Override
     protected void onHit(LivingEntity target) {
         super.onHit(target);
+        hit();
+    }
+
+    protected void hit() {
         if (!this.getWorld().isClient) {
             this.getWorld().createExplosion(
                     this,
@@ -48,5 +47,14 @@ public class FlameCrystalArrowEntity extends PersistentProjectileEntity {
                     World.ExplosionSourceType.MOB
             );
         }
+
+        ThermalCloudEntity cloud = new ThermalCloudEntity(getWorld(), getX(), getY(), getZ(), 3);
+        cloud.setDuration(2000);
+        cloud.setWaitTime(0);
+        cloud.setRadiusGrowth(-0.02F);
+        if (getOwner() instanceof LivingEntity owner) {
+            cloud.setOwner(owner);
+        }
+        getWorld().spawnEntity(cloud);
     }
 }
