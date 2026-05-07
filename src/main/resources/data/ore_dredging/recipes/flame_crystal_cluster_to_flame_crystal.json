@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ore_dredging:flame_crystal_cluster" }
+  ],
+  "result": {
+    "item": "ore_dredging:flame_crystal",
+    "count": 4
+  }
+}

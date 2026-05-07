@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:copper_block"
+    },
+    "X": {
+      "item": "ore_dredging:nephrite"
+    },
+    "Y": {
+      "item": "ore_dredging:quartz_glass_panes"
+    }
+  },
+  "pattern": [
+    "###",
+    "YXY",
+    "YYY"
+  ],
+  "result": {
+    "count": 6,
+    "item": "ore_dredging:thunder_smelter_pipe"
+  }
+}

@@ -29,7 +29,7 @@ import org.oredredging.registry.ModBlockEntities;
 import org.oredredging.registry.ModItems;
 import org.oredredging.registry.ModSoundEvent;
 
-public class MimeticLeyLineBlock extends BlockWithEntity {
+public class MimeticLeyLineBlock extends BlockWithEntity implements LandingBlock{
     public static final EnumProperty<MimeticLeyLineBlockEntity.State> STATE =
             EnumProperty.of("state", MimeticLeyLineBlockEntity.State.class);
     public static final IntProperty LIGHT = IntProperty.of("light", 0, 4);

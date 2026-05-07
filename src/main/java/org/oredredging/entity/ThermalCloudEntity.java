@@ -25,10 +25,6 @@ public class ThermalCloudEntity extends Entity {
     private float radiusGrowth = -0.2f;  // 每 tick 半径变化量
     @Nullable
     private LivingEntity owner;
-    private final float maxDamage = 4.0f;
-    private final int minInterval = 1;
-    private final int maxInterval = 5;
-    private final float intervalDistMultiplier = 3.0f;
 
     private final Map<Entity, Integer> nextHurtTick = new HashMap<>();
 
@@ -139,7 +135,10 @@ public class ThermalCloudEntity extends Entity {
         float elapsedTime = (float)(this.age - this.waitTime);
         float progress = Math.min(elapsedTime / this.duration, 1.0f);
 
+        int minInterval = 1;
+        int maxInterval = 5;
         int baseInterval = Math.round(minInterval + (maxInterval - minInterval) * progress);
+        float maxDamage = 4.0f;
         float baseDamage = maxDamage * (1.0f - progress);
 
         // 获取包围盒内所有生物
@@ -159,6 +158,7 @@ public class ThermalCloudEntity extends Entity {
             double dist = Math.sqrt(distSq);
             float distRatio = (float)(dist / radius);
 
+            float intervalDistMultiplier = 3.0f;
             float intervalMultiplier = 1.0f + distRatio * intervalDistMultiplier;
             int actualInterval = Math.max(1, (int)(baseInterval * intervalMultiplier));
 

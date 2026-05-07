@@ -7,6 +7,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -22,6 +23,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 
 public class FlameCrystalBlock extends AbstractFlameCrystalBlock {
@@ -54,6 +56,14 @@ public class FlameCrystalBlock extends AbstractFlameCrystalBlock {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(COUNT, FACING);
+    }
+
+    @Override
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+        return super.getDroppedStacks(state, builder)
+                .stream()
+                .peek(stack -> stack.setCount(state.get(COUNT)))
+                .toList();
     }
 
     @Override

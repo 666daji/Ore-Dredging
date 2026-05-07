@@ -7,7 +7,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-import org.oredredging.OreDredging;
 
 public class WrapOreFeature extends Feature<WrapOreFeatureConfig> {
 
@@ -44,8 +43,6 @@ public class WrapOreFeature extends Feature<WrapOreFeatureConfig> {
                 }
             }
         }
-
-        OreDredging.LOGGER.info("{}", origin);
 
         // 核心区域范围
         int coreMinX = origin.getX();

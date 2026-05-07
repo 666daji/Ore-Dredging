@@ -111,9 +111,9 @@ public class ModBlocks {
     public static final Block MIMETIC_LEY_LINE = register("mimetic_ley_line",
             new MimeticLeyLineBlock(AbstractBlock.Settings.create().strength(-1.0F, 3600000.0F).dropsNothing().nonOpaque().mapColor(MapColor.DEEPSLATE_GRAY).luminance(state -> state.get(MimeticLeyLineBlock.LIGHT) * 2)));
     public static final Block FLAME_CRYSTAL = register("flame_crystal",
-            new FlameCrystalBlock(AbstractBlock.Settings.create().strength(1.0F, 3.0F).nonOpaque().mapColor(MapColor.RED)));
+            new FlameCrystalBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(0.5F, 0.5F).nonOpaque().mapColor(MapColor.RED).luminance(state -> 3)));
     public static final Block FLAME_CRYSTAL_CLUSTER = register("flame_crystal_cluster",
-            new FlameCrystalClusterBlock(AbstractBlock.Settings.create().strength(1.0F, 3.0F).nonOpaque().mapColor(MapColor.RED)));
+            new FlameCrystalClusterBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(0.5F, 0.5F).nonOpaque().mapColor(MapColor.RED).luminance(state ->5)));
 
     // 矿石
     public static final Block SWAMP_IRON_ORE = register("swamp_iron_ore",

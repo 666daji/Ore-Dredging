@@ -13,6 +13,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.create(MimeticLeyLineBlockEntity::new, ModBlocks.MIMETIC_LEY_LINE));
     public static final BlockEntityType<ThunderSmelterPipeBlockEntity> THUNDER_SMELTER_PIPE = create("thunder_smelter_pipe",
             BlockEntityType.Builder.create(ThunderSmelterPipeBlockEntity::new, ModBlocks.THUNDER_SMELTER_PIPE));
+    public static final BlockEntityType<FlameCrystalClusterBlockEntity> FLAME_CRYSTAL_CLUSTER = create("flame_crystal_cluster",
+            BlockEntityType.Builder.create(FlameCrystalClusterBlockEntity::new, ModBlocks.FLAME_CRYSTAL_CLUSTER));
 
     private static <T extends BlockEntity> BlockEntityType<T> create(String id, BlockEntityType.Builder<T> builder) {
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(OreDredging.MOD_ID, id), builder.build(null));

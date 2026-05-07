@@ -1,25 +1,44 @@
 package org.oredredging.block;
 
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
+import org.oredredging.block.entity.FlameCrystalClusterBlockEntity;
+import org.oredredging.registry.ModItems;
+import org.oredredging.util.RandomUtil;
 
-public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implements Waterloggable {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
+
+public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implements Waterloggable, BlockEntityProvider {
+    public static final Map<Predicate<ItemStack>, Float> EXPLOSION_PROBABILITY = new HashMap<>();
+
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final DirectionProperty FACING = Properties.FACING;
 
@@ -61,8 +80,43 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
     }
 
     @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (world.getBlockEntity(pos) instanceof FlameCrystalClusterBlockEntity blockEntity
+                && !blockEntity.isNatural()) {
+            player.giveItemStack(new ItemStack(asItem()));
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            return ActionResult.SUCCESS;
+        }
+
+        return super.onUse(state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        if (world.getBlockEntity(pos) instanceof FlameCrystalClusterBlockEntity blockEntity) {
+            blockEntity.markPlayer();
+        }
+    }
+
+    @Override
     protected float getPower(BlockState state, Random random) {
         return 12;
+    }
+
+    @Override
+    public void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack tool, boolean dropExperience) {
+        float probability = 0.5F;
+
+        for (Predicate<ItemStack> predicate : EXPLOSION_PROBABILITY.keySet()) {
+            if (predicate.test(tool)) {
+                probability = EXPLOSION_PROBABILITY.get(predicate);
+            }
+        }
+
+        if (RandomUtil.randomBoolean(probability)) {
+            createThermalExplosion(null, world, pos.toCenterPos(), 12);
+        }
     }
 
     @Override
@@ -94,6 +148,11 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
     }
 
     @Override
+    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new FlameCrystalClusterBlockEntity(pos, state);
+    }
+
+    @Override
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
@@ -111,5 +170,10 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED, FACING);
+    }
+
+    static {
+        EXPLOSION_PROBABILITY.put(stack -> stack.getItem() instanceof PickaxeItem, 0.18F);
+        EXPLOSION_PROBABILITY.put(stack -> stack.isOf(ModItems.GEOLOGICAL_HAMMER), 0.07F);
     }
 }

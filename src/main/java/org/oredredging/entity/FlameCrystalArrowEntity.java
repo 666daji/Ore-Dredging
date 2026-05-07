@@ -6,6 +6,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
+import org.oredredging.block.AbstractFlameCrystalBlock;
 import org.oredredging.registry.ModEntities;
 import org.oredredging.registry.ModItems;
 
@@ -40,21 +41,10 @@ public class FlameCrystalArrowEntity extends PersistentProjectileEntity {
 
     protected void hit() {
         if (!this.getWorld().isClient) {
-            this.getWorld().createExplosion(
-                    this,
-                    this.getX(), this.getY(), this.getZ(),
-                    1.0F,
-                    World.ExplosionSourceType.MOB
+            AbstractFlameCrystalBlock.createThermalExplosion(
+                    getOwner() instanceof LivingEntity explosionOwner? explosionOwner : null,
+                    getWorld(), getPos(), 1.0F
             );
         }
-
-        ThermalCloudEntity cloud = new ThermalCloudEntity(getWorld(), getX(), getY(), getZ(), 3);
-        cloud.setDuration(2000);
-        cloud.setWaitTime(0);
-        cloud.setRadiusGrowth(-0.02F);
-        if (getOwner() instanceof LivingEntity owner) {
-            cloud.setOwner(owner);
-        }
-        getWorld().spawnEntity(cloud);
     }
 }
