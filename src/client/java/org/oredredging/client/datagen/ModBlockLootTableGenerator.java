@@ -39,6 +39,25 @@ public class ModBlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.TUFF_GRAVEL_PILES);
         addDrop(ModBlocks.NETHERRACK_GRAVEL_PILES);
         addDrop(ModBlocks.BASALT_GRAVEL_PILES);
+        addDrop(ModBlocks.RAW_COPPER_GRAVEL_PILES);
+        addDrop(ModBlocks.RAW_IRON_PILES);
+        addDrop(ModBlocks.RAW_GOLD_PILES);
+
+        // 粗金属块半砖
+        addDrop(ModBlocks.RAW_IRON_SLAB);
+        addDrop(ModBlocks.RAW_COPPER_SLAB);
+        addDrop(ModBlocks.RAW_GOLD_SLAB);
+
+        // 金属块半砖
+        addDrop(ModBlocks.IRON_SLAB);
+        addDrop(ModBlocks.GOLD_SLAB);
+        addDrop(ModBlocks.COPPER_SLAB);
+        addDrop(ModBlocks.NETHERITE_SLAB);
+        addDrop(ModBlocks.DIAMOND_SLAB);
+        addDrop(ModBlocks.EMERALD_SLAB);
+        addDrop(ModBlocks.LAPIS_SLAB);
+        addDrop(ModBlocks.REDSTONE_SLAB);
+        addDrop(ModBlocks.COAL_SLAB);
 
         // 碎石堆方块
         addDrop(ModBlocks.STONE_PEBBLE);
@@ -46,5 +65,8 @@ public class ModBlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.ANDESITE_PEBBLE);
         addDrop(ModBlocks.GRANITE_PEBBLE);
         addDrop(ModBlocks.DEEPSLATE_PEBBLE);
+
+        // 工作方块
+        addDrop(ModBlocks.THUNDER_SMELTER_PIPE);
     }
 }

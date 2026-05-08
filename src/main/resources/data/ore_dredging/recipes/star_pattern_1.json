@@ -4,7 +4,7 @@
     "item": "ore_dredging:soft_armor_template"
   },
   "addition": {
-    "item": "ore_dredging:astralium"
+    "item": "ore_dredging:astralium_steel"
   },
   "enchantment": {
     "enchantment": "ore_dredging:star_pattern",
