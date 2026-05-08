@@ -112,26 +112,28 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
             return ActionResult.PASS;
         }
 
-        // 潜行提取输出
-        if (player.isSneaking()) {
-            boolean changed = false;
-            for (int slot : new int[]{1, 2}) {
-                ItemStack stack = pipe.getStack(slot);
-                if (!stack.isEmpty()) {
-                    ItemStack extracted = pipe.removeStack(slot);
-                    if (!player.getInventory().insertStack(extracted)) {
-                        player.dropItem(extracted, false);
-                    }
-                    changed = true;
+        if (pipe.isCrafting()) {
+            return ActionResult.PASS;
+        }
+
+        // 1. 如果输出槽有任何物品，直接全部取出
+        boolean hasOutput = false;
+        for (int slot : new int[]{1, 2}) {
+            ItemStack stack = pipe.getStack(slot);
+            if (!stack.isEmpty()) {
+                ItemStack extracted = pipe.removeStack(slot);
+                if (!player.getInventory().insertStack(extracted)) {
+                    player.dropItem(extracted, false);
                 }
+                hasOutput = true;
             }
-            if (changed) {
-                pipe.markDirty();
-            }
+        }
+        if (hasOutput) {
+            pipe.markDirty();
             return ActionResult.CONSUME;
         }
 
-        // 熔炼过程中禁止对输入槽进行任何操作
+        // 2. 输出槽为空，但正在熔炼则不允许操作输入槽
         if (pipe.isCrafting()) {
             return ActionResult.PASS;
         }
@@ -139,13 +141,16 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
         ItemStack held = player.getMainHandStack();
         ItemStack inputStack = pipe.getStack(0);
 
+        // 3. 手持物品时的逻辑
         if (!held.isEmpty()) {
-            // 尝试放入物品
-            if (inputStack.isEmpty() || (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < 3)) {
+            boolean canInsert = inputStack.isEmpty() ||
+                    (ItemStack.areItemsEqual(inputStack, held) && inputStack.getCount() < pipe.getSlotMaxCount(0));
+
+            if (canInsert) {
+                // 放入一个物品
                 ItemStack oneItem = held.copy();
                 oneItem.setCount(1);
                 held.decrement(1);
-
                 if (inputStack.isEmpty()) {
                     pipe.setStack(0, oneItem);
                 } else {
@@ -154,16 +159,20 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
                 pipe.markDirty();
                 return ActionResult.CONSUME;
             } else {
-                // 输入槽已满或物品不同，则取出一个物品
-                ItemStack extracted = pipe.removeStack(0, 1);
-                if (!player.getInventory().insertStack(extracted)) {
-                    player.dropItem(extracted, false);
+                // 无法放入，从输入槽取出一个物品（如果有）
+                if (!inputStack.isEmpty()) {
+                    ItemStack extracted = pipe.removeStack(0, 1);
+                    if (!player.getInventory().insertStack(extracted)) {
+                        player.dropItem(extracted, false);
+                    }
+                    pipe.markDirty();
+                    return ActionResult.CONSUME;
                 }
-                pipe.markDirty();
-                return ActionResult.CONSUME;
+                // 输入槽也为空，无法操作
+                return ActionResult.PASS;
             }
         } else {
-            // 空手取出
+            // 4. 空手时的逻辑
             if (!inputStack.isEmpty()) {
                 ItemStack extracted = pipe.removeStack(0, 1);
                 if (!player.getInventory().insertStack(extracted)) {
@@ -172,9 +181,9 @@ public class ThunderSmelterPipeBlock extends BlockWithEntity {
                 pipe.markDirty();
                 return ActionResult.CONSUME;
             }
+            // 输入槽为空，什么都不做
+            return ActionResult.PASS;
         }
-
-        return ActionResult.PASS;
     }
 
     @Override

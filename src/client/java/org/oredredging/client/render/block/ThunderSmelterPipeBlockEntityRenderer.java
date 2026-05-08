@@ -18,27 +18,30 @@ import java.util.Random;
 public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRenderer<ThunderSmelterPipeBlockEntity> {
     protected final ItemRenderer itemRenderer;
 
-    // 每层输出物品向上堆叠的位移增量（保留）
+    // 每层输出物品向上堆叠的位移增量
     private static final double OUTPUT_STACK_UP = 0.03;
 
     // 物品模型缩放
-    private static final float INPUT_SCALE  = 0.3F;
+    private static final float INPUT_SCALE  = 0.4F;
     private static final float OUTPUT_SCALE = 0.3F;
 
-    // 输入物品固定中心位置
-    private static final double INPUT_BASE_X = 0.0;
-    private static final double INPUT_BASE_Y = -0.25;
-    private static final double INPUT_BASE_Z = -0.15;
+    // ---- 中心渲染位置（输入槽 & 主输出槽共用） ----
+    private static final double CENTER_BASE_X = 0.0;
+    private static final double CENTER_BASE_Y = -0.25;
+    private static final double CENTER_BASE_Z = 0.0;
 
-    // 主输出物品中心位置
-    private static final double OUTPUT1_BASE_X = -0.13;
-    private static final double OUTPUT1_BASE_Y = -0.35;
-    private static final double OUTPUT1_BASE_Z = 0.05;
-
-    // 额外输出物品中心位置
-    private static final double OUTPUT2_BASE_X = 0.13;
-    private static final double OUTPUT2_BASE_Y = -0.35;
-    private static final double OUTPUT2_BASE_Z = 0.05;
+    // ---- 额外输出槽外围八个相对偏移 ----
+    private static final double[][] EXTRA_OFFSETS = {
+            {-0.2, 0.0, -0.2},
+            {-0.2, 0.0,  0.0},
+            {-0.2, 0.0,  0.2},
+            { 0.0, 0.0, -0.2},
+            { 0.0, 0.0,  0.2},
+            { 0.2, 0.0, -0.2},
+            { 0.2, 0.0,  0.0},
+            { 0.2, 0.0,  0.2}
+    };
+    private static final double EXTRA_BASE_Y = -0.35; // 额外输出堆叠的起始高度
 
     public ThunderSmelterPipeBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         this.itemRenderer = context.getItemRenderer();
@@ -46,10 +49,8 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
 
     /**
      * 生成与物品、槽位、位置绑定的确定性种子。
-     * 当物品类型或数量改变时种子变化，从而刷新随机旋转；否则保持不变。
      */
     private static long createSeed(BlockPos pos, int slot, ItemStack stack) {
-        // 使用物品的哈希码（单例唯一），物品数量和槽位构造种子
         return pos.asLong() ^ ((long) stack.getItem().hashCode() << 32)
                 ^ ((long) stack.getCount() << 16) ^ slot;
     }
@@ -78,66 +79,64 @@ public class ThunderSmelterPipeBlockEntityRenderer implements BlockEntityRendere
 
         BlockPos pos = entity.getPos();
 
-        // === 输入槽 (0) ===
+        // === 中心物品渲染（输入槽 或 主输出槽） ===
+        ItemStack centerStack = ItemStack.EMPTY;
+        int centerSlot = -1;
         if (!input.isEmpty()) {
-            int count = input.getCount();
-            long seed = createSeed(pos, 0, input);
+            centerStack = input;
+            centerSlot = 0;
+        } else if (!output1.isEmpty()) {
+            // 主输出槽也使用中心渲染逻辑
+            centerStack = output1;
+            centerSlot = 1;
+        }
+
+        if (!centerStack.isEmpty()) {
+            int count = centerStack.getCount();
+            long seed = createSeed(pos, centerSlot, centerStack);
             Random rand = new Random(seed);
             for (int i = 0; i < count; i++) {
                 matrices.push();
                 // 所有物品位于同一位置，无层叠偏移
-                matrices.translate(INPUT_BASE_X, INPUT_BASE_Y, INPUT_BASE_Z);
-                // 随机 Y 轴旋转
+                matrices.translate(CENTER_BASE_X, CENTER_BASE_Y, CENTER_BASE_Z);
+                // 随机 Y 轴旋转（与原输入槽相同）
                 float rotY = (rand.nextFloat() + 2) * 360.0F;
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotY));
                 matrices.scale(INPUT_SCALE, INPUT_SCALE, INPUT_SCALE);
-                itemRenderer.renderItem(input, ModelTransformationMode.FIXED, light, overlay,
+                itemRenderer.renderItem(centerStack, ModelTransformationMode.FIXED, light, overlay,
                         matrices, vertexConsumers, entity.getWorld(), 0);
                 matrices.pop();
             }
         }
 
-        // === 主输出槽 (1) ===
-        if (!output1.isEmpty()) {
-            int count = output1.getCount();
-            long seed = createSeed(pos, 1, output1);
-            Random rand = new Random(seed);
-            for (int i = 0; i < count; i++) {
-                matrices.push();
-                // 保留逐层向上堆叠效果
-                matrices.translate(
-                        OUTPUT1_BASE_X,
-                        OUTPUT1_BASE_Y + i * OUTPUT_STACK_UP,
-                        OUTPUT1_BASE_Z
-                );
-                // 基础平放（绕 X 轴 -90°）
-                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
-                // 随机 Y 轴旋转（每个物品独立）
-                float rotY = rand.nextFloat() * 360.0F;
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotY));
-                matrices.scale(OUTPUT_SCALE, OUTPUT_SCALE, OUTPUT_SCALE);
-                itemRenderer.renderItem(output1, ModelTransformationMode.FIXED, light, overlay,
-                        matrices, vertexConsumers, entity.getWorld(), 0);
-                matrices.pop();
-            }
-        }
-
-        // === 额外输出槽 (2) ===
+        // === 额外输出槽渲染（散布在外围八个位置） ===
         if (!output2.isEmpty()) {
             int count = output2.getCount();
             long seed = createSeed(pos, 2, output2);
             Random rand = new Random(seed);
+
+            // 记录每个外围格子内已放置的物品数量
+            int[] slotCounts = new int[EXTRA_OFFSETS.length];
+
             for (int i = 0; i < count; i++) {
                 matrices.push();
-                matrices.translate(
-                        OUTPUT2_BASE_X,
-                        OUTPUT2_BASE_Y + i * OUTPUT_STACK_UP,
-                        OUTPUT2_BASE_Z
-                );
+
+                // 随机选择一个外围格子
+                int slotIndex = rand.nextInt(EXTRA_OFFSETS.length);
+                double[] offset = EXTRA_OFFSETS[slotIndex];
+
+                // 该物品的 Y 位置 = 基础高度 + 该格子内已有物品堆叠高度
+                double y = EXTRA_BASE_Y + slotCounts[slotIndex] * OUTPUT_STACK_UP;
+                slotCounts[slotIndex]++;
+
+                matrices.translate(offset[0], y, offset[2]);
+
+                // 保留平放与随机旋转
                 matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
-                float rotY = rand.nextFloat() * 360.0F;
+                float rotY = rand.nextFloat() * 360.0F;          // 注意：此处绕 Z 轴旋转
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotY));
                 matrices.scale(OUTPUT_SCALE, OUTPUT_SCALE, OUTPUT_SCALE);
+
                 itemRenderer.renderItem(output2, ModelTransformationMode.FIXED, light, overlay,
                         matrices, vertexConsumers, entity.getWorld(), 0);
                 matrices.pop();

@@ -116,12 +116,18 @@ public class ThunderSmelterPipeBlockEntity extends BlockEntity
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return !isCrafting() && slot == 0 && dir != Direction.DOWN;
+        if (isCrafting() || slot != 0 || dir == Direction.DOWN) {
+            return false;
+        }
+        return getStack(1).isEmpty() && getStack(2).isEmpty();
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return !isCrafting() && dir == Direction.DOWN && (slot == 1 || slot == 2);
+        if (isCrafting() || dir != Direction.DOWN || (slot != 1 && slot != 2)) {
+            return false;
+        }
+        return getStack(0).isEmpty();
     }
 
     // ========== 熔炼状态与方块同步 ==========
