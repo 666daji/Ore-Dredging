@@ -2,6 +2,7 @@ package org.oredredging.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -62,21 +63,14 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Direction direction = state.get(FACING);
-        switch (direction) {
-            case NORTH:
-                return this.northShape;
-            case SOUTH:
-                return this.southShape;
-            case EAST:
-                return this.eastShape;
-            case WEST:
-                return this.westShape;
-            case DOWN:
-                return this.downShape;
-            case UP:
-            default:
-                return this.upShape;
-        }
+        return switch (direction) {
+            case NORTH -> this.northShape;
+            case SOUTH -> this.southShape;
+            case EAST -> this.eastShape;
+            case WEST -> this.westShape;
+            case DOWN -> this.downShape;
+            default -> this.upShape;
+        };
     }
 
     @Override
@@ -115,7 +109,23 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
         }
 
         if (RandomUtil.randomBoolean(probability)) {
-            createThermalExplosion(null, world, pos.toCenterPos(), 12);
+            createThermalExplosion(null, world, pos.toCenterPos(), 9);
+        }
+    }
+
+    @Override
+    public void onLanding(World world, BlockPos pos, BlockState fallingBlockState, BlockState currentStateInPos, FallingBlockEntity fallingBlockEntity) {
+        if (fallingBlockState.get(FACING) != Direction.UP || getHighDifference(fallingBlockEntity.getFallingBlockPos(), pos) > 5) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            createThermalExplosion(null, world, pos.toCenterPos(), 9);
+        }
+    }
+
+    @Override
+    public void onDestroyedOnLanding(World world, BlockPos pos, FallingBlockEntity fallingBlockEntity) {
+        if (fallingBlockEntity.getBlockState().get(FACING) != Direction.UP || getHighDifference(fallingBlockEntity.getFallingBlockPos(), pos) > 5) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            createThermalExplosion(null, world, pos.toCenterPos(), 9);
         }
     }
 
@@ -127,16 +137,8 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
     }
 
     @Override
-    public BlockState getStateForNeighborUpdate(
-            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
-    ) {
-        if (state.get(WATERLOGGED)) {
-            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-        }
-
-        return direction == state.get(FACING).getOpposite() && !state.canPlaceAt(world, pos)
-                ? Blocks.AIR.getDefaultState()
-                : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    protected BlockState getCheckState(BlockState state, ServerWorld world, BlockPos pos) {
+        return world.getBlockState(pos.offset(state.get(FACING).getOpposite()));
     }
 
     @Nullable

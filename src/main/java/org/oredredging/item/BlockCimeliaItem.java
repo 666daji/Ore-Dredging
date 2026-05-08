@@ -4,9 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,15 +19,6 @@ public class BlockCimeliaItem extends BlockItem implements Cimelia{
         super(block, settings.rarity(Rarity.UNCOMMON).fireproof());
         this.category = category;
         this.lineCount = lineCount;
-    }
-
-    @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getPlayer() != null && context.getPlayer().isSneaking()) {
-            return super.useOnBlock(context);
-        }
-
-        return ActionResult.PASS;
     }
 
     @Override

@@ -4,10 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -39,7 +41,7 @@ public class FlameCrystalBlock extends AbstractFlameCrystalBlock {
 
     @Override
     protected float getPower(BlockState state, Random random) {
-        return state.get(COUNT) * 6;
+        return state.get(COUNT) * 4;
     }
 
     @Override
@@ -64,6 +66,19 @@ public class FlameCrystalBlock extends AbstractFlameCrystalBlock {
                 .stream()
                 .peek(stack -> stack.setCount(state.get(COUNT)))
                 .toList();
+    }
+
+    @Override
+    public void onLanding(World world, BlockPos pos, BlockState fallingBlockState, BlockState currentStateInPos, FallingBlockEntity fallingBlockEntity) {
+        if (getHighDifference(fallingBlockEntity.getFallingBlockPos(), pos) > 5) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            createThermalExplosion(null, world, pos.toCenterPos(), 3 * fallingBlockState.get(COUNT));
+        }
+    }
+
+    @Override
+    protected BlockState getCheckState(BlockState state, ServerWorld world, BlockPos pos) {
+        return world.getBlockState(pos.down());
     }
 
     @Override

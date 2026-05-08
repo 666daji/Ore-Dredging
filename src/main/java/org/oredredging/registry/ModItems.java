@@ -82,7 +82,7 @@ public class ModItems {
     public static final Item NEPHRITE = register("nephrite", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 2));
     public static final Item ARMOR_FRAGMENTS = register("armor_fragments", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.ANCIENT, 2));
     public static final Item ENERGETIC_CRYSTAL = register("energetic_crystal", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
-    public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new MimeticLeyLineItem(block, settings, Cimelia.Category.ANCIENT, 3));
+    public static final Item MIMETIC_LEY_LINE = register(ModBlocks.MIMETIC_LEY_LINE, (block, settings) -> new BlockCimeliaItem(block, settings, Cimelia.Category.ANCIENT, 3));
     public static final Item ASTRALIUM = register("astralium", new SimpleCimeliaItem(new Item.Settings(), Cimelia.Category.NATURE, 3));
     public static final Item FLAME_CRYSTAL = register(ModBlocks.FLAME_CRYSTAL, FlameCrystalItem::new);
     public static final Item FLAME_CRYSTAL_CLUSTER = register(ModBlocks.FLAME_CRYSTAL_CLUSTER, (block, settings) -> new BlockCimeliaItem(block, settings, Cimelia.Category.NATURE, 3));
