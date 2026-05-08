@@ -1,30 +1,41 @@
 {
-  "itemGroup.ore_dredging": "TWの鉱石採掘",
-  "jade.modName.ore_dredging": "TWの鉱石採掘",
+  "itemGroup.ore_dredging": "TWの鉱石浚渫",
+  "jade.modName.ore_dredging": "TWの鉱石浚渫",
 
-  "item.ore_dredging.raw_copper_nugget": "原銅塊",
-  "item.ore_dredging.raw_iron_nugget": "原鉄塊",
-  "item.ore_dredging.raw_gold_nugget": "原金塊",
-  "item.ore_dredging.netherite_nugget": "ネザライト塊",
+  "item.ore_dredging.raw_copper_nugget": "銅の原石塊",
+  "item.ore_dredging.raw_iron_nugget": "鉄の原石塊",
+  "item.ore_dredging.raw_gold_nugget": "金の原石塊",
+  "item.ore_dredging.netherite_nugget": "ネザライトの塊",
+
   "item.ore_dredging.golden_ball": "金の球",
   "item.ore_dredging.nephrite": "軟玉",
-  "item.ore_dredging.armor_fragments": "防具の破片",
-  "item.ore_dredging.energetic_crystal": "活力のあるクリスタル",
+  "item.ore_dredging.armor_fragments": "鎧の破片",
+  "item.ore_dredging.energetic_crystal": "エネルギー水晶",
+  "item.ore_dredging.astralium": "アストラリウム",
+
+  "block.ore_dredging.flame_crystal": "炎の結晶",
+  "block.ore_dredging.flame_crystal_cluster": "炎の結晶の塊",
+  "block.ore_dredging.mimetic_ley_line": "模倣の地脈",
+
   "item.ore_dredging.gray_quartz": "灰色の石英",
-  "item.ore_dredging.soft_armor_template": "軟らかい防具のテンプレート",
+  "item.ore_dredging.soft_armor_template": "柔らかな鎧の型",
   "item.ore_dredging.ashes": "灰",
+
   "block.ore_dredging.granite_bricks": "花崗岩レンガ",
   "block.ore_dredging.granite_brick_stairs": "花崗岩レンガの階段",
   "block.ore_dredging.granite_brick_slab": "花崗岩レンガのハーフブロック",
   "block.ore_dredging.granite_brick_wall": "花崗岩レンガの壁",
+
   "block.ore_dredging.diorite_bricks": "閃緑岩レンガ",
   "block.ore_dredging.diorite_brick_stairs": "閃緑岩レンガの階段",
   "block.ore_dredging.diorite_brick_slab": "閃緑岩レンガのハーフブロック",
   "block.ore_dredging.diorite_brick_wall": "閃緑岩レンガの壁",
+
   "block.ore_dredging.andesite_bricks": "安山岩レンガ",
   "block.ore_dredging.andesite_brick_stairs": "安山岩レンガの階段",
   "block.ore_dredging.andesite_brick_slab": "安山岩レンガのハーフブロック",
   "block.ore_dredging.andesite_brick_wall": "安山岩レンガの壁",
+
   "block.ore_dredging.stone_gravel_piles": "石の砂利の山",
   "block.ore_dredging.diorite_gravel_piles": "閃緑岩の砂利の山",
   "block.ore_dredging.andesite_gravel_piles": "安山岩の砂利の山",
@@ -34,42 +45,118 @@
   "block.ore_dredging.tuff_gravel_piles": "凝灰岩の砂利の山",
   "block.ore_dredging.netherrack_gravel_piles": "ネザーラックの砂利の山",
   "block.ore_dredging.basalt_gravel_piles": "玄武岩の砂利の山",
+  "block.ore_dredging.raw_copper_gravel_piles": "銅の原石の砂利の山",
+  "block.ore_dredging.raw_iron_gravel_piles": "鉄の原石の砂利の山",
+  "block.ore_dredging.raw_gold_gravel_piles": "金の原石の砂利の山",
+
+  "block.ore_dredging.raw_iron_slab": "鉄の原石のハーフブロック",
+  "block.ore_dredging.raw_copper_slab": "銅の原石のハーフブロック",
+  "block.ore_dredging.raw_gold_slab": "金の原石のハーフブロック",
+  "block.ore_dredging.iron_slab": "鉄のハーフブロック",
+  "block.ore_dredging.gold_slab": "金のハーフブロック",
+  "block.ore_dredging.copper_slab": "銅のハーフブロック",
+  "block.ore_dredging.netherite_slab": "ネザライトのハーフブロック",
+  "block.ore_dredging.diamond_slab": "ダイヤモンドのハーフブロック",
+  "block.ore_dredging.emerald_slab": "エメラルドのハーフブロック",
+  "block.ore_dredging.lapis_slab": "ラピスラズリのハーフブロック",
+  "block.ore_dredging.redstone_slab": "レッドストーンのハーフブロック",
+  "block.ore_dredging.coal_slab": "石炭のハーフブロック",
+
   "block.ore_dredging.stone_pebble": "石の小石",
   "block.ore_dredging.diorite_pebble": "閃緑岩の小石",
   "block.ore_dredging.andesite_pebble": "安山岩の小石",
   "block.ore_dredging.granite_pebble": "花崗岩の小石",
   "block.ore_dredging.deepslate_pebble": "深層岩の小石",
   "block.ore_dredging.tuff_pebble": "凝灰岩の小石",
-  "item.ore_dredging.leather_miner_bundle": "革の鉱夫バッグ",
-  "item.ore_dredging.chain_miner_bundle": "鎖の鉱夫バッグ",
-  "item.ore_dredging.phantom_miner_bundle": "ファントムの鉱夫バッグ",
+
+  "item.ore_dredging.astralium_steel_nugget": "アストラリウム鋼の塊",
+  "item.ore_dredging.astralium_steel": "アストラリウム鋼",
+
+  "block.ore_dredging.astralium_ore": "アストラリウム鉱石",
+  "block.ore_dredging.natural_raw_copper_block": "天然の銅の原石ブロック",
+  "block.ore_dredging.natural_raw_iron_block": "天然の鉄の原石ブロック",
+  "block.ore_dredging.thunder_smelter_pipe": "雷熔管",
+
+  "item.ore_dredging.leather_miner_bundle": "革の採掘バッグ",
+  "item.ore_dredging.chain_miner_bundle": "鎖の採掘バッグ",
+  "item.ore_dredging.phantom_miner_bundle": "ファントムの採掘バッグ",
+
   "item.ore_dredging.geological_hammer": "地質ハンマー",
   "item.ore_dredging.collapse_stone_hammer": "崩石ハンマー",
-  "block.ore_dredging.swamp_iron_ore": "沼鉄鉱",
+
+  "block.ore_dredging.swamp_iron_ore": "沼地の鉄鉱石",
   "block.ore_dredging.quartz_glass": "石英ガラス",
   "block.ore_dredging.quartz_glass_panes": "石英ガラス板",
+
   "item.ore_dredging.miner_helmet": "鉱夫のヘルメット",
-  "enchantment.ore_dredging.expansion": "拡張",
+
+  "item.ore_dredging.flame_crystal_arrow": "炎の結晶の矢",
+
+  "block.ore_dredging.detonator": "雷管",
+  "block.ore_dredging.slimy_detonator": "粘着雷管",
+  "item.ore_dredging.impact_detonator": "衝撃式雷管",
+  "item.ore_dredging.high_energy_detonator": "高エネルギー雷管",
+
+  "entity.ore_dredging.detonator": "雷管",
+  "entity.ore_dredging.slimy_detonator": "粘着雷管",
+  "entity.ore_dredging.impact_detonator": "衝撃式雷管",
+  "entity.ore_dredging.high_energy_detonator": "高エネルギー雷管",
+
+  "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "収束",
-  "enchantment.ore_dredging.auto_picking": "自動収集",
-  "enchantment.ore_dredging.toughness": "耐久力",
-  "enchantment.ore_dredging.unyielding": "不屈",
+  "enchantment.ore_dredging.auto_picking": "自動収納",
+  "enchantment.ore_dredging.toughness": "強靭",
+  "enchantment.ore_dredging.unyielding": "不屈の意志",
+  "enchantment.ore_dredging.heavy": "重量",
+  "enchantment.ore_dredging.star_pattern": "星紋",
+
   "ore_dredging.cimelia.nature": "自然の宝物",
   "ore_dredging.cimelia.ancient": "古代の宝物",
-  "ore_dredging.cimelia_introduction.golden_ball_1": "重く、つや消しの光沢を帯びた小さな球",
-  "ore_dredging.cimelia_introduction.golden_ball_2": "手に持つと、その中で温かくて巨大なエネルギーがゆっくりと流れているのを感じることができる。",
-  "ore_dredging.cimelia_introduction.nephrite_1": "軽く半透明の岩、玉のようで玉でなく、壊れない",
-  "ore_dredging.cimelia_introduction.nephrite_2": "手に握ると何もないように感じるが、少し力を入れると形が変わる",
-  "ore_dredging.cimelia_introduction.armor_fragments_1": "重い漆黒の装甲の破片、具体的な部位は特定しにくい",
-  "ore_dredging.cimelia_introduction.armor_fragments_2": "明らかに溶けた跡があり、一部は元の持ち主の骨を包んでいる",
-  "ore_dredging.cimelia_introduction.energetic_crystal_1": "きらめく、暗い色のアメジスト",
-  "ore_dredging.cimelia_introduction.energetic_crystal_2": "肉眼で、神秘的な巨大なエネルギーが結晶構造の隅々まで流れているのが見える",
-  "ore_dredging.cimelia_introduction.energetic_crystal_3": "手に持つと、それが軽く鼓動しているのを感じる",
-  "item.minerbundle.fullness": "容量:%s/%s",
-  "subtitles.ore_dredging.piles_fall": "小石が砕ける音",
-  "subtitle.ore_dredging.pebble_break": "小石が砕ける音",
-  "death.attack.pebble_hit": "%sは%sに小石で倒された",
-  "modmenu.nameTranslation.tw-ore-dredging": "TWの鉱石採掘",
-  "modmenu.descriptionTranslation.tw-ore-dredging": "あなたの採掘体験を豊かに！岩に合理的で豊富なドロップを追加！そして隠された神秘的な遺物！",
-  "modmenu.summaryTranslation.tw-ore-dredging": "あなたの採掘体験を豊かに！岩に合理的で豊富なドロップと、隠された神秘的な遺物を追加します。"
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "ずっしりと重く、磨りガラスのような輝きを放つ小さな球",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "手に取ると、温かくて巨大なエネルギーがゆっくりと流れているのを感じる",
+
+  "ore_dredging.cimelia_introduction.nephrite_1": "翡翠のようでいて非じ、軽く半透明で破壊できない岩石",
+  "ore_dredging.cimelia_introduction.nephrite_2": "手に持つと無重力に感じるが、わずかな力で形を変える",
+
+  "ore_dredging.cimelia_introduction.armor_fragments_1": "元の部位すら判別できない、重い漆黒の装甲の破片",
+  "ore_dredging.cimelia_introduction.armor_fragments_2": "明らかな熔融の痕跡があり、元の持ち主の骨を包み込んだ部分もある",
+
+  "ore_dredging.cimelia_introduction.energetic_crystal_1": "深く暗い色合いに輝くアメジスト",
+  "ore_dredging.cimelia_introduction.energetic_crystal_2": "肉眼でも、結晶構造の隅々にまで玄妙かつ膨大なエネルギーが流れているのが見える",
+  "ore_dredging.cimelia_introduction.energetic_crystal_3": "握ると、微かな律動を感じる",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "冷たく重い原石で、非常に硬い",
+  "ore_dredging.cimelia_introduction.astralium_2": "手に取ってじっくり見ると、表面が幾重もの波打つような淡い模様で覆われているのが分かる",
+  "ore_dredging.cimelia_introduction.astralium_3": "この鉱物はこの世界のものではないようだ。あまりにも頑丈すぎる。",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "一片の深層岩の石ころのように見える。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "しかし、その恐ろしいほどの重さと硬さが、普通の石ではない事実を露わにしている。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "どうやって活性化させるのだろう？",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "非常に美しい結晶の群れ",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "深紅の結晶膜に包まれ、内側の模様は踊る炎のようだ。",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "触れると火傷しそうなほど熱い。",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "焼けつくように熱い赤色の水晶",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "内部の炎の模様が脈打っているようで、",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "内包された巨大なエネルギーを示す、美しくも危険な気配を絶えず放っている。",
+
+  "item.minerbundle.fullness": "容量: %s/%s",
+
+  "ore_dredging.tootip.energetic": "充填",
+
+  "subtitles.ore_dredging.piles_fall": "石が砕ける",
+  "subtitle.ore_dredging.hammer_hit": "崩石ハンマー: 打撃",
+  "subtitle.ore_dredging.mll_amass": "擬似コア: 鼓動",
+  "subtitle.ore_dredging.budding_ra": "擬似コア: 崩落",
+  "subtitle.ore_dredging.budding_shock": "擬似コア: 震動",
+  "subtitle.ore_dredging.erupt": "擬似コア: 噴出",
+  "subtitle.ore_dredging.erupt_smoke": "擬似コア: 煙",
+
+  "death.attack.pebble_hit": "%sは%sに小石でやられた",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TWの鉱石浚渫",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "採掘体験を豊かに！岩に合理的で豊富なドロップを追加！さらに隠された神秘の遺物も！",
+  "modmenu.summaryTranslation.tw-ore-dredging": "採掘体験を豊かに！岩に合理的で豊富なドロップを追加し、隠された神秘の遺物も！"
 }

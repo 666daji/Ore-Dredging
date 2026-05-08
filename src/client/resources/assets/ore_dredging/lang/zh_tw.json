@@ -5,26 +5,37 @@
   "item.ore_dredging.raw_copper_nugget": "粗銅粒",
   "item.ore_dredging.raw_iron_nugget": "粗鐵粒",
   "item.ore_dredging.raw_gold_nugget": "粗金粒",
-  "item.ore_dredging.netherite_nugget": "獄髓粒",
+  "item.ore_dredging.netherite_nugget": "下界合金粒",
+
   "item.ore_dredging.golden_ball": "金球",
   "item.ore_dredging.nephrite": "軟玉",
   "item.ore_dredging.armor_fragments": "盔甲殘片",
   "item.ore_dredging.energetic_crystal": "盈能水晶",
+  "item.ore_dredging.astralium": "星鈦",
+
+  "block.ore_dredging.flame_crystal": "焰晶",
+  "block.ore_dredging.flame_crystal_cluster": "焰晶晶簇",
+  "block.ore_dredging.mimetic_ley_line": "模擬地脈",
+
   "item.ore_dredging.gray_quartz": "灰石英",
   "item.ore_dredging.soft_armor_template": "軟甲模板",
   "item.ore_dredging.ashes": "灰燼",
+
   "block.ore_dredging.granite_bricks": "花崗岩磚",
   "block.ore_dredging.granite_brick_stairs": "花崗岩磚階梯",
   "block.ore_dredging.granite_brick_slab": "花崗岩磚半磚",
   "block.ore_dredging.granite_brick_wall": "花崗岩磚牆",
+
   "block.ore_dredging.diorite_bricks": "閃長岩磚",
   "block.ore_dredging.diorite_brick_stairs": "閃長岩磚階梯",
   "block.ore_dredging.diorite_brick_slab": "閃長岩磚半磚",
   "block.ore_dredging.diorite_brick_wall": "閃長岩磚牆",
+
   "block.ore_dredging.andesite_bricks": "安山岩磚",
   "block.ore_dredging.andesite_brick_stairs": "安山岩磚階梯",
   "block.ore_dredging.andesite_brick_slab": "安山岩磚半磚",
   "block.ore_dredging.andesite_brick_wall": "安山岩磚牆",
+
   "block.ore_dredging.stone_gravel_piles": "石頭碎石堆",
   "block.ore_dredging.diorite_gravel_piles": "閃長岩碎石堆",
   "block.ore_dredging.andesite_gravel_piles": "安山岩碎石堆",
@@ -32,43 +43,119 @@
   "block.ore_dredging.sandstone_gravel_piles": "砂岩碎石堆",
   "block.ore_dredging.deepslate_gravel_piles": "深板岩碎石堆",
   "block.ore_dredging.tuff_gravel_piles": "凝灰岩碎石堆",
-  "block.ore_dredging.netherrack_gravel_piles": "地獄石碎石堆",
+  "block.ore_dredging.netherrack_gravel_piles": "地獄岩碎石堆",
   "block.ore_dredging.basalt_gravel_piles": "玄武岩碎石堆",
-  "block.ore_dredging.stone_pebble": "石子",
-  "block.ore_dredging.diorite_pebble": "閃長岩石子",
-  "block.ore_dredging.andesite_pebble": "安山岩石子",
-  "block.ore_dredging.granite_pebble": "花崗岩石子",
-  "block.ore_dredging.deepslate_pebble": "深板岩石子",
-  "block.ore_dredging.tuff_pebble": "凝灰岩石子",
+  "block.ore_dredging.raw_copper_gravel_piles": "粗銅碎石堆",
+  "block.ore_dredging.raw_iron_gravel_piles": "粗鐵碎石堆",
+  "block.ore_dredging.raw_gold_gravel_piles": "粗金碎石堆",
+
+  "block.ore_dredging.raw_iron_slab": "粗鐵半磚",
+  "block.ore_dredging.raw_copper_slab": "粗銅半磚",
+  "block.ore_dredging.raw_gold_slab": "粗金半磚",
+  "block.ore_dredging.iron_slab": "鐵半磚",
+  "block.ore_dredging.gold_slab": "金半磚",
+  "block.ore_dredging.copper_slab": "銅半磚",
+  "block.ore_dredging.netherite_slab": "下界合金半磚",
+  "block.ore_dredging.diamond_slab": "鑽石半磚",
+  "block.ore_dredging.emerald_slab": "綠寶石半磚",
+  "block.ore_dredging.lapis_slab": "青金石半磚",
+  "block.ore_dredging.redstone_slab": "紅石半磚",
+  "block.ore_dredging.coal_slab": "煤炭半磚",
+
+  "block.ore_dredging.stone_pebble": "卵石",
+  "block.ore_dredging.diorite_pebble": "閃長岩卵石",
+  "block.ore_dredging.andesite_pebble": "安山岩卵石",
+  "block.ore_dredging.granite_pebble": "花崗岩卵石",
+  "block.ore_dredging.deepslate_pebble": "深板岩卵石",
+  "block.ore_dredging.tuff_pebble": "凝灰岩卵石",
+
+  "item.ore_dredging.astralium_steel_nugget": "星鈦鋼粒",
+  "item.ore_dredging.astralium_steel": "星鈦鋼",
+
+  "block.ore_dredging.astralium_ore": "星鈦礦",
+  "block.ore_dredging.natural_raw_copper_block": "天然粗銅塊",
+  "block.ore_dredging.natural_raw_iron_block": "天然粗鐵塊",
+  "block.ore_dredging.thunder_smelter_pipe": "雷熔罐",
+
   "item.ore_dredging.leather_miner_bundle": "皮革儲礦袋",
   "item.ore_dredging.chain_miner_bundle": "鎖鏈儲礦袋",
   "item.ore_dredging.phantom_miner_bundle": "幻翼儲礦袋",
+
   "item.ore_dredging.geological_hammer": "地質錘",
   "item.ore_dredging.collapse_stone_hammer": "崩石錘",
+
   "block.ore_dredging.swamp_iron_ore": "沼鐵礦",
   "block.ore_dredging.quartz_glass": "石英玻璃",
   "block.ore_dredging.quartz_glass_panes": "石英玻璃板",
+
   "item.ore_dredging.miner_helmet": "礦工帽",
+
+  "item.ore_dredging.flame_crystal_arrow": "焰晶箭",
+
+  "block.ore_dredging.detonator": "雷管",
+  "block.ore_dredging.slimy_detonator": "黏性雷管",
+  "item.ore_dredging.impact_detonator": "觸碰式雷管",
+  "item.ore_dredging.high_energy_detonator": "高能雷管",
+
+  "entity.ore_dredging.detonator": "雷管",
+  "entity.ore_dredging.slimy_detonator": "黏性雷管",
+  "entity.ore_dredging.impact_detonator": "觸碰式雷管",
+  "entity.ore_dredging.high_energy_detonator": "高能雷管",
+
   "enchantment.ore_dredging.expansion": "洞天",
   "enchantment.ore_dredging.convergence": "聚攏",
   "enchantment.ore_dredging.auto_picking": "收納",
   "enchantment.ore_dredging.toughness": "堅韌",
   "enchantment.ore_dredging.unyielding": "不屈意志",
+  "enchantment.ore_dredging.heavy": "沉重",
+  "enchantment.ore_dredging.star_pattern": "星紋",
+
   "ore_dredging.cimelia.nature": "自然珍寶",
   "ore_dredging.cimelia.ancient": "遠古珍寶",
+
   "ore_dredging.cimelia_introduction.golden_ball_1": "一顆沉甸甸的泛著磨砂光澤的小球",
   "ore_dredging.cimelia_introduction.golden_ball_2": "將它拿在手中時，能感受到其中溫熱而磅礴的能量正在緩慢的流動",
+
   "ore_dredging.cimelia_introduction.nephrite_1": "一塊輕盈的半透明岩石，似玉非玉，堅不可摧",
   "ore_dredging.cimelia_introduction.nephrite_2": "將它握在手中時狀若無物，微微用力卻能讓其改變形狀",
+
   "ore_dredging.cimelia_introduction.armor_fragments_1": "一塊沉重的漆黑色裝甲碎片，具體部位已經難以辨認",
   "ore_dredging.cimelia_introduction.armor_fragments_2": "有明顯的融化過的痕跡，其中有些部分還包裹著原主人的骨骼",
+
   "ore_dredging.cimelia_introduction.energetic_crystal_1": "一支閃閃發光的，顏色深的發暗的紫水晶",
   "ore_dredging.cimelia_introduction.energetic_crystal_2": "僅用肉眼便能看到玄奧而龐大的能量在其中沿著每一寸晶體結構流淌",
   "ore_dredging.cimelia_introduction.energetic_crystal_3": "將其握在手中時，能感受到它在輕輕律動",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "一顆冰冷沉重的原礦，堅硬無比",
+  "ore_dredging.cimelia_introduction.astralium_2": "握在手中仔細端詳，能看到表面覆蓋有一層層波紋狀的淺色紋路",
+  "ore_dredging.cimelia_introduction.astralium_3": "這種礦物似乎不屬於這個世界，它太過結實了。",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "看起來像是一小塊深板岩石頭。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "巨大的重量和令人詭異的堅硬程度暴露了他不是一塊普通石頭的事實。",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "該怎麼激活它呢？",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "一簇十分美麗的晶體簇",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "外層包裹有深紅色的晶體膜，內層的紋路像是跳動的火焰。",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "摸起來十分滾燙。",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "一支燙手的紅色水晶",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "晶體內層的火焰紋路像是在跳動一樣，",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "它不停的向外釋放著美麗又危險的氣息，昭示了它蘊含的巨大能量。",
+
   "item.minerbundle.fullness": "容量:%s/%s",
+
+  "ore_dredging.tootip.energetic": "充盈",
+
   "subtitles.ore_dredging.piles_fall": "石子碎裂",
-  "subtitle.ore_dredging.pebble_break": "石子碎裂",
+  "subtitle.ore_dredging.hammer_hit": "崩石錘:砸",
+  "subtitle.ore_dredging.mll_amass": "擬態核心:跳動",
+  "subtitle.ore_dredging.budding_ra": "擬態核心:碎落",
+  "subtitle.ore_dredging.budding_shock": "擬態核心:震動",
+  "subtitle.ore_dredging.erupt": "擬態核心:噴湧",
+  "subtitle.ore_dredging.erupt_smoke": "擬態核心:煙霧",
+
   "death.attack.pebble_hit": "%s被%s使用小石子擊敗",
+
   "modmenu.nameTranslation.tw-ore-dredging": "TW的礦石淘採",
   "modmenu.descriptionTranslation.tw-ore-dredging": "豐富你的採礦體驗！為岩石增加了合理、豐富的掉落物！以及隱藏的神秘遺物！",
   "modmenu.summaryTranslation.tw-ore-dredging": "豐富你的採礦體驗！為岩石增加了合理、豐富的掉落物，以及隱藏的神秘遺物！"

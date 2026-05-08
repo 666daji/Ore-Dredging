@@ -1,30 +1,41 @@
 {
-  "itemGroup.ore_dredging": "Extracción de Minerales de TW",
-  "jade.modName.ore_dredging": "Extracción de Minerales de TW",
+  "itemGroup.ore_dredging": "Draga de menas de TW",
+  "jade.modName.ore_dredging": "Draga de menas de TW",
 
-  "item.ore_dredging.raw_copper_nugget": "Pepita de cobre en bruto",
-  "item.ore_dredging.raw_iron_nugget": "Pepita de hierro en bruto",
-  "item.ore_dredging.raw_gold_nugget": "Pepita de oro en bruto",
+  "item.ore_dredging.raw_copper_nugget": "Pepita de cobre crudo",
+  "item.ore_dredging.raw_iron_nugget": "Pepita de hierro crudo",
+  "item.ore_dredging.raw_gold_nugget": "Pepita de oro crudo",
   "item.ore_dredging.netherite_nugget": "Pepita de netherita",
+
   "item.ore_dredging.golden_ball": "Bola dorada",
   "item.ore_dredging.nephrite": "Nefrita",
   "item.ore_dredging.armor_fragments": "Fragmentos de armadura",
   "item.ore_dredging.energetic_crystal": "Cristal energético",
+  "item.ore_dredging.astralium": "Astralium",
+
+  "block.ore_dredging.flame_crystal": "Cristal de fuego",
+  "block.ore_dredging.flame_crystal_cluster": "Racimo de cristal de fuego",
+  "block.ore_dredging.mimetic_ley_line": "Línea ley mimética",
+
   "item.ore_dredging.gray_quartz": "Cuarzo gris",
-  "item.ore_dredging.soft_armor_template": "Plantilla de armadura suave",
+  "item.ore_dredging.soft_armor_template": "Plantilla de armadura blanda",
   "item.ore_dredging.ashes": "Cenizas",
+
   "block.ore_dredging.granite_bricks": "Ladrillos de granito",
-  "block.ore_dredging.granite_brick_stairs": "Escaleras de ladrillo de granito",
-  "block.ore_dredging.granite_brick_slab": "Losa de ladrillo de granito",
-  "block.ore_dredging.granite_brick_wall": "Muro de ladrillo de granito",
+  "block.ore_dredging.granite_brick_stairs": "Escaleras de ladrillos de granito",
+  "block.ore_dredging.granite_brick_slab": "Losa de ladrillos de granito",
+  "block.ore_dredging.granite_brick_wall": "Muro de ladrillos de granito",
+
   "block.ore_dredging.diorite_bricks": "Ladrillos de diorita",
-  "block.ore_dredging.diorite_brick_stairs": "Escaleras de ladrillo de diorita",
-  "block.ore_dredging.diorite_brick_slab": "Losa de ladrillo de diorita",
-  "block.ore_dredging.diorite_brick_wall": "Muro de ladrillo de diorita",
+  "block.ore_dredging.diorite_brick_stairs": "Escaleras de ladrillos de diorita",
+  "block.ore_dredging.diorite_brick_slab": "Losa de ladrillos de diorita",
+  "block.ore_dredging.diorite_brick_wall": "Muro de ladrillos de diorita",
+
   "block.ore_dredging.andesite_bricks": "Ladrillos de andesita",
-  "block.ore_dredging.andesite_brick_stairs": "Escaleras de ladrillo de andesita",
-  "block.ore_dredging.andesite_brick_slab": "Losa de ladrillo de andesita",
-  "block.ore_dredging.andesite_brick_wall": "Muro de ladrillo de andesita",
+  "block.ore_dredging.andesite_brick_stairs": "Escaleras de ladrillos de andesita",
+  "block.ore_dredging.andesite_brick_slab": "Losa de ladrillos de andesita",
+  "block.ore_dredging.andesite_brick_wall": "Muro de ladrillos de andesita",
+
   "block.ore_dredging.stone_gravel_piles": "Montón de grava de piedra",
   "block.ore_dredging.diorite_gravel_piles": "Montón de grava de diorita",
   "block.ore_dredging.andesite_gravel_piles": "Montón de grava de andesita",
@@ -34,42 +45,118 @@
   "block.ore_dredging.tuff_gravel_piles": "Montón de grava de toba",
   "block.ore_dredging.netherrack_gravel_piles": "Montón de grava de netherrack",
   "block.ore_dredging.basalt_gravel_piles": "Montón de grava de basalto",
+  "block.ore_dredging.raw_copper_gravel_piles": "Montón de grava de cobre crudo",
+  "block.ore_dredging.raw_iron_gravel_piles": "Montón de grava de hierro crudo",
+  "block.ore_dredging.raw_gold_gravel_piles": "Montón de grava de oro crudo",
+
+  "block.ore_dredging.raw_iron_slab": "Losa de hierro crudo",
+  "block.ore_dredging.raw_copper_slab": "Losa de cobre crudo",
+  "block.ore_dredging.raw_gold_slab": "Losa de oro crudo",
+  "block.ore_dredging.iron_slab": "Losa de hierro",
+  "block.ore_dredging.gold_slab": "Losa de oro",
+  "block.ore_dredging.copper_slab": "Losa de cobre",
+  "block.ore_dredging.netherite_slab": "Losa de netherita",
+  "block.ore_dredging.diamond_slab": "Losa de diamante",
+  "block.ore_dredging.emerald_slab": "Losa de esmeralda",
+  "block.ore_dredging.lapis_slab": "Losa de lapislázuli",
+  "block.ore_dredging.redstone_slab": "Losa de redstone",
+  "block.ore_dredging.coal_slab": "Losa de carbón",
+
   "block.ore_dredging.stone_pebble": "Guijarro de piedra",
   "block.ore_dredging.diorite_pebble": "Guijarro de diorita",
   "block.ore_dredging.andesite_pebble": "Guijarro de andesita",
   "block.ore_dredging.granite_pebble": "Guijarro de granito",
   "block.ore_dredging.deepslate_pebble": "Guijarro de pizarra profunda",
   "block.ore_dredging.tuff_pebble": "Guijarro de toba",
-  "item.ore_dredging.leather_miner_bundle": "Bolsa minera de cuero",
-  "item.ore_dredging.chain_miner_bundle": "Bolsa minera de cadenas",
-  "item.ore_dredging.phantom_miner_bundle": "Bolsa minera fantasma",
+
+  "item.ore_dredging.astralium_steel_nugget": "Pepita de acero de astralium",
+  "item.ore_dredging.astralium_steel": "Acero de astralium",
+
+  "block.ore_dredging.astralium_ore": "Mena de astralium",
+  "block.ore_dredging.natural_raw_copper_block": "Bloque de cobre crudo natural",
+  "block.ore_dredging.natural_raw_iron_block": "Bloque de hierro crudo natural",
+  "block.ore_dredging.thunder_smelter_pipe": "Tubo fundidor de truenos",
+
+  "item.ore_dredging.leather_miner_bundle": "Saco minero de cuero",
+  "item.ore_dredging.chain_miner_bundle": "Saco minero de cadenas",
+  "item.ore_dredging.phantom_miner_bundle": "Saco minero de fantasma",
+
   "item.ore_dredging.geological_hammer": "Martillo geológico",
-  "item.ore_dredging.collapse_stone_hammer": "Martillo de derrumbe pétreo",
-  "block.ore_dredging.swamp_iron_ore": "Mena de hierro de pantano",
+  "item.ore_dredging.collapse_stone_hammer": "Martillo de derrumbe de piedra",
+
+  "block.ore_dredging.swamp_iron_ore": "Mineral de hierro de pantano",
   "block.ore_dredging.quartz_glass": "Vidrio de cuarzo",
-  "block.ore_dredging.quartz_glass_panes": "Paneles de vidrio de cuarzo",
+  "block.ore_dredging.quartz_glass_panes": "Panel de vidrio de cuarzo",
+
   "item.ore_dredging.miner_helmet": "Casco de minero",
+
+  "item.ore_dredging.flame_crystal_arrow": "Flecha de cristal de fuego",
+
+  "block.ore_dredging.detonator": "Detonador",
+  "block.ore_dredging.slimy_detonator": "Detonador pegajoso",
+  "item.ore_dredging.impact_detonator": "Detonador de impacto",
+  "item.ore_dredging.high_energy_detonator": "Detonador de alta energía",
+
+  "entity.ore_dredging.detonator": "Detonador",
+  "entity.ore_dredging.slimy_detonator": "Detonador pegajoso",
+  "entity.ore_dredging.impact_detonator": "Detonador de impacto",
+  "entity.ore_dredging.high_energy_detonator": "Detonador de alta energía",
+
   "enchantment.ore_dredging.expansion": "Expansión",
   "enchantment.ore_dredging.convergence": "Convergencia",
   "enchantment.ore_dredging.auto_picking": "Recolección automática",
   "enchantment.ore_dredging.toughness": "Tenacidad",
-  "enchantment.ore_dredging.unyielding": "Inquebrantable",
+  "enchantment.ore_dredging.unyielding": "Inflexibilidad",
+  "enchantment.ore_dredging.heavy": "Pesadez",
+  "enchantment.ore_dredging.star_pattern": "Patrón estelar",
+
   "ore_dredging.cimelia.nature": "Tesoro natural",
   "ore_dredging.cimelia.ancient": "Tesoro antiguo",
-  "ore_dredging.cimelia_introduction.golden_ball_1": "Una pequeña bola pesada con un brillo mate",
-  "ore_dredging.cimelia_introduction.golden_ball_2": "Al sostenerla en la mano, puedes sentir la energía cálida e inmensa fluyendo lentamente dentro de ella.",
-  "ore_dredging.cimelia_introduction.nephrite_1": "Una roca ligera y translúcida, parecida al jade pero no jade, indestructible",
-  "ore_dredging.cimelia_introduction.nephrite_2": "Al sostenerla en la mano, parece no pesar nada, pero un poco de fuerza puede cambiar su forma",
-  "ore_dredging.cimelia_introduction.armor_fragments_1": "Un pesado fragmento de armadura negro, la parte específica es difícil de identificar",
-  "ore_dredging.cimelia_introduction.armor_fragments_2": "Hay rastros evidentes de fusión, y algunas partes todavía envuelven los huesos del dueño original",
-  "ore_dredging.cimelia_introduction.energetic_crystal_1": "Una amatista brillante y de color oscuro",
-  "ore_dredging.cimelia_introduction.energetic_crystal_2": "A simple vista, puedes ver una energía misteriosa e inmensa fluyendo a lo largo de cada estructura cristalina",
-  "ore_dredging.cimelia_introduction.energetic_crystal_3": "Al sostenerla en la mano, puedes sentir que palpita suavemente",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "Una bolita pesada con un brillo esmerilado",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Al sostenerla, se siente una energía cálida e inmensa que fluye lentamente en su interior",
+
+  "ore_dredging.cimelia_introduction.nephrite_1": "Una roca ligera y translúcida, parecida al jade pero indestructible",
+  "ore_dredging.cimelia_introduction.nephrite_2": "Parece ingrávida en la mano, pero se deforma con una ligera presión",
+
+  "ore_dredging.cimelia_introduction.armor_fragments_1": "Un pesado fragmento de armadura de color negro azabache, difícil de identificar su parte original",
+  "ore_dredging.cimelia_introduction.armor_fragments_2": "Se aprecian claras señales de fusión, algunas partes aún envuelven los huesos de su portador original",
+
+  "ore_dredging.cimelia_introduction.energetic_crystal_1": "Una amatista brillante de color oscuro intenso",
+  "ore_dredging.cimelia_introduction.energetic_crystal_2": "A simple vista se observa una vasta y arcana energía fluyendo a través de cada estructura cristalina",
+  "ore_dredging.cimelia_introduction.energetic_crystal_3": "Al sostenerla, se siente un suave latido",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "Un mineral bruto frío y pesado, increíblemente duro",
+  "ore_dredging.cimelia_introduction.astralium_2": "Observándolo de cerca, la superficie está cubierta de capas de patrones ondulados de colores claros",
+  "ore_dredging.cimelia_introduction.astralium_3": "Este mineral no parece pertenecer a este mundo, es demasiado sólido.",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "Parece un pequeño trozo de pizarra profunda.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "Su inmenso peso y dureza extraña revelan que no es una roca común.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "¿Cómo se podrá activar?",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "Un hermoso racimo de cristales",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "Envuelta en una membrana cristalina de color rojo intenso, los patrones internos parecen llamas danzantes.",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "Arde al tacto.",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "Un cristal rojo ardiente",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "Los patrones de llamas en su interior parecen parpadear,",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "Irradia constantemente un aura hermosa pero peligrosa, revelando la inmensa energía que contiene.",
+
   "item.minerbundle.fullness": "Capacidad: %s/%s",
-  "subtitles.ore_dredging.piles_fall": "Guijarros rompiéndose",
-  "subtitle.ore_dredging.pebble_break": "Guijarros rompiéndose",
-  "death.attack.pebble_hit": "%s fue derrotado por %s usando un guijarro",
-  "modmenu.nameTranslation.tw-ore-dredging": "Extracción de Minerales de TW",
-  "modmenu.descriptionTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! ¡Añade gotas razonables y abundantes a las rocas! ¡Y reliquias misteriosas ocultas!",
-  "modmenu.summaryTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! Añade gotas razonables y abundantes a las rocas, así como reliquias misteriosas ocultas."
+
+  "ore_dredging.tootip.energetic": "Energizado",
+
+  "subtitles.ore_dredging.piles_fall": "Piedras rompiéndose",
+  "subtitle.ore_dredging.hammer_hit": "Martillo de derrumbe: Golpe",
+  "subtitle.ore_dredging.mll_amass": "Núcleo mimético: Throbs",
+  "subtitle.ore_dredging.budding_ra": "Núcleo mimético: Desmoronamiento",
+  "subtitle.ore_dredging.budding_shock": "Núcleo mimético: Sacudida",
+  "subtitle.ore_dredging.erupt": "Núcleo mimético: Erupción",
+  "subtitle.ore_dredging.erupt_smoke": "Núcleo mimético: Humo",
+
+  "death.attack.pebble_hit": "%s fue derrotado por %s usando una pequeña piedra",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "Draga de menas de TW",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! ¡Añade botín razonable y abundante a las rocas! ¡Además de reliquias misteriosas ocultas!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "¡Enriquece tu experiencia minera! Añade botín razonable y abundante a las rocas, ¡así como reliquias misteriosas ocultas!"
 }

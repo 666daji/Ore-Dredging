@@ -1,30 +1,41 @@
 {
-  "itemGroup.ore_dredging": "TW의 광석 채취",
-  "jade.modName.ore_dredging": "TW의 광석 채취",
+  "itemGroup.ore_dredging": "TW의 광석 준설",
+  "jade.modName.ore_dredging": "TW의 광석 준설",
 
   "item.ore_dredging.raw_copper_nugget": "구리 원석 조각",
   "item.ore_dredging.raw_iron_nugget": "철 원석 조각",
   "item.ore_dredging.raw_gold_nugget": "금 원석 조각",
   "item.ore_dredging.netherite_nugget": "네더라이트 조각",
-  "item.ore_dredging.golden_ball": "황금 공",
+
+  "item.ore_dredging.golden_ball": "황금 구",
   "item.ore_dredging.nephrite": "연옥",
   "item.ore_dredging.armor_fragments": "갑옷 조각",
-  "item.ore_dredging.energetic_crystal": "에너지가 넘치는 수정",
+  "item.ore_dredging.energetic_crystal": "에너지 수정",
+  "item.ore_dredging.astralium": "아스트랄리움",
+
+  "block.ore_dredging.flame_crystal": "화염 수정",
+  "block.ore_dredging.flame_crystal_cluster": "화염 수정 군집",
+  "block.ore_dredging.mimetic_ley_line": "모방 지맥",
+
   "item.ore_dredging.gray_quartz": "회색 석영",
-  "item.ore_dredging.soft_armor_template": "부드러운 갑옷 템플릿",
+  "item.ore_dredging.soft_armor_template": "부드러운 갑옷 형판",
   "item.ore_dredging.ashes": "재",
+
   "block.ore_dredging.granite_bricks": "화강암 벽돌",
   "block.ore_dredging.granite_brick_stairs": "화강암 벽돌 계단",
   "block.ore_dredging.granite_brick_slab": "화강암 벽돌 반 블록",
   "block.ore_dredging.granite_brick_wall": "화강암 벽돌 담장",
+
   "block.ore_dredging.diorite_bricks": "섬록암 벽돌",
   "block.ore_dredging.diorite_brick_stairs": "섬록암 벽돌 계단",
   "block.ore_dredging.diorite_brick_slab": "섬록암 벽돌 반 블록",
   "block.ore_dredging.diorite_brick_wall": "섬록암 벽돌 담장",
+
   "block.ore_dredging.andesite_bricks": "안산암 벽돌",
   "block.ore_dredging.andesite_brick_stairs": "안산암 벽돌 계단",
   "block.ore_dredging.andesite_brick_slab": "안산암 벽돌 반 블록",
   "block.ore_dredging.andesite_brick_wall": "안산암 벽돌 담장",
+
   "block.ore_dredging.stone_gravel_piles": "돌 자갈 더미",
   "block.ore_dredging.diorite_gravel_piles": "섬록암 자갈 더미",
   "block.ore_dredging.andesite_gravel_piles": "안산암 자갈 더미",
@@ -34,42 +45,118 @@
   "block.ore_dredging.tuff_gravel_piles": "응회암 자갈 더미",
   "block.ore_dredging.netherrack_gravel_piles": "네더랙 자갈 더미",
   "block.ore_dredging.basalt_gravel_piles": "현무암 자갈 더미",
-  "block.ore_dredging.stone_pebble": "돌 조약돌",
-  "block.ore_dredging.diorite_pebble": "섬록암 조약돌",
-  "block.ore_dredging.andesite_pebble": "안산암 조약돌",
-  "block.ore_dredging.granite_pebble": "화강암 조약돌",
-  "block.ore_dredging.deepslate_pebble": "심층암 조약돌",
-  "block.ore_dredging.tuff_pebble": "응회암 조약돌",
-  "item.ore_dredging.leather_miner_bundle": "가죽 광부 가방",
-  "item.ore_dredging.chain_miner_bundle": "사슬 광부 가방",
-  "item.ore_dredging.phantom_miner_bundle": "팬텀 광부 가방",
+  "block.ore_dredging.raw_copper_gravel_piles": "구리 원석 자갈 더미",
+  "block.ore_dredging.raw_iron_gravel_piles": "철 원석 자갈 더미",
+  "block.ore_dredging.raw_gold_gravel_piles": "금 원석 자갈 더미",
+
+  "block.ore_dredging.raw_iron_slab": "철 원석 반 블록",
+  "block.ore_dredging.raw_copper_slab": "구리 원석 반 블록",
+  "block.ore_dredging.raw_gold_slab": "금 원석 반 블록",
+  "block.ore_dredging.iron_slab": "철 반 블록",
+  "block.ore_dredging.gold_slab": "금 반 블록",
+  "block.ore_dredging.copper_slab": "구리 반 블록",
+  "block.ore_dredging.netherite_slab": "네더라이트 반 블록",
+  "block.ore_dredging.diamond_slab": "다이아몬드 반 블록",
+  "block.ore_dredging.emerald_slab": "에메랄드 반 블록",
+  "block.ore_dredging.lapis_slab": "청금석 반 블록",
+  "block.ore_dredging.redstone_slab": "레드스톤 반 블록",
+  "block.ore_dredging.coal_slab": "석탄 반 블록",
+
+  "block.ore_dredging.stone_pebble": "돌멩이",
+  "block.ore_dredging.diorite_pebble": "섬록암 돌멩이",
+  "block.ore_dredging.andesite_pebble": "안산암 돌멩이",
+  "block.ore_dredging.granite_pebble": "화강암 돌멩이",
+  "block.ore_dredging.deepslate_pebble": "심층암 돌멩이",
+  "block.ore_dredging.tuff_pebble": "응회암 돌멩이",
+
+  "item.ore_dredging.astralium_steel_nugget": "아스트랄리움 강철 조각",
+  "item.ore_dredging.astralium_steel": "아스트랄리움 강철",
+
+  "block.ore_dredging.astralium_ore": "아스트랄리움 광석",
+  "block.ore_dredging.natural_raw_copper_block": "자연 구리 원석 블록",
+  "block.ore_dredging.natural_raw_iron_block": "자연 철 원석 블록",
+  "block.ore_dredging.thunder_smelter_pipe": "천둥 제련관",
+
+  "item.ore_dredging.leather_miner_bundle": "가죽 광부 주머니",
+  "item.ore_dredging.chain_miner_bundle": "사슬 광부 주머니",
+  "item.ore_dredging.phantom_miner_bundle": "팬텀 광부 주머니",
+
   "item.ore_dredging.geological_hammer": "지질 망치",
-  "item.ore_dredging.collapse_stone_hammer": "붕괴 돌 망치",
-  "block.ore_dredging.swamp_iron_ore": "늪 철광석",
+  "item.ore_dredging.collapse_stone_hammer": "낙석 망치",
+
+  "block.ore_dredging.swamp_iron_ore": "늪지 철광석",
   "block.ore_dredging.quartz_glass": "석영 유리",
   "block.ore_dredging.quartz_glass_panes": "석영 유리판",
-  "item.ore_dredging.miner_helmet": "광부 헬멧",
+
+  "item.ore_dredging.miner_helmet": "광부 모자",
+
+  "item.ore_dredging.flame_crystal_arrow": "화염 수정 화살",
+
+  "block.ore_dredging.detonator": "뇌관",
+  "block.ore_dredging.slimy_detonator": "끈적한 뇌관",
+  "item.ore_dredging.impact_detonator": "충격식 뇌관",
+  "item.ore_dredging.high_energy_detonator": "고에너지 뇌관",
+
+  "entity.ore_dredging.detonator": "뇌관",
+  "entity.ore_dredging.slimy_detonator": "끈적한 뇌관",
+  "entity.ore_dredging.impact_detonator": "충격식 뇌관",
+  "entity.ore_dredging.high_energy_detonator": "고에너지 뇌관",
+
   "enchantment.ore_dredging.expansion": "확장",
   "enchantment.ore_dredging.convergence": "수렴",
   "enchantment.ore_dredging.auto_picking": "자동 수집",
-  "enchantment.ore_dredging.toughness": "인내",
-  "enchantment.ore_dredging.unyielding": "불굴",
+  "enchantment.ore_dredging.toughness": "강인함",
+  "enchantment.ore_dredging.unyielding": "굴하지 않는 의지",
+  "enchantment.ore_dredging.heavy": "무거움",
+  "enchantment.ore_dredging.star_pattern": "별무늬",
+
   "ore_dredging.cimelia.nature": "자연의 보물",
   "ore_dredging.cimelia.ancient": "고대의 보물",
-  "ore_dredging.cimelia_introduction.golden_ball_1": "무겁고 무광택 광택이 나는 작은 공",
-  "ore_dredging.cimelia_introduction.golden_ball_2": "손에 쥐면 그 안에서 따뜻하고 거대한 에너지가 천천히 흐르는 것을 느낄 수 있습니다.",
-  "ore_dredging.cimelia_introduction.nephrite_1": "가볍고 반투명한 바위, 옥 같지만 옥이 아니며, 파괴할 수 없습니다",
-  "ore_dredging.cimelia_introduction.nephrite_2": "손에 쥐면 아무것도 없는 것처럼 느껴지지만, 약간의 힘으로 모양을 바꿀 수 있습니다",
-  "ore_dredging.cimelia_introduction.armor_fragments_1": "무거운 검은색 갑옷 조각, 구체적인 부위는 식별하기 어렵습니다",
-  "ore_dredging.cimelia_introduction.armor_fragments_2": "녹은 흔적이 뚜렷하며, 일부 부분은 여전히 원래 주인의 뼈를 감싸고 있습니다",
-  "ore_dredging.cimelia_introduction.energetic_crystal_1": "반짝이고, 색깔이 짙은 자수정",
-  "ore_dredging.cimelia_introduction.energetic_crystal_2": "육안으로도 신비롭고 거대한 에너지가 수정 구조의 구석구석을 따라 흐르는 것을 볼 수 있습니다",
-  "ore_dredging.cimelia_introduction.energetic_crystal_3": "손에 쥐면 그것이 가볍게 고동치는 것을 느낄 수 있습니다",
-  "item.minerbundle.fullness": "용량:%s/%s",
-  "subtitles.ore_dredging.piles_fall": "조약돌 부서짐",
-  "subtitle.ore_dredging.pebble_break": "조약돌 부서짐",
-  "death.attack.pebble_hit": "%s이(가) %s에게 조약돌로 패배함",
-  "modmenu.nameTranslation.tw-ore-dredging": "TW의 광석 채취",
-  "modmenu.descriptionTranslation.tw-ore-dredging": "당신의 채굴 경험을 풍부하게! 암석에 합리적이고 풍부한 드롭을 추가합니다! 그리고 숨겨진 신비한 유물!",
-  "modmenu.summaryTranslation.tw-ore-dredging": "당신의 채굴 경험을 풍부하게! 암석에 합리적이고 풍부한 드롭과 숨겨진 신비한 유물을 추가합니다."
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "묵직하고 무광의 광택이 감도는 작은 구",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "손에 쥐면, 그 안에서 따뜻하고 거대한 에너지가 천천히 흐르는 것이 느껴진다",
+
+  "ore_dredging.cimelia_introduction.nephrite_1": "옥과 같으면서도 아니며, 가볍고 반투명하며 파괴할 수 없는 암석",
+  "ore_dredging.cimelia_introduction.nephrite_2": "손에 쥐면 아무것도 없는 듯하지만, 약간의 힘으로 그 형태를 바꿀 수 있다",
+
+  "ore_dredging.cimelia_introduction.armor_fragments_1": "무겁고 칠흑 같은 갑옷 파편, 원래 어느 부위인지 분간하기 어렵다",
+  "ore_dredging.cimelia_introduction.armor_fragments_2": "분명히 녹아내린 흔적이 있으며, 일부는 원래 주인의 뼈를 감싸고 있다",
+
+  "ore_dredging.cimelia_introduction.energetic_crystal_1": "반짝이며, 짙고 어두운 색을 띤 자수정",
+  "ore_dredging.cimelia_introduction.energetic_crystal_2": "육안으로도 현묘하고 방대한 에너지가 결정 구조 곳곳을 따라 흐르는 것을 볼 수 있다",
+  "ore_dredging.cimelia_introduction.energetic_crystal_3": "손에 쥐면 은은하게 고동치는 것이 느껴진다",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "차갑고 무거운 원석, 상상 이상으로 단단하다",
+  "ore_dredging.cimelia_introduction.astralium_2": "손에 들고 자세히 들여다보면, 표면이 여러 겹의 물결치는 듯한 밝은 무늬로 덮여 있다",
+  "ore_dredging.cimelia_introduction.astralium_3": "이 광물은 이 세상의 것이 아닌 것 같다. 너무나도 견고하다.",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "작은 심층암 조각처럼 보인다.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "거대한 무게와 기이할 정도의 경도가 평범한 돌이 아니라는 사실을 드러낸다.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "어떻게 활성화하는 걸까?",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "매우 아름다운 수정 무리",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "짙은 붉은색의 결정막으로 둘러싸여 있으며, 내부의 무늬는 춤추는 불꽃과도 같다.",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "만지면 화상을 입을 듯이 뜨겁다.",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "뜨거운 적색 수정",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "수정 내부의 불꽃 무늬가 마치 일렁이는 듯하며,",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "내포된 거대한 에너지를 암시하는 아름답고도 위험한 기운을 끊임없이 발산한다.",
+
+  "item.minerbundle.fullness": "용량: %s/%s",
+
+  "ore_dredging.tootip.energetic": "충만",
+
+  "subtitles.ore_dredging.piles_fall": "돌이 부서짐",
+  "subtitle.ore_dredging.hammer_hit": "낙석 망치: 타격",
+  "subtitle.ore_dredging.mll_amass": "의태 코어: 고동",
+  "subtitle.ore_dredging.budding_ra": "의태 코어: 파쇄",
+  "subtitle.ore_dredging.budding_shock": "의태 코어: 진동",
+  "subtitle.ore_dredging.erupt": "의태 코어: 분출",
+  "subtitle.ore_dredging.erupt_smoke": "의태 코어: 연기",
+
+  "death.attack.pebble_hit": "%s이(가) %s에게 작은 돌멩이로 패배했습니다",
+
+  "modmenu.nameTranslation.tw-ore-dredging": "TW의 광석 준설",
+  "modmenu.descriptionTranslation.tw-ore-dredging": "채굴 경험을 풍부하게! 암석에 합리적이고 풍부한 드롭을 추가! 숨겨진 신비한 유물까지!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "채굴 경험을 풍부하게! 암석에 합리적이고 풍부한 드롭을 추가하며, 숨겨진 신비한 유물까지!"
 }

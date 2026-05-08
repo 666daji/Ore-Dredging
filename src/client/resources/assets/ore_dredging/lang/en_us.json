@@ -6,70 +6,157 @@
   "item.ore_dredging.raw_iron_nugget": "Raw Iron Nugget",
   "item.ore_dredging.raw_gold_nugget": "Raw Gold Nugget",
   "item.ore_dredging.netherite_nugget": "Netherite Nugget",
+
   "item.ore_dredging.golden_ball": "Golden Ball",
   "item.ore_dredging.nephrite": "Nephrite",
   "item.ore_dredging.armor_fragments": "Armor Fragments",
   "item.ore_dredging.energetic_crystal": "Energetic Crystal",
+  "item.ore_dredging.astralium": "Astralium",
+
+  "block.ore_dredging.flame_crystal": "Flame Crystal",
+  "block.ore_dredging.flame_crystal_cluster": "Flame Crystal Cluster",
+  "block.ore_dredging.mimetic_ley_line": "Mimetic Ley Line",
+
   "item.ore_dredging.gray_quartz": "Gray Quartz",
   "item.ore_dredging.soft_armor_template": "Soft Armor Template",
   "item.ore_dredging.ashes": "Ashes",
+
   "block.ore_dredging.granite_bricks": "Granite Bricks",
   "block.ore_dredging.granite_brick_stairs": "Granite Brick Stairs",
   "block.ore_dredging.granite_brick_slab": "Granite Brick Slab",
   "block.ore_dredging.granite_brick_wall": "Granite Brick Wall",
+
   "block.ore_dredging.diorite_bricks": "Diorite Bricks",
   "block.ore_dredging.diorite_brick_stairs": "Diorite Brick Stairs",
   "block.ore_dredging.diorite_brick_slab": "Diorite Brick Slab",
   "block.ore_dredging.diorite_brick_wall": "Diorite Brick Wall",
+
   "block.ore_dredging.andesite_bricks": "Andesite Bricks",
   "block.ore_dredging.andesite_brick_stairs": "Andesite Brick Stairs",
   "block.ore_dredging.andesite_brick_slab": "Andesite Brick Slab",
   "block.ore_dredging.andesite_brick_wall": "Andesite Brick Wall",
-  "block.ore_dredging.stone_gravel_piles": "Stone Gravel Piles",
-  "block.ore_dredging.diorite_gravel_piles": "Diorite Gravel Piles",
-  "block.ore_dredging.andesite_gravel_piles": "Andesite Gravel Piles",
-  "block.ore_dredging.granite_gravel_piles": "Granite Gravel Piles",
-  "block.ore_dredging.sandstone_gravel_piles": "Sandstone Gravel Piles",
-  "block.ore_dredging.deepslate_gravel_piles": "Deepslate Gravel Piles",
-  "block.ore_dredging.tuff_gravel_piles": "Tuff Gravel Piles",
-  "block.ore_dredging.netherrack_gravel_piles": "Netherrack Gravel Piles",
-  "block.ore_dredging.basalt_gravel_piles": "Basalt Gravel Piles",
+
+  "block.ore_dredging.stone_gravel_piles": "Stone Gravel Pile",
+  "block.ore_dredging.diorite_gravel_piles": "Diorite Gravel Pile",
+  "block.ore_dredging.andesite_gravel_piles": "Andesite Gravel Pile",
+  "block.ore_dredging.granite_gravel_piles": "Granite Gravel Pile",
+  "block.ore_dredging.sandstone_gravel_piles": "Sandstone Gravel Pile",
+  "block.ore_dredging.deepslate_gravel_piles": "Deepslate Gravel Pile",
+  "block.ore_dredging.tuff_gravel_piles": "Tuff Gravel Pile",
+  "block.ore_dredging.netherrack_gravel_piles": "Netherrack Gravel Pile",
+  "block.ore_dredging.basalt_gravel_piles": "Basalt Gravel Pile",
+  "block.ore_dredging.raw_copper_gravel_piles": "Raw Copper Gravel Pile",
+  "block.ore_dredging.raw_iron_gravel_piles": "Raw Iron Gravel Pile",
+  "block.ore_dredging.raw_gold_gravel_piles": "Raw Gold Gravel Pile",
+
+  "block.ore_dredging.raw_iron_slab": "Raw Iron Slab",
+  "block.ore_dredging.raw_copper_slab": "Raw Copper Slab",
+  "block.ore_dredging.raw_gold_slab": "Raw Gold Slab",
+  "block.ore_dredging.iron_slab": "Iron Slab",
+  "block.ore_dredging.gold_slab": "Gold Slab",
+  "block.ore_dredging.copper_slab": "Copper Slab",
+  "block.ore_dredging.netherite_slab": "Netherite Slab",
+  "block.ore_dredging.diamond_slab": "Diamond Slab",
+  "block.ore_dredging.emerald_slab": "Emerald Slab",
+  "block.ore_dredging.lapis_slab": "Lapis Lazuli Slab",
+  "block.ore_dredging.redstone_slab": "Redstone Slab",
+  "block.ore_dredging.coal_slab": "Coal Slab",
+
   "block.ore_dredging.stone_pebble": "Stone Pebble",
   "block.ore_dredging.diorite_pebble": "Diorite Pebble",
   "block.ore_dredging.andesite_pebble": "Andesite Pebble",
   "block.ore_dredging.granite_pebble": "Granite Pebble",
   "block.ore_dredging.deepslate_pebble": "Deepslate Pebble",
   "block.ore_dredging.tuff_pebble": "Tuff Pebble",
+
+  "item.ore_dredging.astralium_steel_nugget": "Astralium Steel Nugget",
+  "item.ore_dredging.astralium_steel": "Astralium Steel",
+
+  "block.ore_dredging.astralium_ore": "Astralium Ore",
+  "block.ore_dredging.natural_raw_copper_block": "Natural Raw Copper Block",
+  "block.ore_dredging.natural_raw_iron_block": "Natural Raw Iron Block",
+  "block.ore_dredging.thunder_smelter_pipe": "Thunder Smelter Pipe",
+
   "item.ore_dredging.leather_miner_bundle": "Leather Miner Bundle",
   "item.ore_dredging.chain_miner_bundle": "Chain Miner Bundle",
   "item.ore_dredging.phantom_miner_bundle": "Phantom Miner Bundle",
+
   "item.ore_dredging.geological_hammer": "Geological Hammer",
   "item.ore_dredging.collapse_stone_hammer": "Collapse Stone Hammer",
+
   "block.ore_dredging.swamp_iron_ore": "Swamp Iron Ore",
   "block.ore_dredging.quartz_glass": "Quartz Glass",
-  "block.ore_dredging.quartz_glass_panes": "Quartz Glass Panes",
+  "block.ore_dredging.quartz_glass_panes": "Quartz Glass Pane",
+
   "item.ore_dredging.miner_helmet": "Miner Helmet",
+
+  "item.ore_dredging.flame_crystal_arrow": "Flame Crystal Arrow",
+
+  "block.ore_dredging.detonator": "Detonator",
+  "block.ore_dredging.slimy_detonator": "Slimy Detonator",
+  "item.ore_dredging.impact_detonator": "Impact Detonator",
+  "item.ore_dredging.high_energy_detonator": "High-Energy Detonator",
+
+  "entity.ore_dredging.detonator": "Detonator",
+  "entity.ore_dredging.slimy_detonator": "Slimy Detonator",
+  "entity.ore_dredging.impact_detonator": "Impact Detonator",
+  "entity.ore_dredging.high_energy_detonator": "High-Energy Detonator",
+
   "enchantment.ore_dredging.expansion": "Expansion",
   "enchantment.ore_dredging.convergence": "Convergence",
-  "enchantment.ore_dredging.auto_picking": "Auto Picking",
+  "enchantment.ore_dredging.auto_picking": "Auto-Picking",
   "enchantment.ore_dredging.toughness": "Toughness",
   "enchantment.ore_dredging.unyielding": "Unyielding",
-  "ore_dredging.cimelia.nature": "Nature's Treasure",
-  "ore_dredging.cimelia.ancient": "Ancient Treasure",
-  "ore_dredging.cimelia_introduction.golden_ball_1": "A heavy little ball with a matte luster",
-  "ore_dredging.cimelia_introduction.golden_ball_2": "When held in hand, you can feel the warm and immense energy slowly flowing within it.",
-  "ore_dredging.cimelia_introduction.nephrite_1": "A light, translucent rock, resembling jade but not jade, indestructible",
-  "ore_dredging.cimelia_introduction.nephrite_2": "When held in hand, it feels like nothing, but a little force can change its shape",
-  "ore_dredging.cimelia_introduction.armor_fragments_1": "A heavy black armor fragment, the specific part is hard to identify",
-  "ore_dredging.cimelia_introduction.armor_fragments_2": "There are obvious traces of melting, and some parts still wrap around the bones of the original owner",
-  "ore_dredging.cimelia_introduction.energetic_crystal_1": "A sparkling, dark-colored amethyst",
-  "ore_dredging.cimelia_introduction.energetic_crystal_2": "With the naked eye, you can see mysterious and immense energy flowing along every crystal structure",
-  "ore_dredging.cimelia_introduction.energetic_crystal_3": "When held in hand, you can feel it gently pulsating",
+  "enchantment.ore_dredging.heavy": "Heavy",
+  "enchantment.ore_dredging.star_pattern": "Star Pattern",
+
+  "ore_dredging.cimelia.nature": "Nature Cimelia",
+  "ore_dredging.cimelia.ancient": "Ancient Cimelia",
+
+  "ore_dredging.cimelia_introduction.golden_ball_1": "A heavy little ball with a frosted sheen",
+  "ore_dredging.cimelia_introduction.golden_ball_2": "Holding it, you can feel a warm, immense energy slowly coursing through it",
+
+  "ore_dredging.cimelia_introduction.nephrite_1": "A light, translucent rock, jade-like yet not, indestructible",
+  "ore_dredging.cimelia_introduction.nephrite_2": "Weightless in hand, yet it deforms under slight pressure",
+
+  "ore_dredging.cimelia_introduction.armor_fragments_1": "A heavy, jet-black armor fragment, its original location unidentifiable",
+  "ore_dredging.cimelia_introduction.armor_fragments_2": "Clear signs of melting are visible, some parts still encase the original wearer's bones",
+
+  "ore_dredging.cimelia_introduction.energetic_crystal_1": "A sparkling, deep and dark amethyst",
+  "ore_dredging.cimelia_introduction.energetic_crystal_2": "With the naked eye, one can see vast, arcane energy flowing along every crystalline structure",
+  "ore_dredging.cimelia_introduction.energetic_crystal_3": "Holding it, you feel it gently pulsating",
+
+  "ore_dredging.cimelia_introduction.astralium_1": "A cold, heavy raw ore, incredibly hard",
+  "ore_dredging.cimelia_introduction.astralium_2": "Upon closer inspection, the surface is covered with layers of wavy light-colored patterns",
+  "ore_dredging.cimelia_introduction.astralium_3": "This mineral doesn't seem to belong to this world, it's far too solid.",
+
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_1": "Looks like a small piece of deepslate.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_2": "Its immense weight and eerie hardness betray it's no ordinary rock.",
+  "ore_dredging.cimelia_introduction.mimetic_ley_line_3": "How can it be activated?",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_1": "A very beautiful crystal cluster",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_2": "Wrapped in a deep red crystalline membrane, the inner patterns resemble dancing flames.",
+  "ore_dredging.cimelia_introduction.flame_crystal_cluster_3": "Feels extremely hot to the touch.",
+
+  "ore_dredging.cimelia_introduction.flame_crystal_1": "A hot red crystal",
+  "ore_dredging.cimelia_introduction.flame_crystal_2": "The flame patterns inside seem to be flickering,",
+  "ore_dredging.cimelia_introduction.flame_crystal_3": "It constantly radiates a beautiful yet dangerous aura, revealing the immense energy within.",
+
   "item.minerbundle.fullness": "Capacity: %s/%s",
-  "subtitles.ore_dredging.piles_fall": "Pebbles break",
-  "subtitle.ore_dredging.pebble_break": "Pebbles break",
-  "death.attack.pebble_hit": "%s was defeated by %s using a pebble",
+
+  "ore_dredging.tootip.energetic": "Energized",
+
+  "subtitles.ore_dredging.piles_fall": "Stone crumbling",
+  "subtitle.ore_dredging.hammer_hit": "Collapse Stone Hammer: Smash",
+  "subtitle.ore_dredging.mll_amass": "Mimetic Core: Throbs",
+  "subtitle.ore_dredging.budding_ra": "Mimetic Core: Crumbles",
+  "subtitle.ore_dredging.budding_shock": "Mimetic Core: Shakes",
+  "subtitle.ore_dredging.erupt": "Mimetic Core: Erupts",
+  "subtitle.ore_dredging.erupt_smoke": "Mimetic Core: Smoke",
+
+  "death.attack.pebble_hit": "%s was defeated by %s using a tiny pebble",
+
   "modmenu.nameTranslation.tw-ore-dredging": "TW's Ore Dredging",
-  "modmenu.descriptionTranslation.tw-ore-dredging": "Enrich your mining experience! Adds reasonable and abundant drops to rocks! And hidden mysterious relics!",
-  "modmenu.summaryTranslation.tw-ore-dredging": "Enrich your mining experience! Adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!"
+  "modmenu.descriptionTranslation.tw-ore-dredging": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!",
+  "modmenu.summaryTranslation.tw-ore-dredging": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!"
 }
