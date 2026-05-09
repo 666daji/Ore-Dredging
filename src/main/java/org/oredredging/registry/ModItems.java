@@ -110,7 +110,7 @@ public class ModItems {
     public static final Item DETONATOR = register(ModBlocks.DETONATOR, ((block, settings) -> new DetonatorItem(block, settings, 100)));
     public static final Item SLIMY_DETONATOR = register(ModBlocks.SLIMY_DETONATOR, ((block, settings) -> new SlimyDetonatorItem(block, settings, 100)));
     public static final Item IMPACT_DETONATOR = register("impact_detonator", new ImpactDetonatorItem(new Item.Settings()));
-    public static final Item HIGH_ENERGY_DETONATOR = register("high_energy_detonator", new ImpactDetonatorItem(new Item.Settings(), 12F));
+    public static final Item HIGH_ENERGY_DETONATOR = register("high_energy_detonator", new ImpactDetonatorItem(new Item.Settings(), 10F));
 
     // 武器
     public static final Item FLAME_CRYSTAL_ARROW = register("flame_crystal_arrow", new FlameCrystalArrowItem(new Item.Settings()));

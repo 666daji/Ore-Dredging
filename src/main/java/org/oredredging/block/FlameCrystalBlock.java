@@ -41,7 +41,7 @@ public class FlameCrystalBlock extends AbstractFlameCrystalBlock {
 
     @Override
     protected float getPower(BlockState state, Random random) {
-        return state.get(COUNT) * 4;
+        return state.get(COUNT) * 9;
     }
 
     @Override

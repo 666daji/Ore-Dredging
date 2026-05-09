@@ -21,7 +21,7 @@ public class ImpactDetonatorItem extends Item implements Wave{
     }
 
     public ImpactDetonatorItem(Settings settings) {
-        this(settings, 8.0F);
+        this(settings, 6.0F);
     }
 
     @Override

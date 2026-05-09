@@ -56,7 +56,7 @@ public abstract class AbstractDetonatorEntity extends ThrownItemEntity {
                 setIgniteTime(igniteTime - 1);
             }
             if (igniteTime <= 0) {
-                explode(8.0F);
+                explode(6.0F);
             }
         }
 

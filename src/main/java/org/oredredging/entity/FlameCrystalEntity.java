@@ -23,7 +23,7 @@ public class FlameCrystalEntity extends PebbleEntity {
         if (!this.getWorld().isClient) {
             AbstractFlameCrystalBlock.createThermalExplosion(
                     getOwner() instanceof LivingEntity explosionOwner? explosionOwner : null,
-                    getWorld(), hitResult.getPos(), 3.0F
+                    getWorld(), hitResult.getPos(), 5
             );
 
             this.discard();

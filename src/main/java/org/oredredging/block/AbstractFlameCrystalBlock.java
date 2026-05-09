@@ -17,6 +17,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 import org.oredredging.entity.ThermalCloudEntity;
+import org.oredredging.registry.ModDamageTypes;
 
 import java.util.List;
 
@@ -40,9 +41,7 @@ public abstract class AbstractFlameCrystalBlock extends Block implements Landing
         if (!world.isClient) {
             if (shouldRedStoneExplosion(world, pos)) {
                 world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                world.createExplosion(
-                        null, pos.getX(), pos.getY(), pos.getZ(), getPower(state, world.random), World.ExplosionSourceType.MOB
-                );
+                createRedStoneExplosion(world, pos, getPower(state, world.random));
             }
         }
     }
@@ -62,9 +61,7 @@ public abstract class AbstractFlameCrystalBlock extends Block implements Landing
         if (!world.isClient) {
             if (shouldRedStoneExplosion(world, pos)) {
                 world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                world.createExplosion(
-                        null, pos.getX(), pos.getY(), pos.getZ(), getPower(state, world.random), World.ExplosionSourceType.MOB
-                );
+                createRedStoneExplosion(world, pos, getPower(state, world.random));
             }
         }
     }
@@ -116,12 +113,14 @@ public abstract class AbstractFlameCrystalBlock extends Block implements Landing
      * @return 是否应该爆炸
      */
     protected static boolean shouldRedStoneExplosion(World world, BlockPos pos) {
-        boolean bl = false;
-        for (Direction direction : new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}) {
-            if (world.getBlockState(pos.offset(direction)).isOf(Blocks.REDSTONE_WIRE)) bl = true;
+        for (Direction direction : Direction.values()) {
+            BlockState state = world.getBlockState(pos.offset(direction));
+            if (state.isOf(Blocks.REDSTONE_WIRE) || state.isOf(Blocks.REDSTONE_WIRE)) {
+                return true;
+            }
         }
 
-        return world.isReceivingRedstonePower(pos) || bl;
+        return false;
     }
 
     /**
@@ -154,5 +153,11 @@ public abstract class AbstractFlameCrystalBlock extends Block implements Landing
         world.spawnEntity(cloud);
 
         return cloud;
+    }
+
+    public static Explosion createRedStoneExplosion(World world, BlockPos pos, float power) {
+        return world.createExplosion(
+                null, world.getDamageSources().create(ModDamageTypes.FLAME_CRYSTAL_RED_STONE), null, pos.toCenterPos(), power, false, World.ExplosionSourceType.MOB
+        );
     }
 }

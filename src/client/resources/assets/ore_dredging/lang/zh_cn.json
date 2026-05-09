@@ -155,6 +155,7 @@
   "subtitle.ore_dredging.erupt_smoke": "拟态核心:烟雾",
 
   "death.attack.pebble_hit": "%s被%s使用小石子击败",
+  "death.attack.flame_crystal_red_stone": "%s被焰晶炸飞了",
 
   "modmenu.nameTranslation.tw-ore-dredging": "TW的矿石淘采",
   "modmenu.descriptionTranslation.tw-ore-dredging": "丰富你的采矿体验!为岩石增加了合理,丰富的掉落物!以及隐藏的神秘遗物!",

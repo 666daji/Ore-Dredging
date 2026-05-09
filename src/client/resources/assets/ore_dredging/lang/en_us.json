@@ -155,6 +155,7 @@
   "subtitle.ore_dredging.erupt_smoke": "Mimetic Core: Smoke",
 
   "death.attack.pebble_hit": "%s was defeated by %s using a tiny pebble",
+  "death.attack.flame_crystal_red_stone": "% was blown away by the flame crystal",
 
   "modmenu.nameTranslation.tw-ore-dredging": "TW's Ore Dredging",
   "modmenu.descriptionTranslation.tw-ore-dredging": "Enhance your mining experience! This adds reasonable and abundant drops to rocks, as well as hidden mysterious relics!",

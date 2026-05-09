@@ -1,5 +1,7 @@
 package org.oredredging.mixin;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,10 +11,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.oredredging.block.entity.FlameCrystalClusterBlockEntity;
+import org.oredredging.registry.ModBlocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BrushItem.class)
@@ -32,5 +36,14 @@ public abstract class BrushItemMixin {
                 stack.damage(1, user, userX -> userX.sendEquipmentBreakStatus(equipmentSlot));
             }
         }
+    }
+
+    @ModifyVariable(method = "addDustParticles", at = @At("HEAD"), argsOnly = true, index = 3)
+    private BlockState modifyParticle(BlockState state) {
+        if (state.isOf(ModBlocks.FLAME_CRYSTAL_CLUSTER)) {
+            return Blocks.GLOWSTONE.getDefaultState();
+        }
+
+        return state;
     }
 }

@@ -8,6 +8,7 @@
     "BrushItemMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
+    "ExplosionMixin",
     "GlowstoneBlobFeatureMixin",
     "GrindstoneScreenHandlerInputMixin",
     "GrindstoneScreenHandlerMixin",

@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"particle": "minecraft:block/glowstone",
+		"particle": "ore_dredging:block/flame_crystal_cluster",
 		"all": "ore_dredging:block/flame_crystal_cluster"
 	},
 	"elements": [

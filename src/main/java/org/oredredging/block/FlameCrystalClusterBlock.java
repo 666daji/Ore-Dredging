@@ -95,7 +95,7 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
 
     @Override
     protected float getPower(BlockState state, Random random) {
-        return 12;
+        return 55;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class FlameCrystalClusterBlock extends AbstractFlameCrystalBlock implemen
         }
 
         if (RandomUtil.randomBoolean(probability)) {
-            createThermalExplosion(null, world, pos.toCenterPos(), 9);
+            createThermalExplosion(null, world, pos.toCenterPos(), 24);
         }
     }
 
