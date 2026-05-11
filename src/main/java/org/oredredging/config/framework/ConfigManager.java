@@ -31,7 +31,7 @@ public final class ConfigManager {
     // 基础配置目录
     private static final Path BASE_DIR = FabricLoader.getInstance().getConfigDir().resolve("tw_ore_dredging");
     // 当前全局配置版本号，所有配置共用此版本
-    private static final int CURRENT_VERSION = 2;
+    private static final int CURRENT_VERSION = 3;
 
     // 类型到数据的缓存
     private static final Map<ConfigType<?>, Object> CACHE = new LinkedHashMap<>();
